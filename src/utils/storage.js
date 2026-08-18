@@ -7,10 +7,23 @@ export const getStoredProducts = () => {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
     if (!data) {
+      // First run — seed with all default products
       localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_PRODUCTS));
       return INITIAL_PRODUCTS;
     }
-    return JSON.parse(data);
+
+    const stored = JSON.parse(data);
+    const storedIds = new Set(stored.map(p => p.id));
+
+    // Add any default products that don't exist yet in localStorage
+    const newDefaults = INITIAL_PRODUCTS.filter(p => !storedIds.has(p.id));
+    if (newDefaults.length > 0) {
+      const merged = [...stored, ...newDefaults];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+      return merged;
+    }
+
+    return stored;
   } catch (err) {
     console.error('Error loading products from localStorage:', err);
     return INITIAL_PRODUCTS;
