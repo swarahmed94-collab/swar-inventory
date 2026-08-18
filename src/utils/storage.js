@@ -199,3 +199,44 @@ export const saveStoredInvoices = (invoices) => {
   }
 };
 
+const CUSTOMERS_KEY = 'swar_customers_v1';
+
+export const getStoredCustomers = () => {
+  try {
+    const data = localStorage.getItem(CUSTOMERS_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (err) {
+    console.error('Error loading customers from storage:', err);
+    return [];
+  }
+};
+
+export const saveStoredCustomers = (customers) => {
+  try {
+    localStorage.setItem(CUSTOMERS_KEY, JSON.stringify(customers));
+  } catch (err) {
+    console.error('Error saving customers to storage:', err);
+  }
+};
+
+const JOURNAL_KEY = 'swar_journal_v1';
+
+export const getStoredJournal = () => {
+  try {
+    const data = localStorage.getItem(JOURNAL_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (err) {
+    console.error('Error loading journal from storage:', err);
+    return [];
+  }
+};
+
+export const saveStoredJournal = (entries) => {
+  try {
+    localStorage.setItem(JOURNAL_KEY, JSON.stringify(entries));
+  } catch (err) {
+    console.error('Error saving journal to storage:', err);
+  }
+};
+
+

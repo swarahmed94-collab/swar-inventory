@@ -45,7 +45,9 @@ export const pushStateToCloud = async (roomId, state) => {
       updatedAt: new Date().toISOString(),
       products: state.products || [],
       invoices: state.invoices || [],
-      version: 2
+      customers: state.customers || [],
+      journal: state.journal || [],
+      version: 3
     });
 
     await fetch(`https://ntfy.sh/swar_sync_${cleanRoom}`, {
@@ -136,7 +138,12 @@ export const createLiveSyncChannel = (onRemoteUpdate) => {
   // 2. Fetch initial cloud state immediately on startup so new viewers get latest admin data
   if (config.enabled && config.roomId) {
     fetchLatestCloudState(config.roomId).then(cloudData => {
-      if (cloudData && (Array.isArray(cloudData.products) || Array.isArray(cloudData.invoices))) {
+      if (cloudData && (
+        Array.isArray(cloudData.products) || 
+        Array.isArray(cloudData.invoices) ||
+        Array.isArray(cloudData.customers) ||
+        Array.isArray(cloudData.journal)
+      )) {
         onRemoteUpdate(cloudData, 'initial-cloud');
       }
     }).catch(e => console.warn('Initial cloud sync error:', e));
@@ -159,7 +166,12 @@ export const createLiveSyncChannel = (onRemoteUpdate) => {
             } else if (data.message) {
               payload = JSON.parse(data.message);
             }
-            if (payload && (Array.isArray(payload.products) || Array.isArray(payload.invoices))) {
+            if (payload && (
+              Array.isArray(payload.products) || 
+              Array.isArray(payload.invoices) ||
+              Array.isArray(payload.customers) ||
+              Array.isArray(payload.journal)
+            )) {
               onRemoteUpdate(payload, 'cloud');
             }
           }
@@ -171,6 +183,7 @@ export const createLiveSyncChannel = (onRemoteUpdate) => {
       console.warn('EventSource SSE connection warning:', e);
     }
   }
+
 
   return {
     broadcastLocalChange: (state) => {

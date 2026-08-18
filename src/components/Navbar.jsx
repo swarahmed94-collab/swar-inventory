@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Moon, Sun, FileSpreadsheet, Smartphone, Cloud, ShoppingCart, Shield, Lock, Receipt } from 'lucide-react';
+import { Plus, Moon, Sun, FileSpreadsheet, Smartphone, Cloud, ShoppingCart, Shield, Lock, Receipt, Wallet } from 'lucide-react';
 
 export default function Navbar({
   theme, toggleTheme,
@@ -11,6 +11,7 @@ export default function Navbar({
   onOpenPurchaseOrder,
   onOpenSync,
   onOpenInvoice,
+  onOpenJournal,
 }) {
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200/80 dark:border-slate-800/80 glass-panel no-print">
@@ -31,7 +32,7 @@ export default function Navbar({
                 صِـوار <span className="text-sky-600 dark:text-sky-400 text-sm font-mono">SWAR</span>
               </h1>
               <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">
-                منظومة جرد المجمدات السحابية
+                منظومة جرد وإدارة المجمدات
               </p>
             </div>
           </div>
@@ -60,11 +61,18 @@ export default function Navbar({
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             </button>
 
-            {/* Invoice */}
-            <button onClick={onOpenInvoice} className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-violet-50 dark:bg-violet-950/50 hover:bg-violet-100 text-violet-800 dark:text-violet-300 border border-violet-200 dark:border-violet-800 text-xs font-bold transition-colors" title="إنشاء فاتورة وطباعتها">
-              <Receipt className="w-4 h-4" />
-              <span className="hidden sm:inline">فاتورة</span>
+            {/* Daily Cash Journal */}
+            <button onClick={onOpenJournal} className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-bold transition-colors" title="دفتر اليومية والخزينة">
+              <Wallet className="w-4 h-4 text-emerald-600" />
+              <span className="hidden sm:inline">اليومية</span>
             </button>
+
+            {/* Invoice */}
+            <button onClick={onOpenInvoice} className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-violet-50 dark:bg-violet-950/50 hover:bg-violet-100 text-violet-800 dark:text-violet-300 border border-violet-200 dark:border-violet-800 text-xs font-bold transition-colors" title="إنشاء فاتورة مبيعات أو مشتريات">
+              <Receipt className="w-4 h-4" />
+              <span className="hidden sm:inline">الفواتير</span>
+            </button>
+
 
             {/* Purchase Order */}
             <button onClick={onOpenPurchaseOrder} className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 text-xs font-bold transition-colors" title="طلبية شراء">
