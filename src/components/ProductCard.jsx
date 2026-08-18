@@ -15,6 +15,7 @@ import { sounds } from '../utils/sound';
 
 export default function ProductCard({
   product,
+  isAdmin = false,
   onOpenAudit,
   onEditProduct,
   onDeleteProduct,
@@ -54,23 +55,25 @@ export default function ProductCard({
             </span>
           </div>
 
-          {/* Quick Edit/Delete Menu */}
-          <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
-            <button
-              onClick={() => onEditProduct(product)}
-              className="p-1.5 rounded-lg text-slate-500 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-slate-800 transition-colors"
-              title="تعديل بيانات الصنف"
-            >
-              <Edit3 className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => onDeleteProduct(product.id, product.name)}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-slate-800 transition-colors"
-              title="حذف الصنف"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
-          </div>
+          {/* Quick Edit/Delete Menu (Admin Only) */}
+          {isAdmin && (
+            <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+              <button
+                onClick={() => onEditProduct(product)}
+                className="p-1.5 rounded-lg text-slate-500 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-slate-800 transition-colors"
+                title="تعديل بيانات الصنف"
+              >
+                <Edit3 className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => onDeleteProduct(product.id, product.name)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-slate-800 transition-colors"
+                title="حذف الصنف"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Product Title with Emoji */}
@@ -143,23 +146,25 @@ export default function ProductCard({
       {/* Action Footer: Quick adjust & Open Audit History */}
       <div className="p-3 bg-slate-100/80 dark:bg-slate-950/80 border-t border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between gap-2">
         
-        {/* Quick Stepper */}
-        <div className="flex items-center gap-1 bg-white dark:bg-slate-900 rounded-xl p-1 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <button
-            onClick={() => handleQuickDelta(-1)}
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 active:bg-rose-500 active:text-white transition-colors"
-            title="تقليل 1"
-          >
-            <Minus className="w-3.5 h-3.5" />
-          </button>
-          <button
-            onClick={() => handleQuickDelta(1)}
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 active:bg-emerald-500 active:text-white transition-colors"
-            title="زيادة 1"
-          >
-            <Plus className="w-3.5 h-3.5" />
-          </button>
-        </div>
+        {/* Quick Stepper (Admin Only) */}
+        {isAdmin && (
+          <div className="flex items-center gap-1 bg-white dark:bg-slate-900 rounded-xl p-1 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <button
+              onClick={() => handleQuickDelta(-1)}
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 active:bg-rose-500 active:text-white transition-colors"
+              title="تقليل 1"
+            >
+              <Minus className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={() => handleQuickDelta(1)}
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 active:bg-emerald-500 active:text-white transition-colors"
+              title="زيادة 1"
+            >
+              <Plus className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
 
         {/* Primary Action Button: Open Audit History */}
         <button

@@ -31,7 +31,8 @@ export default function ProductList({
   onEditProduct,
   onDeleteProduct,
   onQuickUpdateStock,
-  onOpenAddModal
+  onOpenAddModal,
+  isAdmin = false
 }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('urgency'); // 'urgency' | 'name' | 'stockAsc' | 'stockDesc' | 'lastAuditAsc'
@@ -225,6 +226,7 @@ export default function ProductList({
             <ProductCard
               key={product.id}
               product={product}
+              isAdmin={isAdmin}
               onOpenAudit={onOpenAudit}
               onEditProduct={onEditProduct}
               onDeleteProduct={onDeleteProduct}

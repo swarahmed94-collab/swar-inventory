@@ -8,12 +8,14 @@ import ProductFormModal from './components/ProductFormModal';
 import ReportModal from './components/ReportModal';
 import PurchaseOrderModal from './components/PurchaseOrderModal';
 import SyncModal from './components/SyncModal';
+import AdminLoginModal from './components/AdminLoginModal';
 import { 
   getStoredProducts, 
   saveStoredProducts, 
   getAppSettings, 
   saveAppSettings 
 } from './utils/storage';
+import { getAdminAuth, saveAdminAuth } from './utils/auth';
 import { createLiveSyncChannel } from './utils/cloudSync';
 import { INITIAL_PRODUCTS } from './data/defaultProducts';
 import { sounds } from './utils/sound';
@@ -22,6 +24,7 @@ export default function App() {
   // State
   const [products, setProducts] = useState(getStoredProducts);
   const [settings, setSettings] = useState(getAppSettings);
+  const [adminAuth, setAdminAuth] = useState(getAdminAuth);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [activeStatusFilter, setActiveStatusFilter] = useState('all');
   
@@ -33,6 +36,7 @@ export default function App() {
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [isPurchaseOrderOpen, setIsPurchaseOrderOpen] = useState(false);
   const [isSyncOpen, setIsSyncOpen] = useState(false);
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
 
   const liveChannelRef = useRef(null);
 
@@ -80,8 +84,12 @@ export default function App() {
     }));
   };
 
-  // --- CRUD Operations ---
+  // --- CRUD Operations (Admin only) ---
   const handleSaveProduct = (productData, existingId) => {
+    if (!adminAuth.isAdmin) {
+      alert('عفواً، يتطلب هذا الإجراء صلاحيات المسؤول.');
+      return;
+    }
     let updated;
     if (existingId) {
       updated = products.map(p => {
@@ -117,6 +125,10 @@ export default function App() {
   };
 
   const handleDeleteProduct = (productId, productName) => {
+    if (!adminAuth.isAdmin) {
+      alert('عفواً، يتطلب هذا الإجراء صلاحيات المسؤول.');
+      return;
+    }
     if (window.confirm(`هل أنت متأكد من حذف الصنف "${productName}" بالكامل؟ لا يمكن التراجع عن هذا الإجراء.`)) {
       sounds.playWarning();
       const updated = products.filter(p => p.id !== productId);
@@ -127,6 +139,7 @@ export default function App() {
 
   // --- Quick Stepper (+/- 1) on Card ---
   const handleQuickUpdateStock = (productId, delta) => {
+    if (!adminAuth.isAdmin) return;
     const updated = products.map(p => {
       if (p.id === productId) {
         const newStock = Math.max(0, Number(p.currentStock) + delta);
@@ -153,6 +166,10 @@ export default function App() {
 
   // --- Audit Modal Actions ---
   const handleAddAuditLog = (productId, auditEntry) => {
+    if (!adminAuth.isAdmin) {
+      alert('عفواً، يتطلب تسجيل الجرد صلاحيات المسؤول.');
+      return;
+    }
     const updated = products.map(p => {
       if (p.id === productId) {
         const currentLogs = p.auditHistory || [];
@@ -182,6 +199,7 @@ export default function App() {
   };
 
   const handleDeleteAuditLog = (productId, logId) => {
+    if (!adminAuth.isAdmin) return;
     const updated = products.map(p => {
       if (p.id === productId) {
         const updatedLogs = (p.auditHistory || []).filter(l => l.id !== logId);
@@ -219,6 +237,7 @@ export default function App() {
 
   // --- Batch Quick Audit Completion ---
   const handleBatchAuditComplete = (auditResults) => {
+    if (!adminAuth.isAdmin) return;
     const nowIso = new Date().toISOString();
     const updated = products.map(p => {
       if (auditResults[p.id] !== undefined) {
@@ -251,6 +270,8 @@ export default function App() {
       <Navbar
         theme={settings.theme}
         toggleTheme={toggleTheme}
+        isAdmin={adminAuth.isAdmin}
+        onOpenAdminModal={() => setIsAdminModalOpen(true)}
         onOpenAddModal={() => {
           setProductToEdit(null);
           setIsProductFormOpen(true);
@@ -275,6 +296,7 @@ export default function App() {
         {/* Product Catalog & List */}
         <ProductList
           products={products}
+          isAdmin={adminAuth.isAdmin}
           selectedCategory={selectedCategory}
           onSelectCategory={(catId) => setSelectedCategory(catId)}
           activeStatusFilter={activeStatusFilter}
@@ -322,6 +344,7 @@ export default function App() {
       {auditProduct && (
         <AuditModal
           product={auditProduct}
+          isAdmin={adminAuth.isAdmin}
           onClose={() => setAuditProduct(null)}
           onAddAuditLog={handleAddAuditLog}
           onDeleteAuditLog={handleDeleteAuditLog}
@@ -330,7 +353,7 @@ export default function App() {
       )}
 
       {/* 2. Quick Sequential Audit Mode */}
-      {isQuickAuditOpen && (
+      {isQuickAuditOpen && adminAuth.isAdmin && (
         <QuickAuditFlow
           products={products}
           onClose={() => setIsQuickAuditOpen(false)}
@@ -339,9 +362,9 @@ export default function App() {
         />
       )}
 
-      {/* 3. Product Create / Edit Modal with Smart Emojis */}
+      {/* 3. Product Create / Edit Modal */}
       <ProductFormModal
-        isOpen={isProductFormOpen}
+        isOpen={isProductFormOpen && adminAuth.isAdmin}
         productToEdit={productToEdit}
         onClose={() => {
           setIsProductFormOpen(false);
@@ -370,6 +393,19 @@ export default function App() {
         products={products}
         onClose={() => setIsSyncOpen(false)}
         onForceSync={() => broadcastChange(products)}
+      />
+
+      {/* 7. Admin Login Modal */}
+      <AdminLoginModal
+        isOpen={isAdminModalOpen}
+        isAdmin={adminAuth.isAdmin}
+        onClose={() => setIsAdminModalOpen(false)}
+        onLoginSuccess={() => setAdminAuth(getAdminAuth())}
+        onLogout={() => {
+          const updated = { ...adminAuth, isAdmin: false };
+          saveAdminAuth(updated);
+          setAdminAuth(updated);
+        }}
       />
 
     </div>
