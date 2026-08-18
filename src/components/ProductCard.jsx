@@ -8,8 +8,6 @@ import {
   Plus, 
   Minus,
   TrendingDown,
-  TrendingUp,
-  AlertCircle,
   Sparkles
 } from 'lucide-react';
 import { getStockStatus, getAuditRecency, formatArabicDateTime } from '../utils/storage';
@@ -43,14 +41,13 @@ export default function ProductCard({
       <div className="p-4 sm:p-5 pb-3">
         <div className="flex items-start justify-between gap-2 mb-3">
           
-          {/* Status Badge */}
+          {/* Status Badge & Recency */}
           <div className="flex items-center gap-1.5 flex-wrap">
             <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black shadow-sm ${status.badgeBg}`}>
               <span className="w-2 h-2 rounded-full bg-white animate-ping-slow inline-block"></span>
               {status.label}
             </span>
 
-            {/* Audit recency badge */}
             <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold ${recency.badgeClass}`}>
               <Clock className="w-3 h-3" />
               {recency.formattedText}
@@ -76,10 +73,15 @@ export default function ProductCard({
           </div>
         </div>
 
-        {/* Product Title */}
-        <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white leading-tight mb-2 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
-          {product.name}
-        </h3>
+        {/* Product Title with Emoji */}
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-2xl sm:text-3xl shrink-0 p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 shadow-inner">
+            {product.emoji || '🧊'}
+          </span>
+          <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white leading-tight group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
+            {product.name}
+          </h3>
+        </div>
 
         {/* Location & Details */}
         <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 mb-3 flex-wrap">
@@ -141,7 +143,7 @@ export default function ProductCard({
       {/* Action Footer: Quick adjust & Open Audit History */}
       <div className="p-3 bg-slate-100/80 dark:bg-slate-950/80 border-t border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between gap-2">
         
-        {/* Quick Stepper for physical freezer counting */}
+        {/* Quick Stepper */}
         <div className="flex items-center gap-1 bg-white dark:bg-slate-900 rounded-xl p-1 border border-slate-200 dark:border-slate-800 shadow-sm">
           <button
             onClick={() => handleQuickDelta(-1)}
@@ -159,7 +161,7 @@ export default function ProductCard({
           </button>
         </div>
 
-        {/* Primary Action Button: Open Audit History (سجل الجرد) */}
+        {/* Primary Action Button: Open Audit History */}
         <button
           onClick={() => {
             sounds.playClick();

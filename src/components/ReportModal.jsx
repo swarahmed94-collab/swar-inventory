@@ -1,18 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   X, 
-  Printer, 
-  Download, 
   FileSpreadsheet, 
-  Snowflake, 
+  Download, 
+  Printer, 
+  FileText, 
   CheckCircle, 
-  AlertTriangle,
-  Clock
+  Loader2,
+  Sparkles
 } from 'lucide-react';
-import { getStockStatus, getAuditRecency, formatArabicDateTime } from '../utils/storage';
+import { getStockStatus, formatArabicDateTime } from '../utils/storage';
 import { exportToCSV, printInventoryReport } from '../utils/export';
+import { downloadInventoryPDF } from '../utils/pdfExport';
+import { sounds } from '../utils/sound';
 
 export default function ReportModal({ products, isOpen, onClose }) {
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [downloadSuccess, setDownloadSuccess] = useState(false);
+
   if (!isOpen) return null;
 
   let totalItems = products.length;
@@ -36,6 +41,18 @@ export default function ReportModal({ products, isOpen, onClose }) {
     day: 'numeric'
   });
 
+  const handleDownloadPDF = async () => {
+    setIsGeneratingPDF(true);
+    sounds.playClick();
+    const success = await downloadInventoryPDF(products);
+    setIsGeneratingPDF(false);
+    if (success) {
+      sounds.playSuccess();
+      setDownloadSuccess(true);
+      setTimeout(() => setDownloadSuccess(false), 4000);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto animate-fade-in">
       <div className="bg-white dark:bg-slate-900 w-full max-w-4xl rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-auto flex flex-col max-h-[94vh]">
@@ -45,25 +62,45 @@ export default function ReportModal({ products, isOpen, onClose }) {
           <div className="flex items-center gap-2">
             <FileSpreadsheet className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
-              تقرير الجرد الشامل للمخزون
+              تقرير الجرد الشامل وتنزيل PDF
             </h2>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* Direct PDF Download */}
+            <button
+              onClick={handleDownloadPDF}
+              disabled={isGeneratingPDF}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs sm:text-sm font-black shadow-md shadow-rose-600/20 active:scale-95 transition-all disabled:opacity-50"
+            >
+              {isGeneratingPDF ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : downloadSuccess ? (
+                <CheckCircle className="w-4 h-4 text-white" />
+              ) : (
+                <FileText className="w-4 h-4" />
+              )}
+              <span>{isGeneratingPDF ? 'جاري إنشاء PDF...' : downloadSuccess ? 'تم التنزيل بنجاح!' : 'تنزيل PDF مباشر'}</span>
+            </button>
+
+            {/* Excel Download */}
             <button
               onClick={() => exportToCSV(products)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold shadow-sm transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold shadow-sm transition-colors"
             >
               <Download className="w-4 h-4" />
-              <span>تصدير Excel (CSV)</span>
+              <span className="hidden sm:inline">Excel (CSV)</span>
             </button>
+
+            {/* Browser Print */}
             <button
               onClick={printInventoryReport}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs sm:text-sm font-bold shadow-sm transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs sm:text-sm font-bold shadow-sm transition-colors"
             >
               <Printer className="w-4 h-4" />
-              <span>طباعة / حفظ PDF</span>
+              <span className="hidden sm:inline">طباعة</span>
             </button>
+
             <button
               onClick={onClose}
               className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800"
@@ -79,19 +116,19 @@ export default function ReportModal({ products, isOpen, onClose }) {
           {/* Printable Header */}
           <div className="border-b-2 border-slate-200 pb-4 mb-6 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-sky-600 text-white flex items-center justify-center font-black text-xl">
+              <div className="w-12 h-12 rounded-2xl bg-sky-600 text-white flex items-center justify-center font-black text-2xl shadow-md">
                 ❄️
               </div>
               <div>
                 <h1 className="text-2xl font-black text-slate-900 dark:text-white print:text-black">
-                  سِـوار | تقرير جرد وحالة مخزون المجمدات
+                  صِـوار | تقرير جرد وحالة مخزون المجمدات
                 </h1>
                 <p className="text-xs text-slate-500 dark:text-slate-400 print:text-gray-600 mt-0.5">
                   تاريخ استخراج التقرير: {currentDate}
                 </p>
               </div>
             </div>
-            <div className="text-left font-mono text-xs text-slate-400">
+            <div className="text-left font-mono text-xs text-slate-400 font-bold">
               SWAR-AUDIT-REPORT
             </div>
           </div>
@@ -122,7 +159,7 @@ export default function ReportModal({ products, isOpen, onClose }) {
               <thead className="bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
                 <tr>
                   <th className="p-3">#</th>
-                  <th className="p-3">اسم المنتج المجمد</th>
+                  <th className="p-3">الصنف المجمد</th>
                   <th className="p-3">مكان التخزين</th>
                   <th className="p-3 text-center">المخزون الفعلي</th>
                   <th className="p-3 text-center">الحد الحرج</th>
@@ -138,7 +175,10 @@ export default function ReportModal({ products, isOpen, onClose }) {
                   return (
                     <tr key={p.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
                       <td className="p-3 font-mono text-slate-400">{idx + 1}</td>
-                      <td className="p-3 font-bold text-slate-900 dark:text-white">{p.name}</td>
+                      <td className="p-3 font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                        <span>{p.emoji || '🧊'}</span>
+                        <span>{p.name}</span>
+                      </td>
                       <td className="p-3 text-slate-500 dark:text-slate-400">{p.freezerLocation || '-'}</td>
                       <td className="p-3 text-center font-black text-base text-slate-900 dark:text-white">
                         {p.currentStock} <span className="text-[11px] font-normal text-slate-500">{p.unit}</span>

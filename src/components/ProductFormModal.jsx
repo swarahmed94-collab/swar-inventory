@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { 
   X, 
   Package, 
-  Layers, 
-  Scale, 
   MapPin, 
-  FileText, 
   AlertTriangle, 
   CheckCircle2, 
-  Sparkles
+  Sparkles,
+  Smile
 } from 'lucide-react';
 import { DEFAULT_CATEGORIES } from '../data/defaultProducts';
+import { FROZEN_FOOD_EMOJIS, suggestEmojiForProductName } from '../utils/emojiSuggester';
 import { sounds } from '../utils/sound';
 
 export default function ProductFormModal({
@@ -25,6 +24,7 @@ export default function ProductFormModal({
 
   const [formData, setFormData] = useState({
     name: '',
+    emoji: '🍗',
     category: 'poultry',
     unit: 'كيس',
     currentStock: 10,
@@ -34,10 +34,13 @@ export default function ProductFormModal({
     notes: '',
   });
 
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
   useEffect(() => {
     if (productToEdit) {
       setFormData({
         name: productToEdit.name || '',
+        emoji: productToEdit.emoji || suggestEmojiForProductName(productToEdit.name, productToEdit.category),
         category: productToEdit.category || 'poultry',
         unit: productToEdit.unit || 'كيس',
         currentStock: productToEdit.currentStock ?? 0,
@@ -49,6 +52,7 @@ export default function ProductFormModal({
     } else {
       setFormData({
         name: '',
+        emoji: '🍗',
         category: 'poultry',
         unit: 'كيس',
         currentStock: 10,
@@ -60,6 +64,25 @@ export default function ProductFormModal({
     }
   }, [productToEdit]);
 
+  // Smart emoji detection as user types name or changes category
+  const handleNameChange = (val) => {
+    const suggested = suggestEmojiForProductName(val, formData.category);
+    setFormData(prev => ({
+      ...prev,
+      name: val,
+      emoji: suggested || prev.emoji
+    }));
+  };
+
+  const handleCategoryChange = (val) => {
+    const suggested = suggestEmojiForProductName(formData.name, val);
+    setFormData(prev => ({
+      ...prev,
+      category: val,
+      emoji: suggested || prev.emoji
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.name.trim()) return;
@@ -69,6 +92,7 @@ export default function ProductFormModal({
     const productPayload = {
       ...formData,
       name: formData.name.trim(),
+      emoji: formData.emoji || '🧊',
       currentStock: Number(formData.currentStock) || 0,
       minCriticalThreshold: Number(formData.minCriticalThreshold) || 5,
       healthyThreshold: Number(formData.healthyThreshold) || 20,
@@ -87,15 +111,15 @@ export default function ProductFormModal({
         {/* Modal Header */}
         <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-gradient-to-r from-sky-600 to-blue-600 text-white">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center">
-              <Package className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center text-xl">
+              {formData.emoji || '❄️'}
             </div>
             <div>
               <h2 className="text-lg font-black">
                 {isEdit ? 'تعديل بيانات الصنف المجمد' : 'إضافة صنف مجمد جديد'}
               </h2>
               <p className="text-xs text-sky-100 mt-0.5">
-                يرجى إدخال وتحديث البيانات بدقة لمتابعة مستويات المخزون
+                منظومة صِـوار لمتابعة وإدارة الأغذية المجمدة
               </p>
             </div>
           </div>
@@ -110,19 +134,58 @@ export default function ProductFormModal({
         {/* Modal Form */}
         <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 max-h-[80vh] overflow-y-auto">
           
-          {/* Product Name */}
+          {/* Product Name with Emoji selector */}
           <div>
             <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-              اسم المنتج المجمد: <span className="text-red-500">*</span>
+              اسم المنتج المجمد والأيقونة: <span className="text-red-500">*</span>
             </label>
-            <input
-              type="text"
-              required
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="مثال: ستربس دجاج مقرمش 1 كجم، بانيه حار، برجر..."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-sky-500 outline-none"
-            />
+            
+            <div className="flex items-center gap-2">
+              {/* Emoji Trigger Button */}
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                  className="w-12 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-2xl transition-all shadow-sm"
+                  title="تغيير أيقونة الصنف"
+                >
+                  {formData.emoji}
+                </button>
+
+                {/* Dropdown Emoji Palette */}
+                {showEmojiPicker && (
+                  <div className="absolute right-0 top-12 z-50 bg-white dark:bg-slate-900 p-3 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 w-64 grid grid-cols-6 gap-2">
+                    {FROZEN_FOOD_EMOJIS.map((em, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => {
+                          setFormData({ ...formData, emoji: em });
+                          setShowEmojiPicker(false);
+                        }}
+                        className="w-8 h-8 rounded-lg hover:bg-sky-100 dark:hover:bg-slate-800 text-xl flex items-center justify-center transition-colors"
+                      >
+                        {em}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Name Input */}
+              <input
+                type="text"
+                required
+                value={formData.name}
+                onChange={(e) => handleNameChange(e.target.value)}
+                placeholder="مثال: ستربس دجاج، بانيه، برجر، سمبوسك..."
+                className="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-sky-500 outline-none"
+              />
+            </div>
+            <p className="text-[11px] text-sky-600 dark:text-sky-400 mt-1 flex items-center gap-1">
+              <Sparkles className="w-3 h-3" />
+              <span>يقترح النظام الإيموجي تلقائياً بناءً على ما تكتبه!</span>
+            </p>
           </div>
 
           {/* Category & Unit */}
@@ -133,7 +196,7 @@ export default function ProductFormModal({
               </label>
               <select
                 value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                onChange={(e) => handleCategoryChange(e.target.value)}
                 className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm outline-none cursor-pointer"
               >
                 {DEFAULT_CATEGORIES.filter(c => c.id !== 'all').map(c => (

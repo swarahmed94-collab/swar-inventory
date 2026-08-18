@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import DashboardStats from './components/DashboardStats';
 import ProductList from './components/ProductList';
@@ -6,13 +6,15 @@ import AuditModal from './components/AuditModal';
 import QuickAuditFlow from './components/QuickAuditFlow';
 import ProductFormModal from './components/ProductFormModal';
 import ReportModal from './components/ReportModal';
-import BackupModal from './components/BackupModal';
+import PurchaseOrderModal from './components/PurchaseOrderModal';
+import SyncModal from './components/SyncModal';
 import { 
   getStoredProducts, 
   saveStoredProducts, 
   getAppSettings, 
   saveAppSettings 
 } from './utils/storage';
+import { createLiveSyncChannel } from './utils/cloudSync';
 import { INITIAL_PRODUCTS } from './data/defaultProducts';
 import { sounds } from './utils/sound';
 
@@ -29,7 +31,10 @@ export default function App() {
   const [isProductFormOpen, setIsProductFormOpen] = useState(false);
   const [productToEdit, setProductToEdit] = useState(null);
   const [isReportOpen, setIsReportOpen] = useState(false);
-  const [isBackupOpen, setIsBackupOpen] = useState(false);
+  const [isPurchaseOrderOpen, setIsPurchaseOrderOpen] = useState(false);
+  const [isSyncOpen, setIsSyncOpen] = useState(false);
+
+  const liveChannelRef = useRef(null);
 
   // Sync theme
   useEffect(() => {
@@ -41,10 +46,31 @@ export default function App() {
     saveAppSettings(settings);
   }, [settings]);
 
-  // Sync products with localStorage
+  // Save to localStorage
   useEffect(() => {
     saveStoredProducts(products);
   }, [products]);
+
+  // Initialize Realtime Live Cloud / Tab Sync
+  useEffect(() => {
+    liveChannelRef.current = createLiveSyncChannel((remoteProducts, source) => {
+      if (Array.isArray(remoteProducts) && remoteProducts.length > 0) {
+        setProducts(remoteProducts);
+      }
+    });
+
+    return () => {
+      if (liveChannelRef.current) {
+        liveChannelRef.current.close();
+      }
+    };
+  }, []);
+
+  const broadcastChange = (updatedProducts) => {
+    if (liveChannelRef.current) {
+      liveChannelRef.current.broadcastLocalChange(updatedProducts);
+    }
+  };
 
   const toggleTheme = () => {
     sounds.playClick();
@@ -56,9 +82,9 @@ export default function App() {
 
   // --- CRUD Operations ---
   const handleSaveProduct = (productData, existingId) => {
+    let updated;
     if (existingId) {
-      // Edit
-      setProducts(prev => prev.map(p => {
+      updated = products.map(p => {
         if (p.id === existingId) {
           return {
             ...p,
@@ -67,9 +93,8 @@ export default function App() {
           };
         }
         return p;
-      }));
+      });
     } else {
-      // New Product
       const newProduct = {
         ...productData,
         id: 'prod-' + Date.now(),
@@ -85,20 +110,24 @@ export default function App() {
           }
         ]
       };
-      setProducts(prev => [newProduct, ...prev]);
+      updated = [newProduct, ...products];
     }
+    setProducts(updated);
+    broadcastChange(updated);
   };
 
   const handleDeleteProduct = (productId, productName) => {
     if (window.confirm(`هل أنت متأكد من حذف الصنف "${productName}" بالكامل؟ لا يمكن التراجع عن هذا الإجراء.`)) {
       sounds.playWarning();
-      setProducts(prev => prev.filter(p => p.id !== productId));
+      const updated = products.filter(p => p.id !== productId);
+      setProducts(updated);
+      broadcastChange(updated);
     }
   };
 
   // --- Quick Stepper (+/- 1) on Card ---
   const handleQuickUpdateStock = (productId, delta) => {
-    setProducts(prev => prev.map(p => {
+    const updated = products.map(p => {
       if (p.id === productId) {
         const newStock = Math.max(0, Number(p.currentStock) + delta);
         const newLog = {
@@ -117,12 +146,14 @@ export default function App() {
         };
       }
       return p;
-    }));
+    });
+    setProducts(updated);
+    broadcastChange(updated);
   };
 
   // --- Audit Modal Actions ---
   const handleAddAuditLog = (productId, auditEntry) => {
-    setProducts(prev => prev.map(p => {
+    const updated = products.map(p => {
       if (p.id === productId) {
         const currentLogs = p.auditHistory || [];
         return {
@@ -132,9 +163,11 @@ export default function App() {
         };
       }
       return p;
-    }));
+    });
 
-    // Update active audit modal product data so it re-renders instantaneously
+    setProducts(updated);
+    broadcastChange(updated);
+
     setAuditProduct(prev => {
       if (prev && prev.id === productId) {
         const currentLogs = prev.auditHistory || [];
@@ -149,10 +182,9 @@ export default function App() {
   };
 
   const handleDeleteAuditLog = (productId, logId) => {
-    setProducts(prev => prev.map(p => {
+    const updated = products.map(p => {
       if (p.id === productId) {
         const updatedLogs = (p.auditHistory || []).filter(l => l.id !== logId);
-        // Latest stock becomes the last log quantity or fallback
         const latestQty = updatedLogs.length > 0
           ? [...updatedLogs].sort((a, b) => new Date(b.date) - new Date(a.date))[0].quantity
           : p.currentStock;
@@ -164,7 +196,10 @@ export default function App() {
         };
       }
       return p;
-    }));
+    });
+
+    setProducts(updated);
+    broadcastChange(updated);
 
     setAuditProduct(prev => {
       if (prev && prev.id === productId) {
@@ -185,7 +220,7 @@ export default function App() {
   // --- Batch Quick Audit Completion ---
   const handleBatchAuditComplete = (auditResults) => {
     const nowIso = new Date().toISOString();
-    setProducts(prev => prev.map(p => {
+    const updated = products.map(p => {
       if (auditResults[p.id] !== undefined) {
         const targetQty = Number(auditResults[p.id]);
         const delta = targetQty - (Number(p.currentStock) || 0);
@@ -204,7 +239,9 @@ export default function App() {
         };
       }
       return p;
-    }));
+    });
+    setProducts(updated);
+    broadcastChange(updated);
   };
 
   return (
@@ -220,7 +257,8 @@ export default function App() {
         }}
         onOpenQuickAudit={() => setIsQuickAuditOpen(true)}
         onOpenReport={() => setIsReportOpen(true)}
-        onOpenBackup={() => setIsBackupOpen(true)}
+        onOpenPurchaseOrder={() => setIsPurchaseOrderOpen(true)}
+        onOpenSync={() => setIsSyncOpen(true)}
         totalItems={products.length}
       />
 
@@ -260,10 +298,13 @@ export default function App() {
       <footer className="border-t border-slate-200 dark:border-slate-800/80 py-6 text-center text-xs text-slate-500 dark:text-slate-400 no-print mt-auto">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <div>
-            منظومة <span className="font-bold text-sky-600 dark:text-sky-400">سِـوار (SWAR)</span> لإدارة وجرد مخزون الأغذية المجمدة
+            منظومة <span className="font-bold text-sky-600 dark:text-sky-400">صِـوار (SWAR)</span> لإدارة وجرد مخزون الأغذية المجمدة
           </div>
           <div className="flex items-center gap-4">
-            <span>❄️ يعمل بدون إنترنت (Offline Ready)</span>
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              مزامنة سحابية حية
+            </span>
             <span>🔒 مجاني 100% بدون خوادم</span>
           </div>
         </div>
@@ -271,7 +312,7 @@ export default function App() {
 
       {/* --- MODALS --- */}
       
-      {/* 1. Audit History Modal (سجل الجرد) */}
+      {/* 1. Audit History Modal */}
       {auditProduct && (
         <AuditModal
           product={auditProduct}
@@ -282,7 +323,7 @@ export default function App() {
         />
       )}
 
-      {/* 2. Quick Sequential Audit Mode (وضع الجرد السريع للهواتف) */}
+      {/* 2. Quick Sequential Audit Mode */}
       {isQuickAuditOpen && (
         <QuickAuditFlow
           products={products}
@@ -292,7 +333,7 @@ export default function App() {
         />
       )}
 
-      {/* 3. Product Create / Edit Modal */}
+      {/* 3. Product Create / Edit Modal with Smart Emojis */}
       <ProductFormModal
         isOpen={isProductFormOpen}
         productToEdit={productToEdit}
@@ -303,20 +344,26 @@ export default function App() {
         onSaveProduct={handleSaveProduct}
       />
 
-      {/* 4. Report & Print Modal */}
+      {/* 4. Report & Direct PDF Modal */}
       <ReportModal
         isOpen={isReportOpen}
         products={products}
         onClose={() => setIsReportOpen(false)}
       />
 
-      {/* 5. Backup, Restore & Reset Modal */}
-      <BackupModal
-        isOpen={isBackupOpen}
+      {/* 5. Purchase Order Generator & WhatsApp */}
+      <PurchaseOrderModal
+        isOpen={isPurchaseOrderOpen}
         products={products}
-        onClose={() => setIsBackupOpen(false)}
-        onRestoreProducts={(imported) => setProducts(imported)}
-        onResetToDefaults={() => setProducts(INITIAL_PRODUCTS)}
+        onClose={() => setIsPurchaseOrderOpen(false)}
+      />
+
+      {/* 6. Live Cloud Sync Settings */}
+      <SyncModal
+        isOpen={isSyncOpen}
+        products={products}
+        onClose={() => setIsSyncOpen(false)}
+        onForceSync={() => broadcastChange(products)}
       />
 
     </div>

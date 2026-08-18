@@ -11,6 +11,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'prod-1',
     name: 'ستربس دجاج حار (أكياس 1 كجم)',
+    emoji: '🍗',
     category: 'poultry',
     unit: 'كيس',
     currentStock: 18,
@@ -49,6 +50,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'prod-2',
     name: 'بانيه دجاج متبل مقرمش (كرتونة 5 كجم)',
+    emoji: '🥩',
     category: 'poultry',
     unit: 'كرتونة',
     currentStock: 4,
@@ -79,6 +81,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'prod-3',
     name: 'برجر لحم بقري جامبو (علبة 24 قطعة)',
+    emoji: '🍔',
     category: 'meat',
     unit: 'علبة',
     currentStock: 28,
@@ -101,6 +104,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'prod-4',
     name: 'بطاطس نصف مقلية فريتس (كيس 2.5 كجم)',
+    emoji: '🍟',
     category: 'appetizers',
     unit: 'كيس',
     currentStock: 12,
@@ -131,6 +135,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'prod-5',
     name: 'سمبوسك جبنة بالنعناع (طبق 50 حبة)',
+    emoji: '🥟',
     category: 'appetizers',
     unit: 'طبق',
     currentStock: 0,
@@ -161,6 +166,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'prod-6',
     name: 'فيليه سمك قشر بياض مجمد (كرتونة 10 كجم)',
+    emoji: '🐟',
     category: 'seafood',
     unit: 'كرتونة',
     currentStock: 14,
@@ -183,6 +189,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'prod-7',
     name: 'خضار مشكل مجمد بسلة وجزر وفاصوليا (كيس 1 كجم)',
+    emoji: '🥦',
     category: 'vegetables',
     unit: 'كيس',
     currentStock: 45,
@@ -205,6 +212,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'prod-8',
     name: 'كفتة حاتي متبلة وجاهزة للشواء (أطباق 1 كجم)',
+    emoji: '🌭',
     category: 'meat',
     unit: 'طبق',
     currentStock: 9,

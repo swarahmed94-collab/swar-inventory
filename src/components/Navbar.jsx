@@ -1,13 +1,13 @@
 import React from 'react';
 import { 
-  Snowflake, 
   Plus, 
   Moon, 
   Sun, 
   FileSpreadsheet, 
-  Database, 
   Smartphone,
-  RotateCcw
+  Cloud,
+  ShoppingCart,
+  Wifi
 } from 'lucide-react';
 
 export default function Navbar({
@@ -16,8 +16,9 @@ export default function Navbar({
   onOpenAddModal,
   onOpenQuickAudit,
   onOpenReport,
-  onOpenBackup,
-  onResetData,
+  onOpenPurchaseOrder,
+  onOpenSync,
+  isCloudSynced,
   totalItems
 }) {
   return (
@@ -25,10 +26,13 @@ export default function Navbar({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           
-          {/* Logo & Brand */}
+          {/* Logo & Brand with letter 'S' */}
           <div className="flex items-center space-x-3 space-x-reverse">
             <div className="relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-sky-600 via-sky-500 to-cyan-400 text-white shadow-lg shadow-sky-500/25">
-              <Snowflake className="w-6 h-6 sm:w-7 sm:h-7 animate-spin-slow" />
+              {/* Premium 'S' Monogram Logo */}
+              <span className="font-black text-2xl sm:text-3xl font-mono tracking-tighter select-none">
+                S
+              </span>
               <span className="absolute -top-1 -right-1 flex h-3 w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
@@ -37,21 +41,42 @@ export default function Navbar({
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">
-                  سِـوار <span className="text-sky-600 dark:text-sky-400 font-extrabold text-sm sm:text-base font-mono">SWAR</span>
+                  صِـوار <span className="text-sky-600 dark:text-sky-400 font-extrabold text-sm sm:text-base font-mono">SWAR</span>
                 </h1>
                 <span className="hidden sm:inline-block px-2 py-0.5 text-xs font-semibold rounded-full bg-sky-100 text-sky-800 dark:bg-sky-950/80 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
                   إدارة المجمدات
                 </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 hidden xs:block">
-                المنظومة الذكية لجرد ومتابعة مخزون الأغذية المجمدة
+                المنظومة السحابية الذكية لجرد ومتابعة مخزون الأغذية المجمدة
               </p>
             </div>
           </div>
 
           {/* Actions & Buttons */}
-          <div className="flex items-center gap-1.5 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-2.5">
             
+            {/* Live Cloud Sync Status Button */}
+            <button
+              onClick={onOpenSync}
+              className="flex items-center gap-1.5 px-2.5 py-2 sm:px-3 sm:py-2.5 rounded-xl bg-sky-50 dark:bg-sky-950/60 hover:bg-sky-100 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800 text-xs sm:text-sm font-bold transition-colors"
+              title="حالة المزامنة السحابية المباشرة"
+            >
+              <Cloud className="w-4 h-4 text-sky-500" />
+              <span className="hidden md:inline">مزامنة حية</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            </button>
+
+            {/* Purchase Order (طلبيات الشراء) */}
+            <button
+              onClick={onOpenPurchaseOrder}
+              className="flex items-center gap-1.5 px-2.5 py-2 sm:px-3 sm:py-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 text-xs sm:text-sm font-bold transition-colors"
+              title="طلبية النواقص عبر WhatsApp"
+            >
+              <ShoppingCart className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+              <span className="hidden lg:inline">طلبية شراء</span>
+            </button>
+
             {/* Quick Mobile Audit Mode */}
             <button
               onClick={onOpenQuickAudit}
@@ -75,20 +100,10 @@ export default function Navbar({
             <button
               onClick={onOpenReport}
               className="p-2 sm:px-3 sm:py-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm font-medium transition-colors flex items-center gap-1.5"
-              title="تقرير الجرد والطباعة"
+              title="تقرير الجرد والـ PDF"
             >
               <FileSpreadsheet className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span className="hidden md:inline">التقارير</span>
-            </button>
-
-            {/* Data Backup / Settings */}
-            <button
-              onClick={onOpenBackup}
-              className="p-2 sm:px-3 sm:py-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm font-medium transition-colors flex items-center gap-1.5"
-              title="النسخ الاحتياطي والبيانات"
-            >
-              <Database className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-              <span className="hidden lg:inline">البيانات</span>
+              <span className="hidden md:inline">التقرير والـ PDF</span>
             </button>
 
             {/* Theme Toggle */}
