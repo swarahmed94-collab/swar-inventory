@@ -10,13 +10,21 @@ import PurchaseOrderModal from './components/PurchaseOrderModal';
 import SyncModal from './components/SyncModal';
 import AdminModal from './components/AdminModal';
 import InvoiceModal from './components/InvoiceModal';
-import { getStoredProducts, saveStoredProducts, getAppSettings, saveAppSettings } from './utils/storage';
+import { 
+  getStoredProducts, 
+  saveStoredProducts, 
+  getAppSettings, 
+  saveAppSettings,
+  getStoredInvoices,
+  saveStoredInvoices
+} from './utils/storage';
 import { getAuth, saveAuth } from './utils/auth';
 import { createLiveSyncChannel } from './utils/cloudSync';
 import { sounds } from './utils/sound';
 
 export default function App() {
   const [products, setProducts] = useState(getStoredProducts);
+  const [invoices, setInvoices] = useState(getStoredInvoices);
   const [settings, setSettings] = useState(getAppSettings);
   const [isAdmin, setIsAdmin] = useState(() => getAuth().isAdmin);
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -43,6 +51,10 @@ export default function App() {
 
   // Save products
   useEffect(() => { saveStoredProducts(products); }, [products]);
+
+  // Save invoices
+  useEffect(() => { saveStoredInvoices(invoices); }, [invoices]);
+
 
   // Live cloud sync
   useEffect(() => {
@@ -173,6 +185,81 @@ export default function App() {
     broadcast(updated);
   };
 
+  // ─── INVOICE PROCESSING & STOCK DEDUCTION ──────────────────
+  const handleProcessInvoice = (invoiceData) => {
+    if (!isAdmin) return;
+    const now = new Date().toISOString();
+    const itemsMap = new Map();
+    (invoiceData.items || []).forEach(item => {
+      itemsMap.set(item.productId, (itemsMap.get(item.productId) || 0) + Number(item.qty));
+    });
+
+    const updated = products.map(p => {
+      if (!itemsMap.has(p.id)) return p;
+      const soldQty = itemsMap.get(p.id);
+      const newStock = Number(p.currentStock) - soldQty;
+      const log = {
+        id: 'aud-inv-' + Date.now() + '-' + p.id,
+        date: now,
+        quantity: newStock,
+        delta: -soldQty,
+        auditor: invoiceData.invoiceNumber || 'فاتورة مبيعات',
+        notes: invoiceData.customerName
+          ? `فاتورة مبيعات للعميل: ${invoiceData.customerName}`
+          : 'فاتورة مبيعات نقدية'
+      };
+      return {
+        ...p,
+        currentStock: newStock,
+        updatedAt: now,
+        auditHistory: [...(p.auditHistory || []), log]
+      };
+    });
+
+    setProducts(updated);
+    broadcast(updated);
+    setInvoices(prev => [invoiceData, ...prev]);
+    sounds.playSuccess();
+  };
+
+  const handleDeleteInvoice = (invoiceId, restoreStock = false) => {
+    if (!isAdmin) return;
+    const invToDelete = invoices.find(i => i.id === invoiceId);
+
+    if (restoreStock && invToDelete && invToDelete.deductedFromStock) {
+      const now = new Date().toISOString();
+      const itemsMap = new Map();
+      (invToDelete.items || []).forEach(item => {
+        itemsMap.set(item.productId, (itemsMap.get(item.productId) || 0) + Number(item.qty));
+      });
+
+      const updated = products.map(p => {
+        if (!itemsMap.has(p.id)) return p;
+        const restoredQty = itemsMap.get(p.id);
+        const newStock = Number(p.currentStock) + restoredQty;
+        const log = {
+          id: 'aud-del-inv-' + Date.now() + '-' + p.id,
+          date: now,
+          quantity: newStock,
+          delta: +restoredQty,
+          auditor: 'إلغاء ' + (invToDelete.invoiceNumber || 'فاتورة'),
+          notes: `استرجاع كميات بعد حذف الفاتورة ${invToDelete.invoiceNumber || ''}`
+        };
+        return {
+          ...p,
+          currentStock: newStock,
+          updatedAt: now,
+          auditHistory: [...(p.auditHistory || []), log]
+        };
+      });
+
+      setProducts(updated);
+      broadcast(updated);
+    }
+
+    setInvoices(prev => prev.filter(i => i.id !== invoiceId));
+  };
+
   // ─── RENDER ─────────────────────────────────────────────────
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-sky-500 selection:text-white transition-colors duration-200">
@@ -182,7 +269,14 @@ export default function App() {
         toggleTheme={toggleTheme}
         isAdmin={isAdmin}
         onOpenAdminModal={() => setIsAdminModalOpen(true)}
-        onOpenAddModal={() => { setProductToEdit(null); setIsProductFormOpen(true); }}
+        onOpenAddModal={() => {
+          if (!isAdmin) {
+            setIsAdminModalOpen(true);
+            return;
+          }
+          setProductToEdit(null);
+          setIsProductFormOpen(true);
+        }}
         onOpenQuickAudit={() => setIsQuickAuditOpen(true)}
         onOpenReport={() => setIsReportOpen(true)}
         onOpenPurchaseOrder={() => setIsPurchaseOrderOpen(true)}
@@ -204,10 +298,24 @@ export default function App() {
           activeStatusFilter={activeStatusFilter}
           onSelectStatusFilter={setActiveStatusFilter}
           onOpenAudit={setAuditProduct}
-          onEditProduct={(p) => { setProductToEdit(p); setIsProductFormOpen(true); }}
+          onEditProduct={(p) => {
+            if (!isAdmin) {
+              setIsAdminModalOpen(true);
+              return;
+            }
+            setProductToEdit(p);
+            setIsProductFormOpen(true);
+          }}
           onDeleteProduct={handleDeleteProduct}
           onQuickUpdateStock={handleQuickUpdateStock}
-          onOpenAddModal={() => { setProductToEdit(null); setIsProductFormOpen(true); }}
+          onOpenAddModal={() => {
+            if (!isAdmin) {
+              setIsAdminModalOpen(true);
+              return;
+            }
+            setProductToEdit(null);
+            setIsProductFormOpen(true);
+          }}
         />
       </main>
 
@@ -282,9 +390,15 @@ export default function App() {
       <InvoiceModal
         isOpen={isInvoiceOpen}
         products={products}
+        invoices={invoices}
+        isAdmin={isAdmin}
         onClose={() => setIsInvoiceOpen(false)}
+        onProcessInvoice={handleProcessInvoice}
+        onDeleteInvoice={handleDeleteInvoice}
+        onOpenAdminModal={() => setIsAdminModalOpen(true)}
       />
 
     </div>
   );
 }
+

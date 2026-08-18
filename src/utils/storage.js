@@ -178,3 +178,24 @@ export const formatArabicDateTime = (isoDate) => {
     return isoDate;
   }
 };
+
+const INVOICES_KEY = 'swar_invoices_v1';
+
+export const getStoredInvoices = () => {
+  try {
+    const data = localStorage.getItem(INVOICES_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (err) {
+    console.error('Error loading invoices from storage:', err);
+    return [];
+  }
+};
+
+export const saveStoredInvoices = (invoices) => {
+  try {
+    localStorage.setItem(INVOICES_KEY, JSON.stringify(invoices));
+  } catch (err) {
+    console.error('Error saving invoices to storage:', err);
+  }
+};
+
