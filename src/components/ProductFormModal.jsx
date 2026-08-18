@@ -27,6 +27,7 @@ export default function ProductFormModal({
     emoji: '🍗',
     category: 'poultry',
     unit: 'كيس',
+    price: '',
     currentStock: 10,
     minCriticalThreshold: 5,
     healthyThreshold: 20,
@@ -43,6 +44,7 @@ export default function ProductFormModal({
         emoji: productToEdit.emoji || suggestEmojiForProductName(productToEdit.name, productToEdit.category),
         category: productToEdit.category || 'poultry',
         unit: productToEdit.unit || 'كيس',
+        price: productToEdit.price ?? '',
         currentStock: productToEdit.currentStock ?? 0,
         minCriticalThreshold: productToEdit.minCriticalThreshold ?? 5,
         healthyThreshold: productToEdit.healthyThreshold ?? 20,
@@ -55,6 +57,7 @@ export default function ProductFormModal({
         emoji: '🍗',
         category: 'poultry',
         unit: 'كيس',
+        price: '',
         currentStock: 10,
         minCriticalThreshold: 5,
         healthyThreshold: 20,
@@ -93,6 +96,7 @@ export default function ProductFormModal({
       ...formData,
       name: formData.name.trim(),
       emoji: formData.emoji || '🧊',
+      price: formData.price !== '' ? Number(formData.price) : null,
       currentStock: Number(formData.currentStock) || 0,
       minCriticalThreshold: Number(formData.minCriticalThreshold) || 5,
       healthyThreshold: Number(formData.healthyThreshold) || 20,
@@ -219,6 +223,22 @@ export default function ProductFormModal({
                 ))}
               </select>
             </div>
+          </div>
+
+          {/* Price Field */}
+          <div>
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+              💰 سعر الوحدة (بالجنيه) — اختياري:
+            </label>
+            <input
+              type="number"
+              min="0"
+              step="0.5"
+              value={formData.price}
+              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+              placeholder="مثال: 150"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm font-bold outline-none focus:ring-2 focus:ring-amber-400"
+            />
           </div>
 
           {/* Stock Levels & Thresholds */}

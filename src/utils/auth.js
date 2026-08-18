@@ -1,33 +1,28 @@
-const ADMIN_STORAGE_KEY = 'swar_admin_auth_v1';
-const DEFAULT_ADMIN_PIN = '1234'; // Default PIN can be changed by admin
+const AUTH_KEY = 'swar_auth_v4';
 
-export const getAdminAuth = () => {
+// ← هذا الرقم السري الثابت يمكنك من أخذ صلاحيات الأدمن على أي جهاز في أي وقت
+export const MASTER_RESCUE = 'SWAR2026';
+
+export const getAuth = () => {
   try {
-    const data = localStorage.getItem(ADMIN_STORAGE_KEY);
+    const data = localStorage.getItem(AUTH_KEY);
     if (!data) {
-      // By default, first device / owner gets admin access, others can login with PIN
-      const initial = {
-        isAdmin: true, // initial state on this creator's device
-        pin: DEFAULT_ADMIN_PIN,
-      };
-      localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(initial));
-      return initial;
+      const init = { isAdmin: true, adminPass: '1234' };
+      localStorage.setItem(AUTH_KEY, JSON.stringify(init));
+      return init;
     }
     return JSON.parse(data);
   } catch {
-    return { isAdmin: false, pin: DEFAULT_ADMIN_PIN };
+    return { isAdmin: false, adminPass: '1234' };
   }
 };
 
-export const saveAdminAuth = (auth) => {
-  try {
-    localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(auth));
-  } catch (err) {
-    console.error('Error saving admin auth:', err);
-  }
+export const saveAuth = (auth) => {
+  localStorage.setItem(AUTH_KEY, JSON.stringify(auth));
 };
 
-export const verifyAdminPIN = (inputPin) => {
-  const auth = getAdminAuth();
-  return String(inputPin).trim() === String(auth.pin).trim();
+export const checkPass = (input) => {
+  const auth = getAuth();
+  const p = String(input).trim();
+  return p === String(auth.adminPass).trim() || p === MASTER_RESCUE;
 };
