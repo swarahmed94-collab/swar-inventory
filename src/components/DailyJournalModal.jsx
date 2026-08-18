@@ -10,20 +10,13 @@ import {
   Calendar, 
   Search, 
   Download, 
-  TrendingUp, 
-  TrendingDown, 
   DollarSign, 
-  FileSpreadsheet, 
   CheckCircle2, 
-  AlertCircle,
-  Filter,
-  User,
-  Tag,
+  User, 
   Clock
 } from 'lucide-react';
 import { formatArabicDateTime } from '../utils/storage';
 import { sounds } from '../utils/sound';
-import html2pdf from 'html2pdf.js';
 
 export default function DailyJournalModal({
   isOpen,
@@ -35,8 +28,11 @@ export default function DailyJournalModal({
   onDeleteJournalEntry,
   onOpenAdminModal
 }) {
+  const safeJournal = Array.isArray(journal) ? journal : [];
+  const safeCustomers = Array.isArray(customers) ? customers : [];
+
   const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().split('T')[0]);
-  const [dateFilterMode, setDateFilterMode] = useState('day'); // 'today' | 'day' | 'month' | 'all'
+  const [dateFilterMode, setDateFilterMode] = useState('today'); // 'today' | 'day' | 'month' | 'all'
   const [typeFilter, setTypeFilter] = useState('all'); // 'all' | 'income' | 'expense'
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -45,14 +41,12 @@ export default function DailyJournalModal({
   const [entryType, setEntryType] = useState('income'); // 'income' | 'expense'
   const [personName, setPersonName] = useState('');
   const [amount, setAmount] = useState('');
-  const [category, setCategory] = useState('تحصيل مبيعات');
+  const [category, setCategory] = useState('تحصيل مبيعات نقدية');
   const [notes, setNotes] = useState('');
   const [customDateTime, setCustomDateTime] = useState(() => new Date().toISOString().slice(0, 16));
   const [successToast, setSuccessToast] = useState('');
 
-  if (!isOpen) return null;
-
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = useMemo(() => new Date().toISOString().split('T')[0], []);
 
   const incomeCategories = [
     'تحصيل مبيعات نقدية',
@@ -74,8 +68,9 @@ export default function DailyJournalModal({
 
   // Filter journal entries
   const filteredJournal = useMemo(() => {
-    return journal.filter(entry => {
-      const entryDate = entry.date ? entry.date.split('T')[0] : '';
+    return safeJournal.filter(entry => {
+      if (!entry) return false;
+      const entryDate = entry.date ? String(entry.date).split('T')[0] : '';
 
       // Date filtering
       if (dateFilterMode === 'today' && entryDate !== todayStr) return false;
@@ -91,15 +86,15 @@ export default function DailyJournalModal({
       // Text search
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
-        const matchName = (entry.personName || '').toLowerCase().includes(q);
-        const matchCat = (entry.category || '').toLowerCase().includes(q);
-        const matchNotes = (entry.notes || '').toLowerCase().includes(q);
+        const matchName = String(entry.personName || '').toLowerCase().includes(q);
+        const matchCat = String(entry.category || '').toLowerCase().includes(q);
+        const matchNotes = String(entry.notes || '').toLowerCase().includes(q);
         if (!matchName && !matchCat && !matchNotes) return false;
       }
 
       return true;
-    }).sort((a, b) => new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt));
-  }, [journal, selectedDate, dateFilterMode, typeFilter, searchQuery, todayStr]);
+    }).sort((a, b) => new Date(b.date || b.createdAt || 0) - new Date(a.date || a.createdAt || 0));
+  }, [safeJournal, selectedDate, dateFilterMode, typeFilter, searchQuery, todayStr]);
 
   // Aggregate sums
   const stats = useMemo(() => {
@@ -121,6 +116,8 @@ export default function DailyJournalModal({
     };
   }, [filteredJournal]);
 
+  if (!isOpen) return null;
+
   const handleCreateEntry = (e) => {
     e.preventDefault();
     if (!isAdmin) {
@@ -141,7 +138,7 @@ export default function DailyJournalModal({
       type: entryType,
       amount: numAmount,
       personName: personName.trim() || (entryType === 'income' ? 'عميل نقدي' : 'مصروفات عامة'),
-      category: category || (entryType === 'income' ? 'تحصيل مبيعات' : 'مصروفات'),
+      category: category || (entryType === 'income' ? 'تحصيل مبيعات نقدية' : 'مشتريات وتوريد بضاعة'),
       notes: notes.trim(),
       createdAt: new Date().toISOString()
     };
@@ -172,6 +169,10 @@ export default function DailyJournalModal({
   // Direct Print Collection Sheet
   const handlePrintSheet = () => {
     const win = window.open('', '_blank');
+    if (!win) {
+      window.print();
+      return;
+    }
     const displayDate = dateFilterMode === 'today' 
       ? 'اليوم (' + todayStr + ')'
       : dateFilterMode === 'day' 
@@ -277,77 +278,79 @@ export default function DailyJournalModal({
     win.document.close();
   };
 
-  // PDF Export
   const handleExportPDF = async () => {
-    const container = document.createElement('div');
-    container.style.direction = 'rtl';
-    container.style.fontFamily = "'Cairo', sans-serif";
-    container.style.padding = '20px';
-    container.style.backgroundColor = '#ffffff';
-
-    const displayDate = dateFilterMode === 'today' ? todayStr : selectedDate || 'كافة الفترات';
-
-    container.innerHTML = `
-      <div style="border-bottom: 2px solid #0284c7; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <h1 style="margin: 0; font-size: 20px; font-weight: 900; color: #0f172a;">💵 كشف يومية الخزينة والحركات النقدية</h1>
-          <p style="margin: 3px 0 0 0; font-size: 11px; color: #64748b;">الفترة: ${displayDate} | منظومة صِـوار SWAR</p>
-        </div>
-      </div>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px;">
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 8px; text-align: center;">
-          <div style="font-size: 10px; color: #166534;">المقبوضات</div>
-          <div style="font-size: 16px; font-weight: 900; color: #166534;">+ ${stats.totalIncome.toFixed(2)} ج</div>
-        </div>
-        <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 8px; text-align: center;">
-          <div style="font-size: 10px; color: #991b1b;">المصروفات</div>
-          <div style="font-size: 16px; font-weight: 900; color: #991b1b;">- ${stats.totalExpense.toFixed(2)} ج</div>
-        </div>
-        <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 8px; text-align: center;">
-          <div style="font-size: 10px; color: #0369a1;">صافي الخزينة</div>
-          <div style="font-size: 16px; font-weight: 900; color: #0369a1;">${stats.netCash.toFixed(2)} ج</div>
-        </div>
-      </div>
-      <table style="width: 100%; border-collapse: collapse; text-align: right; font-size: 10px;">
-        <thead>
-          <tr style="background: #0284c7; color: white;">
-            <th style="padding: 6px;">#</th>
-            <th style="padding: 6px;">التاريخ</th>
-            <th style="padding: 6px;">النوع</th>
-            <th style="padding: 6px;">الطرف</th>
-            <th style="padding: 6px;">البند</th>
-            <th style="padding: 6px;">المبلغ</th>
-            <th style="padding: 6px;">ملاحظات</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${filteredJournal.map((item, idx) => `
-            <tr style="border-bottom: 1px solid #e2e8f0;">
-              <td style="padding: 5px;">${idx + 1}</td>
-              <td style="padding: 5px;">${formatArabicDateTime(item.date || item.createdAt)}</td>
-              <td style="padding: 5px; font-weight: bold; color: ${item.type === 'income' ? '#16a34a' : '#dc2626'};">
-                ${item.type === 'income' ? 'قبض' : 'صرف'}
-              </td>
-              <td style="padding: 5px;">${item.personName || '-'}</td>
-              <td style="padding: 5px;">${item.category || '-'}</td>
-              <td style="padding: 5px; font-weight: bold;">${item.type === 'income' ? '+' : '-'}${item.amount} ج</td>
-              <td style="padding: 5px;">${item.notes || '-'}</td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    `;
-
-    const opt = {
-      margin: [10, 10, 10, 10],
-      filename: `يومية_الخزينة_${displayDate}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
     try {
-      await html2pdf().set(opt).from(container).save();
+      const html2pdfModule = await import('html2pdf.js');
+      const html2pdfFn = html2pdfModule.default || html2pdfModule;
+
+      const container = document.createElement('div');
+      container.style.direction = 'rtl';
+      container.style.fontFamily = "'Cairo', sans-serif";
+      container.style.padding = '20px';
+      container.style.backgroundColor = '#ffffff';
+
+      const displayDate = dateFilterMode === 'today' ? todayStr : selectedDate || 'كافة الفترات';
+
+      container.innerHTML = `
+        <div style="border-bottom: 2px solid #0284c7; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 900; color: #0f172a;">💵 كشف يومية الخزينة والحركات النقدية</h1>
+            <p style="margin: 3px 0 0 0; font-size: 11px; color: #64748b;">الفترة: ${displayDate} | منظومة صِـوار SWAR</p>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px;">
+          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 8px; text-align: center;">
+            <div style="font-size: 10px; color: #166534;">المقبوضات</div>
+            <div style="font-size: 16px; font-weight: 900; color: #166534;">+ ${stats.totalIncome.toFixed(2)} ج</div>
+          </div>
+          <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 8px; text-align: center;">
+            <div style="font-size: 10px; color: #991b1b;">المصروفات</div>
+            <div style="font-size: 16px; font-weight: 900; color: #991b1b;">- ${stats.totalExpense.toFixed(2)} ج</div>
+          </div>
+          <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 8px; text-align: center;">
+            <div style="font-size: 10px; color: #0369a1;">صافي الخزينة</div>
+            <div style="font-size: 16px; font-weight: 900; color: #0369a1;">${stats.netCash.toFixed(2)} ج</div>
+          </div>
+        </div>
+        <table style="width: 100%; border-collapse: collapse; text-align: right; font-size: 10px;">
+          <thead>
+            <tr style="background: #0284c7; color: white;">
+              <th style="padding: 6px;">#</th>
+              <th style="padding: 6px;">التاريخ</th>
+              <th style="padding: 6px;">النوع</th>
+              <th style="padding: 6px;">الطرف</th>
+              <th style="padding: 6px;">البند</th>
+              <th style="padding: 6px;">المبلغ</th>
+              <th style="padding: 6px;">ملاحظات</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filteredJournal.map((item, idx) => `
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 5px;">${idx + 1}</td>
+                <td style="padding: 5px;">${formatArabicDateTime(item.date || item.createdAt)}</td>
+                <td style="padding: 5px; font-weight: bold; color: ${item.type === 'income' ? '#16a34a' : '#dc2626'};">
+                  ${item.type === 'income' ? 'قبض' : 'صرف'}
+                </td>
+                <td style="padding: 5px;">${item.personName || '-'}</td>
+                <td style="padding: 5px;">${item.category || '-'}</td>
+                <td style="padding: 5px; font-weight: bold;">${item.type === 'income' ? '+' : '-'}${item.amount} ج</td>
+                <td style="padding: 5px;">${item.notes || '-'}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: `يومية_الخزينة_${displayDate}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      await html2pdfFn().set(opt).from(container).save();
     } catch {
       handlePrintSheet();
     }
@@ -657,7 +660,7 @@ export default function DailyJournalModal({
                   typeFilter === 'all' ? 'bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
                 }`}
               >
-                الكل ({journal.length})
+                الكل ({safeJournal.length})
               </button>
               <button
                 onClick={() => setTypeFilter('income')}

@@ -2,20 +2,24 @@ import { INITIAL_PRODUCTS } from '../data/defaultProducts';
 
 const STORAGE_KEY = 'swar_frozen_inventory_v1';
 const SETTINGS_KEY = 'swar_app_settings_v1';
+const INVOICES_KEY = 'swar_invoices_v1';
+const CUSTOMERS_KEY = 'swar_customers_v1';
+const JOURNAL_KEY = 'swar_journal_v1';
 
 export const getStoredProducts = () => {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
     if (!data) {
-      // First run — seed with all default products
       localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_PRODUCTS));
       return INITIAL_PRODUCTS;
     }
 
     const stored = JSON.parse(data);
-    const storedIds = new Set(stored.map(p => p.id));
+    if (!Array.isArray(stored)) {
+      return INITIAL_PRODUCTS;
+    }
 
-    // Add any default products that don't exist yet in localStorage
+    const storedIds = new Set(stored.map(p => p.id));
     const newDefaults = INITIAL_PRODUCTS.filter(p => !storedIds.has(p.id));
     if (newDefaults.length > 0) {
       const merged = [...stored, ...newDefaults];
@@ -32,7 +36,9 @@ export const getStoredProducts = () => {
 
 export const saveStoredProducts = (products) => {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+    if (Array.isArray(products)) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+    }
   } catch (err) {
     console.error('Error saving products to localStorage:', err);
   }
@@ -46,7 +52,7 @@ export const getAppSettings = () => {
         theme: 'light',
         soundEnabled: true,
         auditorName: 'مسؤول الجرد',
-        auditWarningDays: 3, // flag item as needing audit if > 3 days
+        auditWarningDays: 3,
       };
       localStorage.setItem(SETTINGS_KEY, JSON.stringify(defaultSettings));
       return defaultSettings;
@@ -59,17 +65,97 @@ export const getAppSettings = () => {
 
 export const saveAppSettings = (settings) => {
   try {
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    if (settings) {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    }
   } catch (err) {
     console.error('Error saving app settings:', err);
   }
 };
 
+export const getStoredInvoices = () => {
+  try {
+    const data = localStorage.getItem(INVOICES_KEY);
+    if (!data) return [];
+    const parsed = JSON.parse(data);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    console.error('Error loading invoices from storage:', err);
+    return [];
+  }
+};
+
+export const saveStoredInvoices = (invoices) => {
+  try {
+    if (Array.isArray(invoices)) {
+      localStorage.setItem(INVOICES_KEY, JSON.stringify(invoices));
+    }
+  } catch (err) {
+    console.error('Error saving invoices to storage:', err);
+  }
+};
+
+export const getStoredCustomers = () => {
+  try {
+    const data = localStorage.getItem(CUSTOMERS_KEY);
+    if (!data) return [];
+    const parsed = JSON.parse(data);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    console.error('Error loading customers from storage:', err);
+    return [];
+  }
+};
+
+export const saveStoredCustomers = (customers) => {
+  try {
+    if (Array.isArray(customers)) {
+      localStorage.setItem(CUSTOMERS_KEY, JSON.stringify(customers));
+    }
+  } catch (err) {
+    console.error('Error saving customers to storage:', err);
+  }
+};
+
+export const getStoredJournal = () => {
+  try {
+    const data = localStorage.getItem(JOURNAL_KEY);
+    if (!data) return [];
+    const parsed = JSON.parse(data);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    console.error('Error loading journal from storage:', err);
+    return [];
+  }
+};
+
+export const saveStoredJournal = (entries) => {
+  try {
+    if (Array.isArray(entries)) {
+      localStorage.setItem(JOURNAL_KEY, JSON.stringify(entries));
+    }
+  } catch (err) {
+    console.error('Error saving journal to storage:', err);
+  }
+};
+
 /**
  * Calculate stock health status
- * Returns: 'critical' (red) | 'warning' (yellow) | 'healthy' (green)
  */
 export const getStockStatus = (product) => {
+  if (!product) {
+    return {
+      status: 'healthy',
+      label: 'غير محدد',
+      color: 'slate',
+      bgColor: 'bg-slate-100 text-slate-700',
+      badgeBg: 'bg-slate-500 text-white',
+      ringColor: '',
+      dotColor: 'bg-slate-500',
+      progressColor: 'bg-slate-500',
+    };
+  }
+
   const stock = Number(product.currentStock) || 0;
   const minCrit = Number(product.minCriticalThreshold) || 5;
   const healthy = Number(product.healthyThreshold) || 20;
@@ -114,7 +200,7 @@ export const getStockStatus = (product) => {
  * Check if a product is due/delayed for audit
  */
 export const getAuditRecency = (product, maxDays = 3) => {
-  const audits = product.auditHistory || [];
+  const audits = product?.auditHistory || [];
   if (audits.length === 0) {
     return {
       needsAudit: true,
@@ -125,7 +211,6 @@ export const getAuditRecency = (product, maxDays = 3) => {
     };
   }
 
-  // Sort descending by date
   const sorted = [...audits].sort((a, b) => new Date(b.date) - new Date(a.date));
   const lastDate = new Date(sorted[0].date);
   const now = new Date();
@@ -163,6 +248,7 @@ export const formatArabicDateTime = (isoDate) => {
   if (!isoDate) return '-';
   try {
     const d = new Date(isoDate);
+    if (isNaN(d.getTime())) return String(isoDate);
     const dateStr = d.toLocaleDateString('ar-EG', {
       year: 'numeric',
       month: 'short',
@@ -175,68 +261,6 @@ export const formatArabicDateTime = (isoDate) => {
     });
     return `${dateStr} - ${timeStr}`;
   } catch {
-    return isoDate;
+    return String(isoDate || '-');
   }
 };
-
-const INVOICES_KEY = 'swar_invoices_v1';
-
-export const getStoredInvoices = () => {
-  try {
-    const data = localStorage.getItem(INVOICES_KEY);
-    return data ? JSON.parse(data) : [];
-  } catch (err) {
-    console.error('Error loading invoices from storage:', err);
-    return [];
-  }
-};
-
-export const saveStoredInvoices = (invoices) => {
-  try {
-    localStorage.setItem(INVOICES_KEY, JSON.stringify(invoices));
-  } catch (err) {
-    console.error('Error saving invoices to storage:', err);
-  }
-};
-
-const CUSTOMERS_KEY = 'swar_customers_v1';
-
-export const getStoredCustomers = () => {
-  try {
-    const data = localStorage.getItem(CUSTOMERS_KEY);
-    return data ? JSON.parse(data) : [];
-  } catch (err) {
-    console.error('Error loading customers from storage:', err);
-    return [];
-  }
-};
-
-export const saveStoredCustomers = (customers) => {
-  try {
-    localStorage.setItem(CUSTOMERS_KEY, JSON.stringify(customers));
-  } catch (err) {
-    console.error('Error saving customers to storage:', err);
-  }
-};
-
-const JOURNAL_KEY = 'swar_journal_v1';
-
-export const getStoredJournal = () => {
-  try {
-    const data = localStorage.getItem(JOURNAL_KEY);
-    return data ? JSON.parse(data) : [];
-  } catch (err) {
-    console.error('Error loading journal from storage:', err);
-    return [];
-  }
-};
-
-export const saveStoredJournal = (entries) => {
-  try {
-    localStorage.setItem(JOURNAL_KEY, JSON.stringify(entries));
-  } catch (err) {
-    console.error('Error saving journal to storage:', err);
-  }
-};
-
-

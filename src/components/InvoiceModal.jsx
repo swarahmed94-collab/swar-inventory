@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   X, 
   Receipt, 
@@ -19,19 +19,14 @@ import {
   ShieldAlert,
   ShoppingBag,
   Truck,
-  ArrowDownLeft,
-  ArrowUpRight,
-  DollarSign,
-  CreditCard,
-  Building2,
-  Calendar
+  DollarSign
 } from 'lucide-react';
 import { formatArabicDateTime } from '../utils/storage';
 import { sounds } from '../utils/sound';
 
 export default function InvoiceModal({ 
   isOpen, 
-  products, 
+  products = [], 
   invoices = [], 
   customers = [],
   isAdmin = false,
@@ -41,6 +36,10 @@ export default function InvoiceModal({
   onOpenAdminModal,
   onSettleCustomerDebt
 }) {
+  const safeProducts = Array.isArray(products) ? products : [];
+  const safeInvoices = Array.isArray(invoices) ? invoices : [];
+  const safeCustomers = Array.isArray(customers) ? customers : [];
+
   const [activeTab, setActiveTab] = useState('create'); // 'create' | 'history' | 'customers'
   const [invoiceType, setInvoiceType] = useState('sales'); // 'sales' (خصم) | 'purchase' (إضافة)
   
@@ -66,24 +65,27 @@ export default function InvoiceModal({
   const [settleAmount, setSettleAmount] = useState('');
   const [successToast, setSuccessToast] = useState('');
 
-  if (!isOpen) return null;
-
-  // Find matched customer
+  // Find matched customer safely
   const matchedCustomer = useMemo(() => {
-    if (!customerName.trim()) return null;
-    return customers.find(c => c.name?.trim().toLowerCase() === customerName.trim().toLowerCase());
-  }, [customerName, customers]);
+    if (!customerName || !customerName.trim()) return null;
+    const clean = customerName.trim().toLowerCase();
+    return safeCustomers.find(c => String(c?.name || '').trim().toLowerCase() === clean) || null;
+  }, [customerName, safeCustomers]);
 
   const customerDebt = Number(matchedCustomer?.totalDebt) || 0;
 
   // Filtered customer suggestions
   const customerSuggestions = useMemo(() => {
-    if (!customerName.trim()) return customers.slice(0, 6);
+    if (!customerName.trim()) return safeCustomers.slice(0, 6);
     const q = customerName.trim().toLowerCase();
-    return customers.filter(c => c.name.toLowerCase().includes(q) || (c.phone && c.phone.includes(q))).slice(0, 6);
-  }, [customerName, customers]);
+    return safeCustomers.filter(c => 
+      String(c?.name || '').toLowerCase().includes(q) || 
+      (c?.phone && String(c.phone).includes(q))
+    ).slice(0, 6);
+  }, [customerName, safeCustomers]);
 
   const addItem = (product) => {
+    if (!product) return;
     sounds.playClick();
     const existing = items.find(i => i.productId === product.id);
     if (existing) {
@@ -94,7 +96,7 @@ export default function InvoiceModal({
     } else {
       setItems([...items, {
         productId: product.id,
-        name: `${product.emoji || ''} ${product.name}`,
+        name: `${product.emoji || ''} ${product.name || 'صنف'}`,
         unit: product.unit || 'وحدة',
         price: Number(product.price) || 0,
         qty: 1,
@@ -136,37 +138,49 @@ export default function InvoiceModal({
 
   // Stock warning for sales invoices
   const stockWarnings = invoiceType === 'sales' ? items.filter(i => {
-    const prod = products.find(p => p.id === i.productId);
+    const prod = safeProducts.find(p => p.id === i.productId);
     const currentStock = prod ? Number(prod.currentStock) : i.availableStock;
     return i.qty > currentStock;
   }) : [];
 
-  const filteredProducts = products.filter(p =>
-    p.name.toLowerCase().includes(search.toLowerCase()) ||
-    (p.emoji && p.emoji.includes(search)) ||
-    (p.freezerLocation && p.freezerLocation.toLowerCase().includes(search.toLowerCase()))
-  ).slice(0, 8);
+  const filteredProducts = safeProducts.filter(p => {
+    if (!p) return false;
+    const q = search.toLowerCase();
+    return (
+      String(p.name || '').toLowerCase().includes(q) ||
+      (p.emoji && String(p.emoji).includes(q)) ||
+      (p.freezerLocation && String(p.freezerLocation).toLowerCase().includes(q))
+    );
+  }).slice(0, 8);
 
-  const filteredInvoices = invoices.filter(inv => {
+  const filteredInvoices = safeInvoices.filter(inv => {
+    if (!inv) return false;
     if (historyTypeFilter !== 'all' && (inv.type || 'sales') !== historyTypeFilter) return false;
     const q = historySearch.trim().toLowerCase();
     if (!q) return true;
     return (
-      (inv.invoiceNumber && inv.invoiceNumber.toLowerCase().includes(q)) ||
-      (inv.customerName && inv.customerName.toLowerCase().includes(q)) ||
-      (inv.notes && inv.notes.toLowerCase().includes(q))
+      String(inv.invoiceNumber || '').toLowerCase().includes(q) ||
+      String(inv.customerName || '').toLowerCase().includes(q) ||
+      String(inv.notes || '').toLowerCase().includes(q)
     );
   });
 
-  const filteredCustomers = customers.filter(c => {
+  const filteredCustomers = safeCustomers.filter(c => {
+    if (!c) return false;
     const q = customerSearch.trim().toLowerCase();
     if (!q) return true;
-    return c.name.toLowerCase().includes(q) || (c.phone && c.phone.includes(q));
+    return String(c.name || '').toLowerCase().includes(q) || (c.phone && String(c.phone).includes(q));
   });
+
+  if (!isOpen) return null;
 
   const printInvoiceContent = (inv) => {
     const win = window.open('', '_blank');
-    const invItems = inv.items || [];
+    if (!win) {
+      window.print();
+      return;
+    }
+    const invItems = Array.isArray(inv.items) ? inv.items : [];
     const invTotal = Number(inv.total) || invItems.reduce((s, x) => s + (x.qty * x.price), 0);
     const invPaid = inv.amountPaid !== undefined ? Number(inv.amountPaid) : invTotal;
     const invRemaining = inv.remainingBalance !== undefined ? Number(inv.remainingBalance) : 0;
@@ -235,11 +249,11 @@ export default function InvoiceModal({
             ${invItems.map((item, idx) => `
               <tr>
                 <td>${idx + 1}</td>
-                <td>${item.name}</td>
-                <td>${item.unit}</td>
-                <td><strong>${item.qty}</strong></td>
-                <td>${Number(item.price).toFixed(2)} ج</td>
-                <td>${(item.qty * item.price).toFixed(2)} ج</td>
+                <td>${item.name || '-'}</td>
+                <td>${item.unit || '-'}</td>
+                <td><strong>${item.qty || 0}</strong></td>
+                <td>${Number(item.price || 0).toFixed(2)} ج</td>
+                <td>${(Number(item.qty || 0) * Number(item.price || 0)).toFixed(2)} ج</td>
               </tr>
             `).join('')}
           </tbody>
@@ -308,7 +322,7 @@ export default function InvoiceModal({
     const prefix = invoiceType === 'sales' ? 'INV-' : 'PUR-';
     const newInvoice = {
       id: 'inv-' + Date.now(),
-      invoiceNumber: prefix + (invoices.length + 1).toString().padStart(4, '0'),
+      invoiceNumber: prefix + (safeInvoices.length + 1).toString().padStart(4, '0'),
       type: invoiceType,
       customerName: customerName.trim() || (invoiceType === 'sales' ? 'عميل نقدي' : 'مورد عام'),
       customerPhone: customerPhone.trim(),
@@ -334,7 +348,6 @@ export default function InvoiceModal({
       onProcessInvoice(newInvoice);
     }
 
-    // Print invoice automatically
     printInvoiceContent(newInvoice);
 
     setSuccessToast(`✅ تم حفظ وإصدار ${invoiceType === 'sales' ? 'فاتورة المبيعات' : 'فاتورة المشتريات'} (${newInvoice.invoiceNumber}) وتحديث المخزون بنجاح!`);
@@ -429,7 +442,7 @@ export default function InvoiceModal({
             <History className="w-4 h-4" />
             <span>سجل الفواتير السابقة</span>
             <span className="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-full text-xs font-black">
-              {invoices.length}
+              {safeInvoices.length}
             </span>
           </button>
 
@@ -444,7 +457,7 @@ export default function InvoiceModal({
             <Users className="w-4 h-4" />
             <span>دليل وحسابات العملاء</span>
             <span className="bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 px-2 py-0.5 rounded-full text-xs font-black">
-              {customers.length}
+              {safeCustomers.length}
             </span>
           </button>
         </div>
@@ -492,10 +505,10 @@ export default function InvoiceModal({
 
             {/* Customer Live Debt Alert Banner */}
             {customerDebt > 0 && invoiceType === 'sales' && (
-              <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/50 border-2 border-amber-400 dark:border-amber-600 text-amber-900 dark:text-amber-200 flex items-center justify-between gap-2 animate-bounce-short shadow-sm">
+              <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/50 border-2 border-amber-400 dark:border-amber-600 text-amber-900 dark:text-amber-200 flex items-center justify-between gap-2 shadow-sm">
                 <div className="flex items-center gap-2 text-xs sm:text-sm font-black">
                   <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0" />
-                  <span>تنبيه مديونية سابقة: العميل ({matchedCustomer.name}) عليه رصيد مستحق بقيمة:</span>
+                  <span>تنبيه مديونية سابقة: العميل ({matchedCustomer?.name || customerName}) عليه رصيد مستحق:</span>
                 </div>
                 <div className="text-base sm:text-lg font-black text-amber-700 dark:text-amber-400 px-3 py-1 bg-white dark:bg-slate-900 rounded-xl border border-amber-300 dark:border-amber-700 shrink-0">
                   {customerDebt.toFixed(2)} ج
@@ -531,17 +544,17 @@ export default function InvoiceModal({
                         key={cust.id}
                         type="button"
                         onClick={() => {
-                          setCustomerName(cust.name);
+                          setCustomerName(cust.name || '');
                           if (cust.phone) setCustomerPhone(cust.phone);
                           setShowCustomerDropdown(false);
                         }}
                         className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-violet-50 dark:hover:bg-slate-800 text-sm border-b border-slate-100 dark:border-slate-800 last:border-0 transition-colors text-right"
                       >
                         <div>
-                          <span className="font-black text-slate-900 dark:text-white">{cust.name}</span>
+                          <span className="font-black text-slate-900 dark:text-white">{cust.name || 'عميل'}</span>
                           {cust.phone && <span className="text-xs text-slate-400 mr-2">({cust.phone})</span>}
                         </div>
-                        {cust.totalDebt > 0 && (
+                        {Number(cust.totalDebt) > 0 && (
                           <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">
                             مديونية: {cust.totalDebt} ج
                           </span>
@@ -597,9 +610,9 @@ export default function InvoiceModal({
                       <div className="flex items-center gap-2.5">
                         <span className="text-xl p-1 bg-slate-100 dark:bg-slate-800 rounded-lg">{p.emoji || '🧊'}</span>
                         <div>
-                          <div className="font-bold text-slate-800 dark:text-white">{p.name}</div>
+                          <div className="font-bold text-slate-800 dark:text-white">{p.name || 'صنف'}</div>
                           <div className="text-[11px] text-slate-500">
-                            الرصيد الحالي بالمخزن: <strong className="text-sky-600">{p.currentStock} {p.unit}</strong>
+                            الرصيد الحالي بالمخزن: <strong className="text-sky-600">{p.currentStock || 0} {p.unit || ''}</strong>
                           </div>
                         </div>
                       </div>
@@ -638,7 +651,7 @@ export default function InvoiceModal({
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900">
                     {items.map(item => {
-                      const prod = products.find(p => p.id === item.productId);
+                      const prod = safeProducts.find(p => p.id === item.productId);
                       const currentStock = prod ? Number(prod.currentStock) : item.availableStock;
                       const isOverStock = invoiceType === 'sales' && item.qty > currentStock;
 
@@ -864,7 +877,7 @@ export default function InvoiceModal({
                             {inv.invoiceNumber}
                           </span>
                           <span className="font-bold text-slate-800 dark:text-slate-200 text-sm">
-                            {inv.customerName}
+                            {inv.customerName || 'عميل'}
                           </span>
                           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
                             isPurch ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300' : 'bg-sky-100 text-sky-800 dark:bg-sky-950/60 dark:text-sky-300'
@@ -894,11 +907,11 @@ export default function InvoiceModal({
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1 border-t border-slate-100 dark:border-slate-800/80">
                         <div className="flex items-center gap-3 text-xs sm:text-sm flex-wrap">
                           <span className="font-black text-slate-900 dark:text-white">
-                            الإجمالي: <strong className="text-violet-600 dark:text-violet-400">{Number(inv.total).toFixed(2)} ج</strong>
+                            الإجمالي: <strong className="text-violet-600 dark:text-violet-400">{Number(inv.total || 0).toFixed(2)} ج</strong>
                           </span>
                           {inv.amountPaid !== undefined && (
                             <span className="text-emerald-600 dark:text-emerald-400 font-bold">
-                              المدفوع: {Number(inv.amountPaid).toFixed(2)} ج
+                              المدفوع: {Number(inv.amountPaid || 0).toFixed(2)} ج
                             </span>
                           )}
                           {Number(inv.remainingBalance) > 0 && (
@@ -972,10 +985,10 @@ export default function InvoiceModal({
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-2.5">
                         <div className="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-950/60 text-violet-600 dark:text-violet-400 flex items-center justify-center font-black text-base">
-                          {cust.name.slice(0, 1)}
+                          {String(cust.name || 'ع').slice(0, 1)}
                         </div>
                         <div>
-                          <h4 className="font-black text-slate-900 dark:text-white text-sm sm:text-base">{cust.name}</h4>
+                          <h4 className="font-black text-slate-900 dark:text-white text-sm sm:text-base">{cust.name || 'عميل'}</h4>
                           {cust.phone && (
                             <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
                               <Phone className="w-3 h-3" />
