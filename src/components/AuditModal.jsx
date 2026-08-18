@@ -14,7 +14,9 @@ import {
   AlertTriangle,
   History,
   Sparkles,
-  MapPin
+  MapPin,
+  Eye,
+  Lock
 } from 'lucide-react';
 import { getStockStatus, formatArabicDateTime } from '../utils/storage';
 import { sounds } from '../utils/sound';
@@ -271,9 +273,9 @@ export default function AuditModal({
               </form>
             </div>
           ) : (
-            <div className="p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 rounded-2xl text-xs text-amber-800 dark:text-amber-300 flex items-center gap-2">
-              <Lock className="w-4 h-4 text-amber-600 shrink-0" />
-              <span>أنت في وضع المشاهدة فقط. لتسجيل حركة جرد جديدة يرجى تسجيل الدخول كمسؤول.</span>
+            <div className="p-3 bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
+              <Eye className="w-4 h-4 shrink-0" />
+              <span>وضع المشاهدة — يمكنك الاطلاع على سجل الجرد بالكامل أدناه.</span>
             </div>
           )}
 
