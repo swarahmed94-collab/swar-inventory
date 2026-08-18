@@ -58,15 +58,26 @@ export default function App() {
 
   // Live cloud sync
   useEffect(() => {
-    liveChannelRef.current = createLiveSyncChannel((remoteProducts) => {
-      if (Array.isArray(remoteProducts) && remoteProducts.length > 0) {
-        setProducts(remoteProducts);
+    liveChannelRef.current = createLiveSyncChannel((remoteState) => {
+      if (!remoteState) return;
+      if (Array.isArray(remoteState.products) && remoteState.products.length > 0) {
+        setProducts(remoteState.products);
+      }
+      if (Array.isArray(remoteState.invoices)) {
+        setInvoices(remoteState.invoices);
       }
     });
     return () => liveChannelRef.current?.close();
   }, []);
 
-  const broadcast = (updated) => liveChannelRef.current?.broadcastLocalChange(updated);
+  const broadcast = (updatedProducts, updatedInvoices) => {
+    const prods = updatedProducts !== undefined ? updatedProducts : products;
+    const invs = updatedInvoices !== undefined ? updatedInvoices : invoices;
+    liveChannelRef.current?.broadcastLocalChange({
+      products: prods,
+      invoices: invs
+    });
+  };
 
   const toggleTheme = () => {
     sounds.playClick();
@@ -96,7 +107,7 @@ export default function App() {
       updated = [newProd, ...products];
     }
     setProducts(updated);
-    broadcast(updated);
+    broadcast(updated, invoices);
   };
 
   const handleDeleteProduct = (productId, productName) => {
@@ -105,7 +116,7 @@ export default function App() {
       sounds.playWarning();
       const updated = products.filter(p => p.id !== productId);
       setProducts(updated);
-      broadcast(updated);
+      broadcast(updated, invoices);
     }
   };
 
@@ -125,7 +136,7 @@ export default function App() {
       return { ...p, currentStock: newStock, auditHistory: [...(p.auditHistory || []), log] };
     });
     setProducts(updated);
-    broadcast(updated);
+    broadcast(updated, invoices);
   };
 
   const handleAddAuditLog = (productId, auditEntry) => {
@@ -135,7 +146,7 @@ export default function App() {
       return { ...p, currentStock: auditEntry.quantity, auditHistory: [...(p.auditHistory || []), auditEntry] };
     });
     setProducts(updated);
-    broadcast(updated);
+    broadcast(updated, invoices);
     setAuditProduct(prev =>
       prev?.id === productId
         ? { ...prev, currentStock: auditEntry.quantity, auditHistory: [...(prev.auditHistory || []), auditEntry] }
@@ -154,7 +165,7 @@ export default function App() {
       return { ...p, currentStock: latestQty, auditHistory: logs };
     });
     setProducts(updated);
-    broadcast(updated);
+    broadcast(updated, invoices);
     setAuditProduct(prev => {
       if (prev?.id !== productId) return prev;
       const logs = (prev.auditHistory || []).filter(l => l.id !== logId);
@@ -182,7 +193,7 @@ export default function App() {
       return { ...p, currentStock: qty, auditHistory: [...(p.auditHistory || []), log] };
     });
     setProducts(updated);
-    broadcast(updated);
+    broadcast(updated, invoices);
   };
 
   // ─── INVOICE PROCESSING & STOCK DEDUCTION ──────────────────
@@ -194,7 +205,7 @@ export default function App() {
       itemsMap.set(item.productId, (itemsMap.get(item.productId) || 0) + Number(item.qty));
     });
 
-    const updated = products.map(p => {
+    const updatedProds = products.map(p => {
       if (!itemsMap.has(p.id)) return p;
       const soldQty = itemsMap.get(p.id);
       const newStock = Number(p.currentStock) - soldQty;
@@ -216,15 +227,17 @@ export default function App() {
       };
     });
 
-    setProducts(updated);
-    broadcast(updated);
-    setInvoices(prev => [invoiceData, ...prev]);
+    const updatedInvs = [invoiceData, ...invoices];
+    setProducts(updatedProds);
+    setInvoices(updatedInvs);
+    broadcast(updatedProds, updatedInvs);
     sounds.playSuccess();
   };
 
   const handleDeleteInvoice = (invoiceId, restoreStock = false) => {
     if (!isAdmin) return;
     const invToDelete = invoices.find(i => i.id === invoiceId);
+    let updatedProds = products;
 
     if (restoreStock && invToDelete && invToDelete.deductedFromStock) {
       const now = new Date().toISOString();
@@ -233,7 +246,7 @@ export default function App() {
         itemsMap.set(item.productId, (itemsMap.get(item.productId) || 0) + Number(item.qty));
       });
 
-      const updated = products.map(p => {
+      updatedProds = products.map(p => {
         if (!itemsMap.has(p.id)) return p;
         const restoredQty = itemsMap.get(p.id);
         const newStock = Number(p.currentStock) + restoredQty;
@@ -253,12 +266,14 @@ export default function App() {
         };
       });
 
-      setProducts(updated);
-      broadcast(updated);
+      setProducts(updatedProds);
     }
 
-    setInvoices(prev => prev.filter(i => i.id !== invoiceId));
+    const updatedInvs = invoices.filter(i => i.id !== invoiceId);
+    setInvoices(updatedInvs);
+    broadcast(updatedProds, updatedInvs);
   };
+
 
   // ─── RENDER ─────────────────────────────────────────────────
   return (
@@ -376,8 +391,9 @@ export default function App() {
       <SyncModal
         isOpen={isSyncOpen}
         products={products}
+        invoices={invoices}
         onClose={() => setIsSyncOpen(false)}
-        onForceSync={() => broadcast(products)}
+        onForceSync={() => broadcast(products, invoices)}
       />
 
       <AdminModal

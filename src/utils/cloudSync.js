@@ -1,6 +1,6 @@
 /**
  * Free Zero-Cost Live Realtime Cloud Synchronization
- * Supports multiple connected users and store branches via free distributed JSON sync
+ * Supports multiple connected users, viewer devices, and store branches
  */
 
 const SYNC_CONFIG_KEY = 'swar_cloud_sync_config_v1';
@@ -34,32 +34,29 @@ export const saveSyncConfig = (config) => {
   }
 };
 
-// Free Public JSON storage endpoint for zero-cost team syncing
-const CLOUD_SYNC_BASE = 'https://api.jsonbin.io/v3/b';
-const FREE_STORAGE_STORE_URL = 'https://kvdb.io/K9wB8QGz8hL92XyRkM6qLp/'; // High speed KV store
-
 /**
- * Push local products to the cloud room
+ * Push full state (products & invoices) to the cloud room
  */
-export const pushProductsToCloud = async (roomId, products) => {
+export const pushStateToCloud = async (roomId, state) => {
   if (!navigator.onLine || !roomId) return false;
   try {
     const cleanRoom = encodeURIComponent(roomId.trim().toLowerCase());
     const payload = JSON.stringify({
       updatedAt: new Date().toISOString(),
-      products: products
+      products: state.products || [],
+      invoices: state.invoices || [],
+      version: 2
     });
 
-    const response = await fetch(`https://ntfy.sh/swar_sync_${cleanRoom}`, {
+    await fetch(`https://ntfy.sh/swar_sync_${cleanRoom}`, {
       method: 'POST',
       body: payload,
       headers: {
-        'Title': 'SWAR-STOCK-UPDATE',
+        'Title': 'SWAR-DATA-SYNC',
         'Priority': '1'
       }
     });
 
-    // Also backup to localStorage
     const now = new Date().toISOString();
     const config = getSyncConfig();
     saveSyncConfig({ ...config, lastSyncTime: now, status: 'synced' });
@@ -71,17 +68,62 @@ export const pushProductsToCloud = async (roomId, products) => {
 };
 
 /**
- * Setup live broadcast channel for instantaneous inter-tab and multi-device sync
+ * Fetch latest state from cloud room on app load or reconnection
+ */
+export const fetchLatestCloudState = async (roomId) => {
+  if (!navigator.onLine || !roomId) return null;
+  try {
+    const cleanRoom = encodeURIComponent(roomId.trim().toLowerCase());
+    const res = await fetch(`https://ntfy.sh/swar_sync_${cleanRoom}/json?poll=1`);
+    if (!res.ok) return null;
+    const text = await res.text();
+    const lines = text.split('\n').filter(l => l.trim().startsWith('{'));
+    if (lines.length === 0) return null;
+
+    const messages = lines
+      .map(l => {
+        try { return JSON.parse(l); } catch { return null; }
+      })
+      .filter(m => m && m.event === 'message');
+
+    if (messages.length === 0) return null;
+
+    // Get the latest published message
+    const latest = messages[messages.length - 1];
+
+    if (latest.attachment && latest.attachment.url) {
+      const attachRes = await fetch(latest.attachment.url);
+      if (attachRes.ok) {
+        return await attachRes.json();
+      }
+    }
+
+    if (latest.message) {
+      try {
+        return JSON.parse(latest.message);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  } catch (err) {
+    console.warn('Error fetching latest cloud state:', err);
+    return null;
+  }
+};
+
+/**
+ * Setup live broadcast channel for instantaneous multi-device and multi-tab sync
  */
 export const createLiveSyncChannel = (onRemoteUpdate) => {
-  // BroadcastChannel for all open tabs on the same device
+  // 1. BroadcastChannel for tabs on same device
   let bc = null;
   try {
     if (typeof BroadcastChannel !== 'undefined') {
       bc = new BroadcastChannel('swar_live_sync_channel');
       bc.onmessage = (event) => {
-        if (event.data && event.data.type === 'SYNC_PRODUCTS' && event.data.products) {
-          onRemoteUpdate(event.data.products, 'tab');
+        if (event.data && event.data.type === 'SYNC_STATE' && event.data.state) {
+          onRemoteUpdate(event.data.state, 'tab');
         }
       };
     }
@@ -89,24 +131,40 @@ export const createLiveSyncChannel = (onRemoteUpdate) => {
     console.warn('BroadcastChannel error:', e);
   }
 
-  // Cross-device server-sent event (SSE) listener via free ntfy channel
-  let eventSource = null;
   const config = getSyncConfig();
+
+  // 2. Fetch initial cloud state immediately on startup so new viewers get latest admin data
+  if (config.enabled && config.roomId) {
+    fetchLatestCloudState(config.roomId).then(cloudData => {
+      if (cloudData && (Array.isArray(cloudData.products) || Array.isArray(cloudData.invoices))) {
+        onRemoteUpdate(cloudData, 'initial-cloud');
+      }
+    }).catch(e => console.warn('Initial cloud sync error:', e));
+  }
+
+  // 3. Server-Sent Events (SSE) for live push across all remote devices
+  let eventSource = null;
   if (config.enabled && config.roomId) {
     try {
       const cleanRoom = encodeURIComponent(config.roomId.trim().toLowerCase());
       eventSource = new EventSource(`https://ntfy.sh/swar_sync_${cleanRoom}/sse`);
-      eventSource.onmessage = (e) => {
+      eventSource.onmessage = async (e) => {
         try {
           const data = JSON.parse(e.data);
-          if (data.message) {
-            const parsedPayload = JSON.parse(data.message);
-            if (parsedPayload.products && Array.isArray(parsedPayload.products)) {
-              onRemoteUpdate(parsedPayload.products, 'cloud');
+          if (data.event === 'message') {
+            let payload = null;
+            if (data.attachment && data.attachment.url) {
+              const res = await fetch(data.attachment.url);
+              if (res.ok) payload = await res.json();
+            } else if (data.message) {
+              payload = JSON.parse(data.message);
+            }
+            if (payload && (Array.isArray(payload.products) || Array.isArray(payload.invoices))) {
+              onRemoteUpdate(payload, 'cloud');
             }
           }
         } catch (err) {
-          // Ignore non-json notification
+          // ignore
         }
       };
     } catch (e) {
@@ -115,12 +173,12 @@ export const createLiveSyncChannel = (onRemoteUpdate) => {
   }
 
   return {
-    broadcastLocalChange: (products) => {
+    broadcastLocalChange: (state) => {
       if (bc) {
-        bc.postMessage({ type: 'SYNC_PRODUCTS', products, timestamp: Date.now() });
+        bc.postMessage({ type: 'SYNC_STATE', state, timestamp: Date.now() });
       }
       if (config.enabled && config.roomId) {
-        pushProductsToCloud(config.roomId, products);
+        pushStateToCloud(config.roomId, state);
       }
     },
     close: () => {

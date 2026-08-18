@@ -10,10 +10,10 @@ import {
   Lock,
   Smartphone
 } from 'lucide-react';
-import { getSyncConfig, saveSyncConfig, pushProductsToCloud } from '../utils/cloudSync';
+import { getSyncConfig, saveSyncConfig, pushStateToCloud } from '../utils/cloudSync';
 import { sounds } from '../utils/sound';
 
-export default function SyncModal({ products, isOpen, onClose, onForceSync }) {
+export default function SyncModal({ products, invoices = [], isOpen, onClose, onForceSync }) {
   const [config, setConfig] = useState(getSyncConfig);
   const [roomInput, setRoomInput] = useState(config.roomId || 'swar-main-freezer');
   const [copied, setCopied] = useState(false);
@@ -35,10 +35,11 @@ export default function SyncModal({ products, isOpen, onClose, onForceSync }) {
     saveSyncConfig(updated);
 
     setIsSyncing(true);
-    await pushProductsToCloud(updated.roomId, products);
+    await pushStateToCloud(updated.roomId, { products, invoices });
     setIsSyncing(false);
     onForceSync();
   };
+
 
   const handleCopyCode = () => {
     sounds.playClick();
