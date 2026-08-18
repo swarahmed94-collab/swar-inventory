@@ -8,14 +8,14 @@ import ProductFormModal from './components/ProductFormModal';
 import ReportModal from './components/ReportModal';
 import PurchaseOrderModal from './components/PurchaseOrderModal';
 import SyncModal from './components/SyncModal';
-import AdminLoginModal from './components/AdminLoginModal';
+import RoleManagementModal from './components/RoleManagementModal';
 import { 
   getStoredProducts, 
   saveStoredProducts, 
   getAppSettings, 
   saveAppSettings 
 } from './utils/storage';
-import { getAdminAuth, saveAdminAuth } from './utils/auth';
+import { getRolesConfig, saveRolesConfig, getRolePermissions, verifyRolePin } from './utils/roles';
 import { createLiveSyncChannel } from './utils/cloudSync';
 import { INITIAL_PRODUCTS } from './data/defaultProducts';
 import { sounds } from './utils/sound';
@@ -24,7 +24,8 @@ export default function App() {
   // State
   const [products, setProducts] = useState(getStoredProducts);
   const [settings, setSettings] = useState(getAppSettings);
-  const [adminAuth, setAdminAuth] = useState(getAdminAuth);
+  const [rolesConfig, setRolesConfig] = useState(getRolesConfig);
+  const [currentRole, setCurrentRole] = useState(getRolesConfig().currentDeviceRole || 'owner');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [activeStatusFilter, setActiveStatusFilter] = useState('all');
   
@@ -36,9 +37,32 @@ export default function App() {
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [isPurchaseOrderOpen, setIsPurchaseOrderOpen] = useState(false);
   const [isSyncOpen, setIsSyncOpen] = useState(false);
-  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
 
   const liveChannelRef = useRef(null);
+  const permissions = getRolePermissions(currentRole);
+
+  // Auto-login via URL invite query (e.g. ?role=manager&pin=5566)
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const urlRole = params.get('role');
+      const urlPin = params.get('pin');
+      if (urlPin) {
+        const verified = verifyRolePin(urlPin);
+        if (verified.valid) {
+          const updated = { ...rolesConfig, currentDeviceRole: verified.role };
+          saveRolesConfig(updated);
+          setRolesConfig(updated);
+          setCurrentRole(verified.role);
+          // Clean URL without refresh
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      }
+    } catch (e) {
+      console.warn('URL invite parse error:', e);
+    }
+  }, []);
 
   // Sync theme
   useEffect(() => {
@@ -84,10 +108,10 @@ export default function App() {
     }));
   };
 
-  // --- CRUD Operations (Admin only) ---
+  // --- CRUD Operations ---
   const handleSaveProduct = (productData, existingId) => {
-    if (!adminAuth.isAdmin) {
-      alert('عفواً، يتطلب هذا الإجراء صلاحيات المسؤول.');
+    if (!permissions.canEditProducts) {
+      alert('عفواً، يتطلب هذا الإجراء صلاحيات المدير أو المالك.');
       return;
     }
     let updated;
@@ -125,8 +149,8 @@ export default function App() {
   };
 
   const handleDeleteProduct = (productId, productName) => {
-    if (!adminAuth.isAdmin) {
-      alert('عفواً، يتطلب هذا الإجراء صلاحيات المسؤول.');
+    if (!permissions.canDeleteProducts) {
+      alert('عفواً، صلاحية حذف الأصناف محصورة للمالك الرئيسي فقط.');
       return;
     }
     if (window.confirm(`هل أنت متأكد من حذف الصنف "${productName}" بالكامل؟ لا يمكن التراجع عن هذا الإجراء.`)) {
@@ -139,7 +163,7 @@ export default function App() {
 
   // --- Quick Stepper (+/- 1) on Card ---
   const handleQuickUpdateStock = (productId, delta) => {
-    if (!adminAuth.isAdmin) return;
+    if (!permissions.canAudit) return;
     const updated = products.map(p => {
       if (p.id === productId) {
         const newStock = Math.max(0, Number(p.currentStock) + delta);
@@ -166,8 +190,8 @@ export default function App() {
 
   // --- Audit Modal Actions ---
   const handleAddAuditLog = (productId, auditEntry) => {
-    if (!adminAuth.isAdmin) {
-      alert('عفواً، يتطلب تسجيل الجرد صلاحيات المسؤول.');
+    if (!permissions.canAudit) {
+      alert('عفواً، يتطلب تسجيل الجرد صلاحيات مأمور جرد أو مدير.');
       return;
     }
     const updated = products.map(p => {
@@ -199,7 +223,7 @@ export default function App() {
   };
 
   const handleDeleteAuditLog = (productId, logId) => {
-    if (!adminAuth.isAdmin) return;
+    if (!permissions.canDeleteProducts) return;
     const updated = products.map(p => {
       if (p.id === productId) {
         const updatedLogs = (p.auditHistory || []).filter(l => l.id !== logId);
@@ -237,7 +261,7 @@ export default function App() {
 
   // --- Batch Quick Audit Completion ---
   const handleBatchAuditComplete = (auditResults) => {
-    if (!adminAuth.isAdmin) return;
+    if (!permissions.canAudit) return;
     const nowIso = new Date().toISOString();
     const updated = products.map(p => {
       if (auditResults[p.id] !== undefined) {
@@ -270,8 +294,8 @@ export default function App() {
       <Navbar
         theme={settings.theme}
         toggleTheme={toggleTheme}
-        isAdmin={adminAuth.isAdmin}
-        onOpenAdminModal={() => setIsAdminModalOpen(true)}
+        currentRole={currentRole}
+        onOpenRoleModal={() => setIsRoleModalOpen(true)}
         onOpenAddModal={() => {
           setProductToEdit(null);
           setIsProductFormOpen(true);
@@ -296,7 +320,7 @@ export default function App() {
         {/* Product Catalog & List */}
         <ProductList
           products={products}
-          isAdmin={adminAuth.isAdmin}
+          permissions={permissions}
           selectedCategory={selectedCategory}
           onSelectCategory={(catId) => setSelectedCategory(catId)}
           activeStatusFilter={activeStatusFilter}
@@ -344,7 +368,8 @@ export default function App() {
       {auditProduct && (
         <AuditModal
           product={auditProduct}
-          isAdmin={adminAuth.isAdmin}
+          canAudit={permissions.canAudit}
+          canDelete={permissions.canDeleteProducts}
           onClose={() => setAuditProduct(null)}
           onAddAuditLog={handleAddAuditLog}
           onDeleteAuditLog={handleDeleteAuditLog}
@@ -353,7 +378,7 @@ export default function App() {
       )}
 
       {/* 2. Quick Sequential Audit Mode */}
-      {isQuickAuditOpen && adminAuth.isAdmin && (
+      {isQuickAuditOpen && permissions.canAudit && (
         <QuickAuditFlow
           products={products}
           onClose={() => setIsQuickAuditOpen(false)}
@@ -364,7 +389,7 @@ export default function App() {
 
       {/* 3. Product Create / Edit Modal */}
       <ProductFormModal
-        isOpen={isProductFormOpen && adminAuth.isAdmin}
+        isOpen={isProductFormOpen && permissions.canEditProducts}
         productToEdit={productToEdit}
         onClose={() => {
           setIsProductFormOpen(false);
@@ -395,17 +420,12 @@ export default function App() {
         onForceSync={() => broadcastChange(products)}
       />
 
-      {/* 7. Admin Login Modal */}
-      <AdminLoginModal
-        isOpen={isAdminModalOpen}
-        isAdmin={adminAuth.isAdmin}
-        onClose={() => setIsAdminModalOpen(false)}
-        onLoginSuccess={() => setAdminAuth(getAdminAuth())}
-        onLogout={() => {
-          const updated = { ...adminAuth, isAdmin: false };
-          saveAdminAuth(updated);
-          setAdminAuth(updated);
-        }}
+      {/* 7. Multi-Tier Role Management Modal */}
+      <RoleManagementModal
+        isOpen={isRoleModalOpen}
+        currentRole={currentRole}
+        onClose={() => setIsRoleModalOpen(false)}
+        onRoleChanged={(newRole) => setCurrentRole(newRole)}
       />
 
     </div>

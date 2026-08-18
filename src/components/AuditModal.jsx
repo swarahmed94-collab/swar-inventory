@@ -22,7 +22,8 @@ import confetti from 'canvas-confetti';
 
 export default function AuditModal({
   product,
-  isAdmin = false,
+  canAudit = false,
+  canDelete = false,
   onClose,
   onAddAuditLog,
   onDeleteAuditLog,
@@ -142,8 +143,8 @@ export default function AuditModal({
             </div>
           </div>
 
-          {/* New Audit Entry Form (Admin Only) */}
-          {isAdmin ? (
+          {/* New Audit Entry Form */}
+          {canAudit ? (
             <div className="bg-gradient-to-br from-sky-50 to-blue-50/50 dark:from-slate-800/60 dark:to-slate-900/60 p-4 sm:p-5 rounded-2xl border border-sky-200/80 dark:border-sky-900/50 shadow-sm">
               <h3 className="text-sm sm:text-base font-black text-slate-900 dark:text-white flex items-center gap-2 mb-3">
                 <Sparkles className="w-4 h-4 text-sky-600 dark:text-sky-400" />
@@ -356,8 +357,8 @@ export default function AuditModal({
                         </div>
                       </div>
 
-                      {/* Delete Log Button (Admin Only) */}
-                      {isAdmin && (
+                      {/* Delete Log Button (Owner / Full Admin Only) */}
+                      {canDelete && (
                         <button
                           onClick={() => {
                             if (window.confirm('هل أنت متأكد من رغبتك في حذف حركة الجرد هذه؟')) {

@@ -32,7 +32,7 @@ export default function ProductList({
   onDeleteProduct,
   onQuickUpdateStock,
   onOpenAddModal,
-  isAdmin = false
+  permissions = {}
 }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('urgency'); // 'urgency' | 'name' | 'stockAsc' | 'stockDesc' | 'lastAuditAsc'
@@ -226,7 +226,9 @@ export default function ProductList({
             <ProductCard
               key={product.id}
               product={product}
-              isAdmin={isAdmin}
+              canAudit={permissions.canAudit}
+              canEdit={permissions.canEditProducts}
+              canDelete={permissions.canDeleteProducts}
               onOpenAudit={onOpenAudit}
               onEditProduct={onEditProduct}
               onDeleteProduct={onDeleteProduct}

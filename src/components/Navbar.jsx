@@ -7,16 +7,18 @@ import {
   Smartphone, 
   Cloud, 
   ShoppingCart, 
+  Crown,
   ShieldCheck, 
   Lock,
-  Eye
+  UserCheck
 } from 'lucide-react';
+import { getRolePermissions } from '../utils/roles';
 
 export default function Navbar({
   theme,
   toggleTheme,
-  isAdmin,
-  onOpenAdminModal,
+  currentRole,
+  onOpenRoleModal,
   onOpenAddModal,
   onOpenQuickAudit,
   onOpenReport,
@@ -24,6 +26,8 @@ export default function Navbar({
   onOpenSync,
   totalItems
 }) {
+  const permissions = getRolePermissions(currentRole);
+
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200/80 dark:border-slate-800/80 glass-panel no-print">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,18 +50,25 @@ export default function Navbar({
                   صِـوار <span className="text-sky-600 dark:text-sky-400 font-extrabold text-sm sm:text-base font-mono">SWAR</span>
                 </h1>
                 
-                {/* Admin Status Pill */}
+                {/* Role Pill Button */}
                 <button
-                  onClick={onOpenAdminModal}
-                  className={`hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 text-xs font-bold rounded-full transition-all ${
-                    isAdmin 
-                      ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800'
-                      : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800'
+                  onClick={onOpenRoleModal}
+                  className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full transition-all shadow-sm ${
+                    currentRole === 'owner'
+                      ? 'bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800'
+                      : currentRole === 'manager'
+                      ? 'bg-sky-100 text-sky-900 dark:bg-sky-950 dark:text-sky-300 border border-sky-300 dark:border-sky-800'
+                      : currentRole === 'auditor'
+                      ? 'bg-teal-100 text-teal-900 dark:bg-teal-950 dark:text-teal-300 border border-teal-300 dark:border-teal-800'
+                      : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-300 dark:border-slate-700'
                   }`}
-                  title={isAdmin ? 'أنت في وضع المدير الكامل' : 'أنت في وضع المشاهدة فقط - اضغط للدخول كمسؤول'}
+                  title="إدارة الصلاحيات والمستخدمين"
                 >
-                  {isAdmin ? <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> : <Lock className="w-3.5 h-3.5 text-amber-600" />}
-                  <span>{isAdmin ? 'وضع المسؤول (تحكم كامل)' : 'وضع المشاهدة فقط 🔒'}</span>
+                  {currentRole === 'owner' && <Crown className="w-3.5 h-3.5 text-amber-600" />}
+                  {currentRole === 'manager' && <ShieldCheck className="w-3.5 h-3.5 text-sky-600" />}
+                  {currentRole === 'auditor' && <UserCheck className="w-3.5 h-3.5 text-teal-600" />}
+                  {currentRole === 'viewer' && <Lock className="w-3.5 h-3.5 text-slate-500" />}
+                  <span>{permissions.roleLabel}</span>
                 </button>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 hidden xs:block">
@@ -69,15 +80,13 @@ export default function Navbar({
           {/* Actions & Buttons */}
           <div className="flex items-center gap-1.5 sm:gap-2.5">
             
-            {/* Admin Lock/Unlock Button on Mobile */}
+            {/* Role Button on Mobile */}
             <button
-              onClick={onOpenAdminModal}
-              className={`sm:hidden p-2 rounded-xl border transition-colors ${
-                isAdmin ? 'bg-emerald-50 text-emerald-600 border-emerald-300' : 'bg-amber-50 text-amber-600 border-amber-300'
-              }`}
-              title="صلاحيات الدخول"
+              onClick={onOpenRoleModal}
+              className="sm:hidden p-2 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold"
+              title="الصلاحيات"
             >
-              {isAdmin ? <ShieldCheck className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+              {currentRole === 'owner' ? '👑' : currentRole === 'manager' ? '⚡' : currentRole === 'auditor' ? '📝' : '👁️'}
             </button>
 
             {/* Live Cloud Sync */}
@@ -101,8 +110,8 @@ export default function Navbar({
               <span className="hidden lg:inline">طلبية شراء</span>
             </button>
 
-            {/* Quick Mobile Audit Mode (Only enabled for admin) */}
-            {isAdmin && (
+            {/* Quick Mobile Audit Mode (Auditor & Manager & Owner) */}
+            {permissions.canAudit && (
               <button
                 onClick={onOpenQuickAudit}
                 className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs sm:text-sm font-bold shadow-md shadow-emerald-500/20 active:scale-95 transition-all"
@@ -113,8 +122,8 @@ export default function Navbar({
               </button>
             )}
 
-            {/* Add Product Button (Only for admin) */}
-            {isAdmin && (
+            {/* Add Product Button (Manager & Owner) */}
+            {permissions.canEditProducts && (
               <button
                 onClick={onOpenAddModal}
                 className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-sky-600/20 active:scale-95 transition-all"

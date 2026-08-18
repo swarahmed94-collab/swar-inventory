@@ -15,7 +15,9 @@ import { sounds } from '../utils/sound';
 
 export default function ProductCard({
   product,
-  isAdmin = false,
+  canAudit = false,
+  canEdit = false,
+  canDelete = false,
   onOpenAudit,
   onEditProduct,
   onDeleteProduct,
@@ -55,23 +57,27 @@ export default function ProductCard({
             </span>
           </div>
 
-          {/* Quick Edit/Delete Menu (Admin Only) */}
-          {isAdmin && (
+          {/* Quick Edit/Delete Menu */}
+          {(canEdit || canDelete) && (
             <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
-              <button
-                onClick={() => onEditProduct(product)}
-                className="p-1.5 rounded-lg text-slate-500 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-slate-800 transition-colors"
-                title="تعديل بيانات الصنف"
-              >
-                <Edit3 className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => onDeleteProduct(product.id, product.name)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-slate-800 transition-colors"
-                title="حذف الصنف"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
+              {canEdit && (
+                <button
+                  onClick={() => onEditProduct(product)}
+                  className="p-1.5 rounded-lg text-slate-500 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-slate-800 transition-colors"
+                  title="تعديل بيانات الصنف"
+                >
+                  <Edit3 className="w-4 h-4" />
+                </button>
+              )}
+              {canDelete && (
+                <button
+                  onClick={() => onDeleteProduct(product.id, product.name)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-slate-800 transition-colors"
+                  title="حذف الصنف"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -146,8 +152,8 @@ export default function ProductCard({
       {/* Action Footer: Quick adjust & Open Audit History */}
       <div className="p-3 bg-slate-100/80 dark:bg-slate-950/80 border-t border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between gap-2">
         
-        {/* Quick Stepper (Admin Only) */}
-        {isAdmin && (
+        {/* Quick Stepper (Auditor / Manager / Owner) */}
+        {canAudit && (
           <div className="flex items-center gap-1 bg-white dark:bg-slate-900 rounded-xl p-1 border border-slate-200 dark:border-slate-800 shadow-sm">
             <button
               onClick={() => handleQuickDelta(-1)}
