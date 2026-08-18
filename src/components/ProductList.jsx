@@ -13,7 +13,9 @@ import {
   Fish,
   Utensils,
   Carrot,
-  Boxes
+  Boxes,
+  Milk,
+  Salad
 } from 'lucide-react';
 import ProductCard from './ProductCard';
 import { DEFAULT_CATEGORIES } from '../data/defaultProducts';
@@ -39,6 +41,8 @@ export default function ProductList({
     all: Boxes,
     poultry: Drumstick,
     meat: Beef,
+    dairy: Milk,
+    pickles: Salad,
     seafood: Fish,
     appetizers: Utensils,
     vegetables: Carrot,
