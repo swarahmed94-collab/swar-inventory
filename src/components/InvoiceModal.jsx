@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   X, 
   Receipt, 
@@ -19,7 +19,8 @@ import {
   ShieldAlert,
   ShoppingBag,
   Truck,
-  DollarSign
+  DollarSign,
+  Pencil
 } from 'lucide-react';
 import { formatArabicDateTime } from '../utils/storage';
 import { sounds } from '../utils/sound';
@@ -30,9 +31,11 @@ export default function InvoiceModal({
   invoices = [], 
   customers = [],
   isAdmin = false,
+  invoiceToEdit = null,
   onClose, 
   onProcessInvoice,
   onDeleteInvoice,
+  onEditInvoice,
   onOpenAdminModal,
   onSettleCustomerDebt
 }) {
@@ -55,6 +58,36 @@ export default function InvoiceModal({
   const [recordInJournal, setRecordInJournal] = useState(true);
   const [notes, setNotes] = useState('');
   const [search, setSearch] = useState('');
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  // When invoiceToEdit changes (admin clicked Edit), pre-fill the create form
+  useEffect(() => {
+    if (invoiceToEdit) {
+      setIsEditMode(true);
+      setActiveTab('create');
+      setInvoiceType(invoiceToEdit.type || 'sales');
+      setCustomerName(invoiceToEdit.customerName || '');
+      setCustomerPhone(invoiceToEdit.customerPhone || '');
+      setPaymentType(invoiceToEdit.paymentType || 'cash');
+      setAmountPaid(invoiceToEdit.amountPaid !== undefined ? String(invoiceToEdit.amountPaid) : '');
+      setNotes(invoiceToEdit.notes || '');
+      const safeProds = Array.isArray(products) ? products : [];
+      setItems((invoiceToEdit.items || []).map(it => ({
+        productId: it.productId,
+        name: it.name,
+        unit: it.unit,
+        price: Number(it.price) || 0,
+        qty: Number(it.qty) || 1,
+        availableStock: (() => {
+          const p = safeProds.find(pr => pr.id === it.productId);
+          return p ? Number(p.currentStock) : 0;
+        })()
+      })));
+      setRecordInJournal(false);
+    } else {
+      setIsEditMode(false);
+    }
+  }, [invoiceToEdit]);
   
   // History & Customers tab states
   const [historySearch, setHistorySearch] = useState('');
@@ -363,6 +396,7 @@ export default function InvoiceModal({
     setAmountPaid('');
     setNotes('');
     setSearch('');
+    setIsEditMode(false);
   };
 
   const executeDelete = (restoreStock) => {
@@ -473,6 +507,22 @@ export default function InvoiceModal({
         {/* TAB 1: CREATE NEW INVOICE */}
         {activeTab === 'create' && (
           <div className="overflow-y-auto flex-1 p-4 sm:p-6 space-y-4">
+
+            {/* Edit mode banner */}
+            {isEditMode && (
+              <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/50 border-2 border-amber-400 dark:border-amber-600 text-amber-900 dark:text-amber-200 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 text-xs sm:text-sm font-black">
+                  <Pencil className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>وضع التعديل — عدّل بيانات الفاتورة وسيتم استرجاع المخزون القديم وإعادة احتسابه تلقائياً.</span>
+                </div>
+                <button
+                  onClick={() => { handleReset(); if (onClose) onClose(); }}
+                  className="px-3 py-1 bg-amber-600 text-white rounded-lg font-bold text-[11px] hover:bg-amber-500 shrink-0"
+                >
+                  إلغاء
+                </button>
+              </div>
+            )}
 
             {/* Invoice Type Selector: Sales vs Purchase */}
             <div className="flex p-1.5 rounded-2xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
@@ -930,6 +980,18 @@ export default function InvoiceModal({
                             <span>طباعة</span>
                           </button>
 
+
+                          {isAdmin && (
+                            <button
+                              onClick={() => { if (onEditInvoice) onEditInvoice(inv.id); }}
+                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-700 dark:text-amber-300 text-xs font-bold transition-colors"
+                              title="تعديل الفاتورة"
+                            >
+                              <Pencil className="w-3.5 h-3.5" />
+                              <span>تعديل</span>
+                            </button>
+                          )}
+
                           {isAdmin && (
                             <button
                               onClick={() => setDeleteConfirm(inv)}
@@ -940,6 +1002,7 @@ export default function InvoiceModal({
                               <span>حذف</span>
                             </button>
                           )}
+
                         </div>
                       </div>
 

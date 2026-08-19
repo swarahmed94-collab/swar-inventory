@@ -43,6 +43,7 @@ export default function App() {
   const [isProductFormOpen, setIsProductFormOpen] = useState(false);
   const [productToEdit, setProductToEdit] = useState(null);
   const [isReportOpen, setIsReportOpen] = useState(false);
+  const [invoiceToEdit, setInvoiceToEdit] = useState(null);
   const [isPurchaseOrderOpen, setIsPurchaseOrderOpen] = useState(false);
   const [isSyncOpen, setIsSyncOpen] = useState(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
@@ -313,6 +314,13 @@ export default function App() {
     sounds.playSuccess();
   };
 
+  const handleEditInvoice = (invoiceId) => {
+    if (!isAdmin) return;
+    // Just open the invoice modal with the invoice to edit — InvoiceModal handles the rest
+    setIsInvoiceOpen(true);
+    setInvoiceToEdit(invoices.find(i => i.id === invoiceId) || null);
+  };
+
   const handleDeleteInvoice = (invoiceId, restoreStock = false) => {
     if (!isAdmin) return;
     const invToDelete = invoices.find(i => i.id === invoiceId);
@@ -563,9 +571,18 @@ export default function App() {
         invoices={invoices}
         customers={customers}
         isAdmin={isAdmin}
-        onClose={() => setIsInvoiceOpen(false)}
-        onProcessInvoice={handleProcessInvoice}
+        invoiceToEdit={invoiceToEdit}
+        onClose={() => { setIsInvoiceOpen(false); setInvoiceToEdit(null); }}
+        onProcessInvoice={(inv) => {
+          // If editing, first delete the old invoice (with stock restore), then process new one
+          if (invoiceToEdit) {
+            handleDeleteInvoice(invoiceToEdit.id, true);
+            setInvoiceToEdit(null);
+          }
+          handleProcessInvoice(inv);
+        }}
         onDeleteInvoice={handleDeleteInvoice}
+        onEditInvoice={handleEditInvoice}
         onOpenAdminModal={() => setIsAdminModalOpen(true)}
         onSettleCustomerDebt={handleSettleCustomerDebt}
       />
