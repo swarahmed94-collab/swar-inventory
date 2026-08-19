@@ -1,6 +1,6 @@
 import { INITIAL_PRODUCTS } from '../data/defaultProducts';
 
-const STORAGE_KEY = 'swar_frozen_inventory_v1';
+const STORAGE_KEY = 'swar_frozen_inventory_v2';
 const SETTINGS_KEY = 'swar_app_settings_v1';
 const INVOICES_KEY = 'swar_invoices_v1';
 const CUSTOMERS_KEY = 'swar_customers_v1';
@@ -11,20 +11,15 @@ export const getStoredProducts = () => {
     const data = localStorage.getItem(STORAGE_KEY);
     if (!data) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_PRODUCTS));
+      // Remove old obsolete v1 key if present
+      localStorage.removeItem('swar_frozen_inventory_v1');
       return INITIAL_PRODUCTS;
     }
 
     const stored = JSON.parse(data);
-    if (!Array.isArray(stored)) {
+    if (!Array.isArray(stored) || stored.length === 0) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_PRODUCTS));
       return INITIAL_PRODUCTS;
-    }
-
-    const storedIds = new Set(stored.map(p => p.id));
-    const newDefaults = INITIAL_PRODUCTS.filter(p => !storedIds.has(p.id));
-    if (newDefaults.length > 0) {
-      const merged = [...stored, ...newDefaults];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-      return merged;
     }
 
     return stored;
@@ -33,6 +28,7 @@ export const getStoredProducts = () => {
     return INITIAL_PRODUCTS;
   }
 };
+
 
 export const saveStoredProducts = (products) => {
   try {
