@@ -1,6 +1,8 @@
 import { INITIAL_PRODUCTS } from '../data/defaultProducts';
 
 const STORAGE_KEY = 'swar_frozen_inventory_v2';
+const SCHEMA_KEY = 'swar_schema_version';
+const CURRENT_SCHEMA = 'v2_445_products';
 const SETTINGS_KEY = 'swar_app_settings_v1';
 const INVOICES_KEY = 'swar_invoices_v1';
 const CUSTOMERS_KEY = 'swar_customers_v1';
@@ -8,11 +10,18 @@ const JOURNAL_KEY = 'swar_journal_v1';
 
 export const getStoredProducts = () => {
   try {
+    const existingSchema = localStorage.getItem(SCHEMA_KEY);
+    if (existingSchema !== CURRENT_SCHEMA) {
+      // Clean wipe of obsolete data and load new 445 products
+      localStorage.setItem(SCHEMA_KEY, CURRENT_SCHEMA);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_PRODUCTS));
+      localStorage.removeItem('swar_frozen_inventory_v1');
+      return INITIAL_PRODUCTS;
+    }
+
     const data = localStorage.getItem(STORAGE_KEY);
     if (!data) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_PRODUCTS));
-      // Remove old obsolete v1 key if present
-      localStorage.removeItem('swar_frozen_inventory_v1');
       return INITIAL_PRODUCTS;
     }
 
@@ -29,6 +38,16 @@ export const getStoredProducts = () => {
   }
 };
 
+export const resetProductsToNewDataset = () => {
+  try {
+    localStorage.setItem(SCHEMA_KEY, CURRENT_SCHEMA);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_PRODUCTS));
+    return INITIAL_PRODUCTS;
+  } catch (err) {
+    console.error('Error resetting products:', err);
+    return INITIAL_PRODUCTS;
+  }
+};
 
 export const saveStoredProducts = (products) => {
   try {

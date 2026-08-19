@@ -3,8 +3,8 @@
  * Supports multiple connected users, viewer devices, and store branches
  */
 
-const SYNC_CONFIG_KEY = 'swar_cloud_sync_config_v1';
-const DEFAULT_ROOM = 'swar-main-freezer';
+const SYNC_CONFIG_KEY = 'swar_cloud_sync_config_v2';
+const DEFAULT_ROOM = 'swar-freezer-v2';
 
 export const getSyncConfig = () => {
   try {
@@ -25,6 +25,7 @@ export const getSyncConfig = () => {
     return { enabled: true, roomId: DEFAULT_ROOM, lastSyncTime: null, isOnline: true, status: 'synced' };
   }
 };
+
 
 export const saveSyncConfig = (config) => {
   try {
