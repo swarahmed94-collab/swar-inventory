@@ -22,7 +22,7 @@ import {
   SwitchCamera
 } from 'lucide-react';
 import { extractTextFromPDF, parseRawInvoiceData } from '../utils/pdfParser';
-import { extractTextFromImage } from '../utils/imageOcr';
+import { extractTextFromImage, isHEICFile } from '../utils/imageOcr';
 import { autoMatchProduct, findBestMatches } from '../utils/fuzzyMatcher';
 import { INITIAL_PRODUCTS } from '../data/defaultProducts';
 import { sounds } from '../utils/sound';
@@ -186,30 +186,60 @@ export default function InvoicePdfImportModal({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Reset input value so re-uploading the same file works
+    // Reset input so re-uploading the same file triggers onChange again
     e.target.value = '';
 
     setErrorMsg('');
     setFileName(file.name || 'ملف فاتورة');
 
     const fileNameLower = (file.name || '').toLowerCase();
-    const fileType = (file.type || '').toLowerCase();
+    const fileType      = (file.type || '').toLowerCase();
 
-    const isPdf = fileType === 'application/pdf' || 
-                  fileType === 'application/x-pdf' || 
-                  fileType.includes('pdf') || 
-                  fileNameLower.endsWith('.pdf');
+    // ─── PDF detection ───────────────────────────────────────────────────────
+    const isPdf =
+      fileType === 'application/pdf' ||
+      fileType === 'application/x-pdf' ||
+      fileType.includes('pdf') ||
+      fileNameLower.endsWith('.pdf');
 
-    const isImage = fileType.startsWith('image/') || 
-                    /\.(jpg|jpeg|png|webp|bmp|gif|heic|heif)$/i.test(fileNameLower);
+    // ─── Image detection (includes HEIC/HEIF from iPhone) ───────────────────
+    // iOS sometimes reports HEIC files with an empty or wrong MIME type, so we
+    // sniff the first 12 bytes via magic numbers as a reliable fallback.
+    let isImage =
+      fileType.startsWith('image/') ||
+      /\.(jpg|jpeg|png|webp|bmp|gif|heic|heif)$/i.test(fileNameLower);
 
+    if (!isImage && !isPdf) {
+      // Last-resort HEIC sniff for files with unknown MIME (e.g. iOS quirks)
+      try {
+        isImage = await isHEICFile(file);
+      } catch {
+        isImage = false;
+      }
+    }
+
+    // ─── Route to the right handler ─────────────────────────────────────────
     if (isImage) {
       handleImageFile(file);
     } else if (isPdf) {
+      // Mobile file-size warning (guard is also inside extractTextFromPDF,
+      // but showing it here gives instant feedback before loading starts)
+      const isMobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile/i.test(
+        navigator.userAgent
+      );
+      const MAX_MOBILE_PDF = 15 * 1024 * 1024;
+      if (isMobile && file.size > MAX_MOBILE_PDF) {
+        setErrorMsg(
+          `حجم ملف الـ PDF كبير جداً على الجوال (${(file.size / 1024 / 1024).toFixed(1)} MB). ` +
+          `الحد المسموح على الموبايل هو 15 MB. يرجى استخدام نسخة أصغر من الملف.`
+        );
+        return;
+      }
+
       setIsLoading(true);
       setLoadingText('جاري قراءة ملف الـ PDF واستخراج الجداول...');
       try {
-        const lines = await extractTextFromPDF(file);
+        const lines    = await extractTextFromPDF(file);
         const rawItems = parseRawInvoiceData(lines);
         processExtractedItems(rawItems);
       } catch (err) {
@@ -222,7 +252,7 @@ export default function InvoicePdfImportModal({
       setIsLoading(true);
       setLoadingText('جاري معالجة الملف...');
       try {
-        const text = await file.text();
+        const text     = await file.text();
         const rawItems = parseRawInvoiceData(text);
         processExtractedItems(rawItems);
       } catch (err) {
