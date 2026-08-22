@@ -1,24 +1,76 @@
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
-// Initialize PDF.js worker
-if (typeof window !== 'undefined' && pdfjsLib.GlobalWorkerOptions) {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
+// Polyfill Promise.withResolvers for mobile browsers (iOS Safari < 17.4, older Android WebViews)
+if (typeof Promise.withResolvers === 'undefined') {
+  if (typeof window !== 'undefined') {
+    window.Promise.withResolvers = function () {
+      let resolve, reject;
+      const promise = new Promise((res, rej) => {
+        resolve = res;
+        reject = rej;
+      });
+      return { promise, resolve, reject };
+    };
+  }
 }
+
+// Initialize PDF.js worker with fallback support
+if (typeof window !== 'undefined' && pdfjsLib.GlobalWorkerOptions) {
+  try {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker || `https://unpkg.com/pdfjs-dist@${pdfjsLib.version || '6.2.108'}/build/pdf.worker.min.mjs`;
+  } catch (e) {
+    console.warn('PDF Worker assignment warning:', e);
+  }
+}
+
+/**
+ * Safely extract ArrayBuffer from File, Blob, or Buffer across all mobile and desktop browsers
+ */
+const getFileArrayBuffer = async (fileOrArrayBuffer) => {
+  if (!fileOrArrayBuffer) {
+    throw new Error('لم يتم تمرير أي ملف للقراءة');
+  }
+  if (fileOrArrayBuffer instanceof ArrayBuffer) {
+    return fileOrArrayBuffer;
+  }
+  if (fileOrArrayBuffer.buffer instanceof ArrayBuffer) {
+    return fileOrArrayBuffer.buffer;
+  }
+  if (typeof fileOrArrayBuffer.arrayBuffer === 'function') {
+    try {
+      return await fileOrArrayBuffer.arrayBuffer();
+    } catch (err) {
+      console.warn('file.arrayBuffer() failed on mobile, falling back to FileReader:', err);
+    }
+  }
+  // Mobile fallback using FileReader
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('تعذر قراءة بيانات الملف من ذاكرة الهاتف.'));
+    reader.readAsArrayBuffer(fileOrArrayBuffer);
+  });
+};
 
 /**
  * Extract structured rows and text from an uploaded PDF file
  */
 export const extractTextFromPDF = async (fileOrArrayBuffer) => {
   try {
-    let arrayBuffer;
-    if (fileOrArrayBuffer instanceof File || fileOrArrayBuffer instanceof Blob) {
-      arrayBuffer = await fileOrArrayBuffer.arrayBuffer();
-    } else {
-      arrayBuffer = fileOrArrayBuffer;
-    }
+    const rawBuffer = await getFileArrayBuffer(fileOrArrayBuffer);
+    const uint8Data = rawBuffer instanceof Uint8Array ? rawBuffer : new Uint8Array(rawBuffer);
 
-    const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+    const pdfVersion = pdfjsLib.version || '6.2.108';
+    const loadingTask = pdfjsLib.getDocument({
+      data: uint8Data,
+      cMapUrl: `https://unpkg.com/pdfjs-dist@${pdfVersion}/cmaps/`,
+      cMapPacked: true,
+      standardFontDataUrl: `https://unpkg.com/pdfjs-dist@${pdfVersion}/standard_fonts/`,
+      isEvalSupported: false,
+      useSystemFonts: true
+    });
+
     const pdf = await loadingTask.promise;
     const allLines = [];
 
@@ -30,12 +82,16 @@ export const extractTextFromPDF = async (fileOrArrayBuffer) => {
       const rowMap = new Map();
       const Y_TOLERANCE = 4.0;
 
-      textContent.items.forEach(item => {
+      (textContent.items || []).forEach(item => {
+        // Safe check for marked content / non-text items in modern PDF.js
+        if (!item || typeof item.str !== 'string') return;
         const text = item.str.trim();
         if (!text) return;
 
-        const y = item.transform[5];
-        const x = item.transform[4];
+        // Safe transform coordinates check
+        const transform = item.transform;
+        const y = Array.isArray(transform) && transform.length >= 6 ? transform[5] : 0;
+        const x = Array.isArray(transform) && transform.length >= 5 ? transform[4] : 0;
 
         // Find existing row within tolerance
         let matchedY = null;

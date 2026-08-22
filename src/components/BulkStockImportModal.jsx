@@ -173,12 +173,26 @@ export default function BulkStockImportModal({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setErrorMsg('');
-    setFileName(file.name);
+    // Reset input value so re-uploading the same file works
+    e.target.value = '';
 
-    if (file.type.startsWith('image/')) {
+    setErrorMsg('');
+    setFileName(file.name || 'ملف مخزون');
+
+    const fileNameLower = (file.name || '').toLowerCase();
+    const fileType = (file.type || '').toLowerCase();
+
+    const isPdf = fileType === 'application/pdf' || 
+                  fileType === 'application/x-pdf' || 
+                  fileType.includes('pdf') || 
+                  fileNameLower.endsWith('.pdf');
+
+    const isImage = fileType.startsWith('image/') || 
+                    /\.(jpg|jpeg|png|webp|bmp|gif|heic|heif)$/i.test(fileNameLower);
+
+    if (isImage) {
       handleImageFile(file);
-    } else if (file.name.toLowerCase().endsWith('.pdf')) {
+    } else if (isPdf) {
       setIsLoading(true);
       setLoadingText('جاري قراءة ملف الـ PDF واستخراج قائمة الأصناف...');
       try {
@@ -186,6 +200,7 @@ export default function BulkStockImportModal({
         const list = parseRawInvoiceData(lines);
         processImportData(list);
       } catch (err) {
+        console.error('Bulk PDF parsing error:', err);
         setErrorMsg(err.message || 'فشل في قراءة ملف المخزون PDF.');
         setIsLoading(false);
       }
@@ -197,6 +212,7 @@ export default function BulkStockImportModal({
         const list = parseRawInvoiceData(text);
         processImportData(list);
       } catch (err) {
+        console.error('Bulk text parsing error:', err);
         setErrorMsg('فشل في معالجة الملف.');
         setIsLoading(false);
       }
@@ -323,7 +339,7 @@ export default function BulkStockImportModal({
         <input
           ref={pdfInputRef}
           type="file"
-          accept=".pdf,.txt,.csv"
+          accept=".pdf,application/pdf,.csv,text/csv,.txt,text/plain"
           onChange={handleGenericFileChange}
           className="hidden"
         />
@@ -438,7 +454,7 @@ export default function BulkStockImportModal({
             <div className="relative border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-sky-500 rounded-3xl p-6 text-center bg-slate-50/50 dark:bg-slate-950/30 transition-all cursor-pointer max-w-3xl mx-auto">
               <input
                 type="file"
-                accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.csv"
+                accept=".pdf,application/pdf,image/*,.png,.jpg,.jpeg,.webp,.txt,text/plain,.csv,text/csv"
                 onChange={handleGenericFileChange}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               />

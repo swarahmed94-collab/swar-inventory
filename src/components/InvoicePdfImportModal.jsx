@@ -186,12 +186,26 @@ export default function InvoicePdfImportModal({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setErrorMsg('');
-    setFileName(file.name);
+    // Reset input value so re-uploading the same file works
+    e.target.value = '';
 
-    if (file.type.startsWith('image/')) {
+    setErrorMsg('');
+    setFileName(file.name || 'ملف فاتورة');
+
+    const fileNameLower = (file.name || '').toLowerCase();
+    const fileType = (file.type || '').toLowerCase();
+
+    const isPdf = fileType === 'application/pdf' || 
+                  fileType === 'application/x-pdf' || 
+                  fileType.includes('pdf') || 
+                  fileNameLower.endsWith('.pdf');
+
+    const isImage = fileType.startsWith('image/') || 
+                    /\.(jpg|jpeg|png|webp|bmp|gif|heic|heif)$/i.test(fileNameLower);
+
+    if (isImage) {
       handleImageFile(file);
-    } else if (file.name.toLowerCase().endsWith('.pdf')) {
+    } else if (isPdf) {
       setIsLoading(true);
       setLoadingText('جاري قراءة ملف الـ PDF واستخراج الجداول...');
       try {
@@ -199,6 +213,7 @@ export default function InvoicePdfImportModal({
         const rawItems = parseRawInvoiceData(lines);
         processExtractedItems(rawItems);
       } catch (err) {
+        console.error('PDF parsing error:', err);
         setErrorMsg(err.message || 'حدث خطأ أثناء معالجة ملف الـ PDF.');
         setIsLoading(false);
       }
@@ -211,6 +226,7 @@ export default function InvoicePdfImportModal({
         const rawItems = parseRawInvoiceData(text);
         processExtractedItems(rawItems);
       } catch (err) {
+        console.error('File reading error:', err);
         setErrorMsg('حدث خطأ أثناء قراءة الملف.');
         setIsLoading(false);
       }
@@ -380,7 +396,7 @@ export default function InvoicePdfImportModal({
         <input
           ref={pdfInputRef}
           type="file"
-          accept=".pdf,.txt,.csv"
+          accept=".pdf,application/pdf,.csv,text/csv,.txt,text/plain"
           onChange={handleGenericFileChange}
           className="hidden"
         />
@@ -501,7 +517,7 @@ export default function InvoicePdfImportModal({
             <div className="relative border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-emerald-500 rounded-3xl p-6 text-center bg-slate-50/50 dark:bg-slate-950/30 transition-all cursor-pointer">
               <input
                 type="file"
-                accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.csv"
+                accept=".pdf,application/pdf,image/*,.png,.jpg,.jpeg,.webp,.txt,text/plain,.csv,text/csv"
                 onChange={handleGenericFileChange}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               />
