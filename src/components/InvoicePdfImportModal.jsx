@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   X, 
   UploadCloud, 
@@ -16,9 +16,13 @@ import {
   Building2, 
   Check, 
   RefreshCw,
-  Edit3
+  Edit3,
+  Camera,
+  Image as ImageIcon,
+  SwitchCamera
 } from 'lucide-react';
 import { extractTextFromPDF, parseRawInvoiceData } from '../utils/pdfParser';
+import { extractTextFromImage } from '../utils/imageOcr';
 import { autoMatchProduct, findBestMatches } from '../utils/fuzzyMatcher';
 import { INITIAL_PRODUCTS } from '../data/defaultProducts';
 import { sounds } from '../utils/sound';
@@ -36,6 +40,8 @@ export default function InvoicePdfImportModal({
   const catalog = (Array.isArray(products) && products.length > 0) ? products : INITIAL_PRODUCTS;
   const [step, setStep] = useState('upload'); // 'upload' | 'review'
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState('');
+  const [ocrProgress, setOcrProgress] = useState(0);
   const [errorMsg, setErrorMsg] = useState('');
   const [fileName, setFileName] = useState('');
   const [vendorName, setVendorName] = useState('');
@@ -45,16 +51,87 @@ export default function InvoicePdfImportModal({
   const [pastedText, setPastedText] = useState('');
   const [showPasteArea, setShowPasteArea] = useState(false);
 
+  // In-app live camera state
+  const [isLiveCameraOpen, setIsLiveCameraOpen] = useState(false);
+  const [cameraFacingMode, setCameraFacingMode] = useState('environment'); // 'environment' (back) | 'user' (front)
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
+
+  // Hidden native inputs
+  const cameraInputRef = useRef(null);
+  const galleryInputRef = useRef(null);
+  const pdfInputRef = useRef(null);
+
   // Extracted and mapped items
   const [parsedRows, setParsedRows] = useState([]);
   const [searchCatalogQuery, setSearchCatalogQuery] = useState('');
   const [activeRemapIndex, setActiveRemapIndex] = useState(null);
 
+  // Clean up camera stream on close
+  useEffect(() => {
+    return () => {
+      stopCameraStream();
+    };
+  }, []);
+
   if (!isOpen) return null;
+
+  const stopCameraStream = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+  };
+
+  const startLiveCamera = async (facing = 'environment') => {
+    stopCameraStream();
+    setIsLiveCameraOpen(true);
+    setErrorMsg('');
+    try {
+      const constraints = {
+        video: {
+          facingMode: { ideal: facing },
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        }
+      };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (err) {
+      console.warn('Live camera access error:', err);
+      // Fallback directly to native camera input
+      setIsLiveCameraOpen(false);
+      if (cameraInputRef.current) {
+        cameraInputRef.current.click();
+      }
+    }
+  };
+
+  const captureLivePhoto = () => {
+    if (!videoRef.current) return;
+    const video = videoRef.current;
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth || 1280;
+    canvas.height = video.videoHeight || 720;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    stopCameraStream();
+    setIsLiveCameraOpen(false);
+
+    canvas.toBlob(blob => {
+      if (blob) {
+        handleImageFile(blob, 'صورة ملتقطة بالكاميرا');
+      }
+    }, 'image/jpeg', 0.95);
+  };
 
   const processExtractedItems = (rawItems) => {
     if (!rawItems || rawItems.length === 0) {
-      setErrorMsg('لم يتم العثور على أصناف قابلة للاستخراج في الملف. يرجى تجربة لصق النص مباشرة.');
+      setErrorMsg('لم يتم العثور على أصناف قابلة للاستخراج في الملف/الصورة. يرجى تجربة تصوير الفاتورة بإضاءة أوضح أو لصق النص.');
       setIsLoading(false);
       return;
     }
@@ -85,35 +162,65 @@ export default function InvoicePdfImportModal({
     sounds.playSuccess();
   };
 
-  const handleFileUpload = async (e) => {
+  const handleImageFile = async (fileOrBlob, customName = '') => {
+    setIsLoading(true);
+    setOcrProgress(0);
+    setLoadingText('جاري التعرف على نصوص الفاتورة بالذكاء الاصطناعي (OCR)...');
+    setErrorMsg('');
+    setFileName(customName || fileOrBlob.name || 'صورة فاتورة');
+
+    try {
+      const lines = await extractTextFromImage(fileOrBlob, progress => {
+        setOcrProgress(progress);
+      });
+      const rawItems = parseRawInvoiceData(lines);
+      processExtractedItems(rawItems);
+    } catch (err) {
+      console.error(err);
+      setErrorMsg(err.message || 'فشل في استخراج نصوص الفاتورة من الصورة.');
+      setIsLoading(false);
+    }
+  };
+
+  const handleGenericFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setIsLoading(true);
     setErrorMsg('');
     setFileName(file.name);
 
-    try {
-      if (file.name.toLowerCase().endsWith('.pdf')) {
+    if (file.type.startsWith('image/')) {
+      handleImageFile(file);
+    } else if (file.name.toLowerCase().endsWith('.pdf')) {
+      setIsLoading(true);
+      setLoadingText('جاري قراءة ملف الـ PDF واستخراج الجداول...');
+      try {
         const lines = await extractTextFromPDF(file);
         const rawItems = parseRawInvoiceData(lines);
         processExtractedItems(rawItems);
-      } else {
-        // Plain text or CSV
+      } catch (err) {
+        setErrorMsg(err.message || 'حدث خطأ أثناء معالجة ملف الـ PDF.');
+        setIsLoading(false);
+      }
+    } else {
+      // Plain text or CSV
+      setIsLoading(true);
+      setLoadingText('جاري معالجة الملف...');
+      try {
         const text = await file.text();
         const rawItems = parseRawInvoiceData(text);
         processExtractedItems(rawItems);
+      } catch (err) {
+        setErrorMsg('حدث خطأ أثناء قراءة الملف.');
+        setIsLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-      setErrorMsg(err.message || 'حدث خطأ أثناء معالجة الملف.');
-      setIsLoading(false);
     }
   };
 
   const handleProcessPastedText = () => {
     if (!pastedText.trim()) return;
     setIsLoading(true);
+    setLoadingText('جاري معالجة النص ومطابقة الأصناف...');
     setErrorMsg('');
     setFileName('نص ملصوق يدوياً');
 
@@ -151,7 +258,6 @@ export default function InvoicePdfImportModal({
         category: 'all',
         brand: 'عام'
       });
-      // Temporarily set placeholder until saved
       setParsedRows(prev => prev.map((r, i) => i === index ? { ...r, matchConfidence: 'high' } : r));
     }
   };
@@ -190,7 +296,6 @@ export default function InvoicePdfImportModal({
       return;
     }
 
-    // Check if any selected item is unmatched
     const hasUnmatched = selectedRows.some(r => !r.matchedProduct);
     if (hasUnmatched) {
       if (!window.confirm('تنبيه: توجد بعض الأصناف المحددة غير مربوطة بمنتج في النظام. سيتم تخطي الأصناف غير المربوطة. هل ترغب في المتابعة؟')) {
@@ -217,7 +322,7 @@ export default function InvoicePdfImportModal({
     if (onImportComplete) {
       onImportComplete({
         items: validItems,
-        vendorName: vendorName.trim() || 'مورد بضاعة (استيراد PDF)',
+        vendorName: vendorName.trim() || 'مورد بضاعة (استيراد فواتير)',
         paymentType,
         recordInJournal,
         updateProductPrices,
@@ -243,12 +348,12 @@ export default function InvoicePdfImportModal({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base sm:text-lg font-black">قارئ فواتير الـ PDF والمطابقة الذكية</h2>
+                <h2 className="text-base sm:text-lg font-black">قارئ ومستخرج الفواتير الذكي (PDF / صور / كاميرا)</h2>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/30 text-emerald-200 border border-emerald-400/40">
-                  AI Smart Match
+                  OCR & PDF Engine
                 </span>
               </div>
-              <p className="text-xs text-emerald-200/80">استخراج الأصناف، الأسعار والكميات ومطابقتها آلياً مع المخزون</p>
+              <p className="text-xs text-emerald-200/80">تصوير بالكاميرا، اختيار من المعرض، أو رفع ملفات PDF والمطابقة التلقائية</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors">
@@ -256,35 +361,153 @@ export default function InvoicePdfImportModal({
           </button>
         </div>
 
-        {/* STEP 1: UPLOAD / INPUT */}
-        {step === 'upload' && (
+        {/* Hidden Native File & Camera Inputs */}
+        <input
+          ref={cameraInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handleGenericFileChange}
+          className="hidden"
+        />
+        <input
+          ref={galleryInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleGenericFileChange}
+          className="hidden"
+        />
+        <input
+          ref={pdfInputRef}
+          type="file"
+          accept=".pdf,.txt,.csv"
+          onChange={handleGenericFileChange}
+          className="hidden"
+        />
+
+        {/* LIVE CAMERA OVERLAY MODAL */}
+        {isLiveCameraOpen && (
+          <div className="p-4 sm:p-6 flex flex-col items-center justify-center bg-black text-white flex-1 space-y-4">
+            <div className="relative w-full max-w-lg aspect-[4/3] rounded-3xl overflow-hidden bg-slate-900 border-2 border-emerald-500 shadow-2xl flex items-center justify-center">
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-x-8 inset-y-12 border-2 border-dashed border-emerald-400/60 rounded-2xl pointer-events-none flex items-center justify-center">
+                <span className="text-[11px] font-bold bg-black/60 px-3 py-1 rounded-full text-emerald-300">
+                  وجّه الكاميرا نحو جدول الفاتورة
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                onClick={() => {
+                  const nextMode = cameraFacingMode === 'environment' ? 'user' : 'environment';
+                  setCameraFacingMode(nextMode);
+                  startLiveCamera(nextMode);
+                }}
+                className="p-3.5 rounded-full bg-white/15 hover:bg-white/25 text-white transition-all shadow-md"
+                title="تبديل الكاميرا"
+              >
+                <SwitchCamera className="w-5 h-5" />
+              </button>
+
+              <button
+                type="button"
+                onClick={captureLivePhoto}
+                className="w-16 h-16 rounded-full bg-emerald-500 hover:bg-emerald-400 text-white shadow-xl shadow-emerald-500/50 flex items-center justify-center border-4 border-white active:scale-95 transition-all"
+                title="التقاط الصورة"
+              >
+                <Camera className="w-8 h-8" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => { stopCameraStream(); setIsLiveCameraOpen(false); }}
+                className="p-3.5 rounded-full bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 transition-all"
+                title="إلغاء الكاميرا"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* STEP 1: UPLOAD / CAMERA / GALLERY */}
+        {step === 'upload' && !isLiveCameraOpen && (
           <div className="p-6 overflow-y-auto space-y-6 flex-1">
             <div className="text-center max-w-xl mx-auto space-y-2">
-              <h3 className="text-lg font-black text-slate-800 dark:text-white">ارفع فاتورة الشراء بصيغة PDF أو ملف نصي</h3>
+              <h3 className="text-lg font-black text-slate-800 dark:text-white">اختر طريقة إدخال الفاتورة</h3>
               <p className="text-xs text-slate-500">
-                يقوم النظام بتحليل نصوص وجداول الفاتورة ومطابقة أسماء المنتجات مع كتالوج الـ 445 صنف تلقائياً حتى مع اختلاف كتابة الكلمات أو الأحجام.
+                يمكنك تصوير الفاتورة الورقية بالكاميرا مباشرة، اختيار صورة من المعرض، أو رفع ملف PDF ليتم استخراج الأصناف والأسعار فوراً.
               </p>
             </div>
 
-            {/* Dropzone */}
-            <div className="relative border-2 border-dashed border-emerald-300 dark:border-emerald-700/60 hover:border-emerald-500 rounded-3xl p-8 sm:p-12 text-center bg-emerald-50/40 dark:bg-emerald-950/20 transition-all cursor-pointer group">
-              <input
-                type="file"
-                accept=".pdf,.txt,.csv"
-                onChange={handleFileUpload}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-              />
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-16 h-16 rounded-3xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <UploadCloud className="w-8 h-8" />
+            {/* 3 Main Action Cards: Camera, Gallery, PDF */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+              
+              {/* 1. Camera Photo */}
+              <button
+                type="button"
+                onClick={() => startLiveCamera('environment')}
+                className="p-6 rounded-3xl bg-gradient-to-b from-emerald-50 to-teal-50 dark:from-emerald-950/40 dark:to-teal-950/20 border-2 border-emerald-300 dark:border-emerald-700/60 hover:border-emerald-500 hover:shadow-xl transition-all flex flex-col items-center text-center gap-3 group active:scale-95"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-600/30 group-hover:scale-110 transition-transform">
+                  <Camera className="w-7 h-7" />
                 </div>
                 <div>
-                  <span className="text-sm font-black text-slate-800 dark:text-slate-200">
-                    اضغط لاختيار ملف الفاتورة أو اسحبه إلى هنا
-                  </span>
-                  <p className="text-xs text-slate-400 mt-1">يدعم ملفات PDF، CSV، والنصوص</p>
+                  <div className="font-black text-sm text-slate-900 dark:text-white">📸 تصوير بالكاميرا</div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">التقاط صورة فورية للفاتورة الورقية</div>
                 </div>
-              </div>
+              </button>
+
+              {/* 2. Photo Gallery */}
+              <button
+                type="button"
+                onClick={() => galleryInputRef.current?.click()}
+                className="p-6 rounded-3xl bg-gradient-to-b from-sky-50 to-indigo-50 dark:from-sky-950/40 dark:to-indigo-950/20 border-2 border-sky-300 dark:border-sky-700/60 hover:border-sky-500 hover:shadow-xl transition-all flex flex-col items-center text-center gap-3 group active:scale-95"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-sky-600 text-white flex items-center justify-center shadow-lg shadow-sky-600/30 group-hover:scale-110 transition-transform">
+                  <ImageIcon className="w-7 h-7" />
+                </div>
+                <div>
+                  <div className="font-black text-sm text-slate-900 dark:text-white">🖼️ معرض الصور</div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">اختيار صورة محفوظة (JPG/PNG)</div>
+                </div>
+              </button>
+
+              {/* 3. PDF & Documents */}
+              <button
+                type="button"
+                onClick={() => pdfInputRef.current?.click()}
+                className="p-6 rounded-3xl bg-gradient-to-b from-violet-50 to-purple-50 dark:from-violet-950/40 dark:to-purple-950/20 border-2 border-violet-300 dark:border-violet-700/60 hover:border-violet-500 hover:shadow-xl transition-all flex flex-col items-center text-center gap-3 group active:scale-95"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-violet-600 text-white flex items-center justify-center shadow-lg shadow-violet-600/30 group-hover:scale-110 transition-transform">
+                  <UploadCloud className="w-7 h-7" />
+                </div>
+                <div>
+                  <div className="font-black text-sm text-slate-900 dark:text-white">📄 ملفات PDF</div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">رفع ملف PDF أو جدول إكسيل</div>
+                </div>
+              </button>
+
+            </div>
+
+            {/* Dropzone for any file */}
+            <div className="relative border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-emerald-500 rounded-3xl p-6 text-center bg-slate-50/50 dark:bg-slate-950/30 transition-all cursor-pointer">
+              <input
+                type="file"
+                accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.csv"
+                onChange={handleGenericFileChange}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+              />
+              <span className="text-xs font-bold text-slate-600 dark:text-slate-400">
+                أو اسحب وأفلت أي ملف PDF أو صورة هنا مباشرة
+              </span>
             </div>
 
             {/* Toggle Paste Raw Text */}
@@ -295,13 +518,13 @@ export default function InvoicePdfImportModal({
                 className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1.5 mx-auto"
               >
                 <FileText className="w-4 h-4" />
-                <span>{showPasteArea ? 'إخفاء لصق النص المباشر' : 'أو الصق نص أو جدول الفاتورة يدوياً من الواتساب / إكسيل'}</span>
+                <span>{showPasteArea ? 'إخفاء لصق النص المباشر' : 'أو الصق نص / جدول الفاتورة يدوياً من الواتساب'}</span>
               </button>
 
               {showPasteArea && (
-                <div className="mt-3 space-y-3 animate-fade-in">
+                <div className="mt-3 space-y-3 animate-fade-in max-w-3xl mx-auto">
                   <textarea
-                    rows={6}
+                    rows={5}
                     value={pastedText}
                     onChange={e => setPastedText(e.target.value)}
                     placeholder="الصق نص الفاتورة هنا (مثال: استربس اطياب كيس | الكمية: 5 | السعر: 290)"
@@ -321,17 +544,24 @@ export default function InvoicePdfImportModal({
 
             {/* Error Message */}
             {errorMsg && (
-              <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 text-xs font-bold flex items-center gap-2">
+              <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 text-xs font-bold flex items-center gap-2 max-w-3xl mx-auto">
                 <AlertTriangle className="w-4 h-4 shrink-0" />
                 <span>{errorMsg}</span>
               </div>
             )}
 
-            {/* Loading Indicator */}
+            {/* Loading Indicator with OCR Progress */}
             {isLoading && (
-              <div className="flex flex-col items-center justify-center p-8 gap-3">
-                <RefreshCw className="w-8 h-8 text-emerald-600 animate-spin" />
-                <p className="text-xs font-bold text-slate-600 dark:text-slate-400">جاري قراءة الفاتورة وتشغيل خوارزمية المطابقة الذكية...</p>
+              <div className="flex flex-col items-center justify-center p-8 gap-3 max-w-md mx-auto">
+                <RefreshCw className="w-9 h-9 text-emerald-600 animate-spin" />
+                <div className="text-center">
+                  <p className="text-xs font-bold text-slate-700 dark:text-slate-300">{loadingText || 'جاري استخراج البيانات والمطابقة...'}</p>
+                  {ocrProgress > 0 && (
+                    <div className="w-48 bg-slate-200 dark:bg-slate-800 rounded-full h-2 mt-2 overflow-hidden mx-auto">
+                      <div className="bg-emerald-500 h-full transition-all duration-300" style={{ width: `${ocrProgress}%` }}></div>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>

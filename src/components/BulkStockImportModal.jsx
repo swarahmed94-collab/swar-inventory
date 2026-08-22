@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   X, 
   Upload, 
@@ -13,9 +13,14 @@ import {
   Edit3, 
   Search, 
   Sparkles,
-  Sliders
+  Sliders,
+  Camera,
+  Image as ImageIcon,
+  SwitchCamera,
+  RefreshCw
 } from 'lucide-react';
 import { extractTextFromPDF, parseRawInvoiceData } from '../utils/pdfParser';
+import { extractTextFromImage } from '../utils/imageOcr';
 import { autoMatchProduct } from '../utils/fuzzyMatcher';
 import { INITIAL_PRODUCTS } from '../data/defaultProducts';
 import { sounds } from '../utils/sound';
@@ -33,20 +38,90 @@ export default function BulkStockImportModal({
   const [step, setStep] = useState('upload'); // 'upload' | 'preview'
   const [importMode, setImportMode] = useState('add'); // 'add' (إضافة على الحالي) | 'set' (تعيين كرصيد فعلي جديد)
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState('');
+  const [ocrProgress, setOcrProgress] = useState(0);
   const [errorMsg, setErrorMsg] = useState('');
   const [fileName, setFileName] = useState('');
   const [pastedText, setPastedText] = useState('');
   const [showPaste, setShowPaste] = useState(false);
 
+  // In-app live camera state
+  const [isLiveCameraOpen, setIsLiveCameraOpen] = useState(false);
+  const [cameraFacingMode, setCameraFacingMode] = useState('environment');
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
+
+  // Hidden native inputs
+  const cameraInputRef = useRef(null);
+  const galleryInputRef = useRef(null);
+  const pdfInputRef = useRef(null);
+
   const [parsedItems, setParsedItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeRemapIdx, setActiveRemapIdx] = useState(null);
 
+  useEffect(() => {
+    return () => {
+      stopCameraStream();
+    };
+  }, []);
+
   if (!isOpen) return null;
+
+  const stopCameraStream = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+  };
+
+  const startLiveCamera = async (facing = 'environment') => {
+    stopCameraStream();
+    setIsLiveCameraOpen(true);
+    setErrorMsg('');
+    try {
+      const constraints = {
+        video: {
+          facingMode: { ideal: facing },
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        }
+      };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (err) {
+      setIsLiveCameraOpen(false);
+      if (cameraInputRef.current) {
+        cameraInputRef.current.click();
+      }
+    }
+  };
+
+  const captureLivePhoto = () => {
+    if (!videoRef.current) return;
+    const video = videoRef.current;
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth || 1280;
+    canvas.height = video.videoHeight || 720;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    stopCameraStream();
+    setIsLiveCameraOpen(false);
+
+    canvas.toBlob(blob => {
+      if (blob) {
+        handleImageFile(blob, 'صورة جرد ملتقطة بالكاميرا');
+      }
+    }, 'image/jpeg', 0.95);
+  };
 
   const processImportData = (rawList) => {
     if (!rawList || rawList.length === 0) {
-      setErrorMsg('لم يتم التعرف على أصناف في الملف. يرجى مراجعة تنسيق البيانات.');
+      setErrorMsg('لم يتم التعرف على أصناف في الملف/الصورة. يرجى مراجعة تنسيق البيانات أو إعادة التصوير.');
       setIsLoading(false);
       return;
     }
@@ -54,7 +129,7 @@ export default function BulkStockImportModal({
     const rows = rawList.map((item, idx) => {
       const match = autoMatchProduct(item.rawName, catalog);
       const currentStock = match.matchedProduct ? Number(match.matchedProduct.currentStock) || 0 : 0;
-      const importedQty = Number(item.qty) || 0;
+      const importedQty = item.qty !== undefined && !isNaN(Number(item.qty)) ? Number(item.qty) : 0;
 
       return {
         id: 'bulk-row-' + idx + '-' + Date.now(),
@@ -75,33 +150,63 @@ export default function BulkStockImportModal({
     sounds.playSuccess();
   };
 
-  const handleFileChange = async (e) => {
+  const handleImageFile = async (fileOrBlob, customName = '') => {
+    setIsLoading(true);
+    setOcrProgress(0);
+    setLoadingText('جاري قراءة نصوص صورة كشف الجرد بالذكاء الاصطناعي (OCR)...');
+    setErrorMsg('');
+    setFileName(customName || fileOrBlob.name || 'صورة جرد');
+
+    try {
+      const lines = await extractTextFromImage(fileOrBlob, progress => {
+        setOcrProgress(progress);
+      });
+      const list = parseRawInvoiceData(lines);
+      processImportData(list);
+    } catch (err) {
+      setErrorMsg(err.message || 'فشل في استخراج نصوص كشف الجرد من الصورة.');
+      setIsLoading(false);
+    }
+  };
+
+  const handleGenericFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setIsLoading(true);
     setErrorMsg('');
     setFileName(file.name);
 
-    try {
-      if (file.name.toLowerCase().endsWith('.pdf')) {
+    if (file.type.startsWith('image/')) {
+      handleImageFile(file);
+    } else if (file.name.toLowerCase().endsWith('.pdf')) {
+      setIsLoading(true);
+      setLoadingText('جاري قراءة ملف الـ PDF واستخراج قائمة الأصناف...');
+      try {
         const lines = await extractTextFromPDF(file);
         const list = parseRawInvoiceData(lines);
         processImportData(list);
-      } else {
+      } catch (err) {
+        setErrorMsg(err.message || 'فشل في قراءة ملف المخزون PDF.');
+        setIsLoading(false);
+      }
+    } else {
+      setIsLoading(true);
+      setLoadingText('جاري قراءة الملف...');
+      try {
         const text = await file.text();
         const list = parseRawInvoiceData(text);
         processImportData(list);
+      } catch (err) {
+        setErrorMsg('فشل في معالجة الملف.');
+        setIsLoading(false);
       }
-    } catch (err) {
-      setErrorMsg(err.message || 'فشل في قراءة ملف المخزون.');
-      setIsLoading(false);
     }
   };
 
   const handlePasteSubmit = () => {
     if (!pastedText.trim()) return;
     setIsLoading(true);
+    setLoadingText('جاري معالجة النص ومطابقة الأصناف...');
     setErrorMsg('');
     setFileName('بيانات مضافة يدوياً');
 
@@ -190,8 +295,8 @@ export default function BulkStockImportModal({
               <Layers className="w-6 h-6 text-sky-300" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-black">الاستيراد والتحديث المجمع للمخزون</h2>
-              <p className="text-xs text-sky-200/80">استيراد ملف بضاعة أو جرد خارجي كامل وتحديث كميات المخزن بضغطة واحدة</p>
+              <h2 className="text-base sm:text-lg font-black">الاستيراد والتحديث المجمع للمخزون (PDF / صور / كاميرا)</h2>
+              <p className="text-xs text-sky-200/80">استيراد وتحديث كميات المخزن بضغطة واحدة من ملف PDF، صورة، أو تصوير بالكاميرا</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors">
@@ -199,35 +304,147 @@ export default function BulkStockImportModal({
           </button>
         </div>
 
+        {/* Hidden inputs */}
+        <input
+          ref={cameraInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handleGenericFileChange}
+          className="hidden"
+        />
+        <input
+          ref={galleryInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleGenericFileChange}
+          className="hidden"
+        />
+        <input
+          ref={pdfInputRef}
+          type="file"
+          accept=".pdf,.txt,.csv"
+          onChange={handleGenericFileChange}
+          className="hidden"
+        />
+
+        {/* LIVE CAMERA OVERLAY */}
+        {isLiveCameraOpen && (
+          <div className="p-4 sm:p-6 flex flex-col items-center justify-center bg-black text-white flex-1 space-y-4">
+            <div className="relative w-full max-w-lg aspect-[4/3] rounded-3xl overflow-hidden bg-slate-900 border-2 border-sky-500 shadow-2xl flex items-center justify-center">
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-x-8 inset-y-12 border-2 border-dashed border-sky-400/60 rounded-2xl pointer-events-none flex items-center justify-center">
+                <span className="text-[11px] font-bold bg-black/60 px-3 py-1 rounded-full text-sky-300">
+                  وجّه الكاميرا نحو كشف الجرد
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                onClick={() => {
+                  const nextMode = cameraFacingMode === 'environment' ? 'user' : 'environment';
+                  setCameraFacingMode(nextMode);
+                  startLiveCamera(nextMode);
+                }}
+                className="p-3.5 rounded-full bg-white/15 hover:bg-white/25 text-white transition-all shadow-md"
+              >
+                <SwitchCamera className="w-5 h-5" />
+              </button>
+
+              <button
+                type="button"
+                onClick={captureLivePhoto}
+                className="w-16 h-16 rounded-full bg-sky-500 hover:bg-sky-400 text-white shadow-xl shadow-sky-500/50 flex items-center justify-center border-4 border-white active:scale-95 transition-all"
+              >
+                <Camera className="w-8 h-8" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => { stopCameraStream(); setIsLiveCameraOpen(false); }}
+                className="p-3.5 rounded-full bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 transition-all"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* STEP 1: UPLOAD */}
-        {step === 'upload' && (
+        {step === 'upload' && !isLiveCameraOpen && (
           <div className="p-6 overflow-y-auto space-y-6 flex-1">
             <div className="text-center max-w-xl mx-auto space-y-2">
-              <h3 className="text-lg font-black text-slate-800 dark:text-white">ارفع ملف البضاعة المستخرج من نظامك الآخر</h3>
+              <h3 className="text-lg font-black text-slate-800 dark:text-white">اختر طريقة رفع كشف البضاعة أو الجرد</h3>
               <p className="text-xs text-slate-500">
-                يدعم ملفات PDF، ملفات Excel المصدرة كـ CSV، أو الجداول النصية. ستتم مراجعة الفروقات والكميات قبل الاعتماد النهائي.
+                يمكنك تصوير كشف البضاعة بالكاميرا، اختيار صورة من المعرض، أو رفع ملف PDF/إكسيل لمطابقة الأرصدة تلقائياً.
               </p>
             </div>
 
-            {/* Dropzone */}
-            <div className="relative border-2 border-dashed border-sky-300 dark:border-sky-700/60 hover:border-sky-500 rounded-3xl p-8 sm:p-12 text-center bg-sky-50/40 dark:bg-sky-950/20 transition-all cursor-pointer group">
-              <input
-                type="file"
-                accept=".pdf,.txt,.csv"
-                onChange={handleFileChange}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-              />
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-16 h-16 rounded-3xl bg-sky-500/10 dark:bg-sky-500/20 text-sky-600 dark:text-sky-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Upload className="w-8 h-8" />
+            {/* 3 Action Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+              
+              <button
+                type="button"
+                onClick={() => startLiveCamera('environment')}
+                className="p-6 rounded-3xl bg-gradient-to-b from-sky-50 to-indigo-50 dark:from-sky-950/40 dark:to-indigo-950/20 border-2 border-sky-300 dark:border-sky-700/60 hover:border-sky-500 hover:shadow-xl transition-all flex flex-col items-center text-center gap-3 group active:scale-95"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-sky-600 text-white flex items-center justify-center shadow-lg shadow-sky-600/30 group-hover:scale-110 transition-transform">
+                  <Camera className="w-7 h-7" />
                 </div>
                 <div>
-                  <span className="text-sm font-black text-slate-800 dark:text-slate-200">
-                    اضغط لاختيار ملف البضاعة أو اسحبه هنا
-                  </span>
-                  <p className="text-xs text-slate-400 mt-1">PDF, CSV, TXT</p>
+                  <div className="font-black text-sm text-slate-900 dark:text-white">📸 تصوير بالكاميرا</div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">تصوير فوري لكشف الجرد الورقي</div>
                 </div>
-              </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => galleryInputRef.current?.click()}
+                className="p-6 rounded-3xl bg-gradient-to-b from-indigo-50 to-purple-50 dark:from-indigo-950/40 dark:to-purple-950/20 border-2 border-indigo-300 dark:border-indigo-700/60 hover:border-indigo-500 hover:shadow-xl transition-all flex flex-col items-center text-center gap-3 group active:scale-95"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-600/30 group-hover:scale-110 transition-transform">
+                  <ImageIcon className="w-7 h-7" />
+                </div>
+                <div>
+                  <div className="font-black text-sm text-slate-900 dark:text-white">🖼️ معرض الصور</div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">اختيار صورة محفوظة (JPG/PNG)</div>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => pdfInputRef.current?.click()}
+                className="p-6 rounded-3xl bg-gradient-to-b from-teal-50 to-emerald-50 dark:from-teal-950/40 dark:to-emerald-950/20 border-2 border-teal-300 dark:border-teal-700/60 hover:border-teal-500 hover:shadow-xl transition-all flex flex-col items-center text-center gap-3 group active:scale-95"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-teal-600 text-white flex items-center justify-center shadow-lg shadow-teal-600/30 group-hover:scale-110 transition-transform">
+                  <Upload className="w-7 h-7" />
+                </div>
+                <div>
+                  <div className="font-black text-sm text-slate-900 dark:text-white">📄 ملفات PDF</div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">ملف PDF أو CSV أو نص</div>
+                </div>
+              </button>
+
+            </div>
+
+            {/* Dropzone */}
+            <div className="relative border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-sky-500 rounded-3xl p-6 text-center bg-slate-50/50 dark:bg-slate-950/30 transition-all cursor-pointer max-w-3xl mx-auto">
+              <input
+                type="file"
+                accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.csv"
+                onChange={handleGenericFileChange}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+              />
+              <span className="text-xs font-bold text-slate-600 dark:text-slate-400">
+                أو اسحب وأفلت أي ملف PDF أو صورة هنا
+              </span>
             </div>
 
             {/* Paste alternative */}
@@ -242,9 +459,9 @@ export default function BulkStockImportModal({
               </button>
 
               {showPaste && (
-                <div className="mt-3 space-y-3 animate-fade-in">
+                <div className="mt-3 space-y-3 animate-fade-in max-w-3xl mx-auto">
                   <textarea
-                    rows={6}
+                    rows={5}
                     value={pastedText}
                     onChange={e => setPastedText(e.target.value)}
                     placeholder="الصق النص هنا (مثال: كفتة اطياب 1 كجم | الكمية: 20)"
@@ -263,9 +480,23 @@ export default function BulkStockImportModal({
             </div>
 
             {errorMsg && (
-              <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 text-xs font-bold flex items-center gap-2">
+              <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 text-xs font-bold flex items-center gap-2 max-w-3xl mx-auto">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{errorMsg}</span>
+              </div>
+            )}
+
+            {isLoading && (
+              <div className="flex flex-col items-center justify-center p-8 gap-3 max-w-md mx-auto">
+                <RefreshCw className="w-9 h-9 text-sky-600 animate-spin" />
+                <div className="text-center">
+                  <p className="text-xs font-bold text-slate-700 dark:text-slate-300">{loadingText || 'جاري استخراج البيانات والمطابقة...'}</p>
+                  {ocrProgress > 0 && (
+                    <div className="w-48 bg-slate-200 dark:bg-slate-800 rounded-full h-2 mt-2 overflow-hidden mx-auto">
+                      <div className="bg-sky-500 h-full transition-all duration-300" style={{ width: `${ocrProgress}%` }}></div>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -328,7 +559,7 @@ export default function BulkStockImportModal({
                         className="rounded text-sky-600"
                       />
                     </th>
-                    <th className="p-2.5">اسم الصنف في الملف</th>
+                    <th className="p-2.5">اسم الصنف في الملف / الصورة</th>
                     <th className="p-2.5">الصنف المطابق في المنظومة</th>
                     <th className="p-2.5 w-24 text-center">الرصيد الحالي</th>
                     <th className="p-2.5 w-28 text-center">{importMode === 'add' ? 'الكمية المضافة (+)' : 'الرصيد الجديد'}</th>
@@ -453,7 +684,7 @@ export default function BulkStockImportModal({
                 onClick={() => setStep('upload')}
                 className="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100"
               >
-                تغيير الملف
+                تغيير الملف / الصورة
               </button>
 
               <button
