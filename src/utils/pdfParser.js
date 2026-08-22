@@ -1,28 +1,5 @@
-import * as pdfjsLib from 'pdfjs-dist';
-import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-
-// Polyfill Promise.withResolvers for mobile browsers (iOS Safari < 17.4, older Android WebViews)
-if (typeof Promise.withResolvers === 'undefined') {
-  if (typeof window !== 'undefined') {
-    window.Promise.withResolvers = function () {
-      let resolve, reject;
-      const promise = new Promise((res, rej) => {
-        resolve = res;
-        reject = rej;
-      });
-      return { promise, resolve, reject };
-    };
-  }
-}
-
-// Initialize PDF.js worker with fallback support
-if (typeof window !== 'undefined' && pdfjsLib.GlobalWorkerOptions) {
-  try {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker || `https://unpkg.com/pdfjs-dist@${pdfjsLib.version || '6.2.108'}/build/pdf.worker.min.mjs`;
-  } catch (e) {
-    console.warn('PDF Worker assignment warning:', e);
-  }
-}
+// NOTE: pdfjs-dist is loaded via dynamic import inside extractTextFromPDF
+// to guarantee Promise.withResolvers polyfill (in index.html) runs first on iOS Safari.
 
 /**
  * Safely extract ArrayBuffer from File, Blob, or Buffer across all mobile and desktop browsers
@@ -53,11 +30,31 @@ const getFileArrayBuffer = async (fileOrArrayBuffer) => {
   });
 };
 
+// Cached pdfjs module reference (loaded once)
+let _pdfjsLib = null;
+let _pdfWorkerUrl = null;
+
+const loadPdfJs = async () => {
+  if (_pdfjsLib) return { pdfjsLib: _pdfjsLib, pdfWorker: _pdfWorkerUrl };
+  const [lib, workerMod] = await Promise.all([
+    import('pdfjs-dist'),
+    import('pdfjs-dist/build/pdf.worker.min.mjs?url'),
+  ]);
+  _pdfjsLib = lib;
+  _pdfWorkerUrl = workerMod.default;
+  if (_pdfjsLib.GlobalWorkerOptions) {
+    _pdfjsLib.GlobalWorkerOptions.workerSrc = _pdfWorkerUrl;
+  }
+  return { pdfjsLib: _pdfjsLib, pdfWorker: _pdfWorkerUrl };
+};
+
 /**
  * Extract structured rows and text from an uploaded PDF file
  */
 export const extractTextFromPDF = async (fileOrArrayBuffer) => {
   try {
+    const { pdfjsLib } = await loadPdfJs();
+
     const rawBuffer = await getFileArrayBuffer(fileOrArrayBuffer);
     const uint8Data = rawBuffer instanceof Uint8Array ? rawBuffer : new Uint8Array(rawBuffer);
 
