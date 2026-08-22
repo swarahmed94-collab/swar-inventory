@@ -1,5 +1,8 @@
-// NOTE: pdfjs-dist is loaded via dynamic import inside extractTextFromPDF
-// to guarantee Promise.withResolvers polyfill (in index.html) runs first on iOS Safari.
+// Static import of worker URL is SAFE: Vite resolves ?url to just a string at build time.
+// No pdfjs-dist code runs here - it only gets the bundled worker file's URL.
+// The main pdfjs-dist library is loaded lazily via dynamic import (see loadPdfJs below),
+// which guarantees the Promise.withResolvers polyfill in index.html runs first on iOS Safari.
+import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
 /**
  * Safely extract ArrayBuffer from File, Blob, or Buffer across all mobile and desktop browsers
@@ -30,22 +33,18 @@ const getFileArrayBuffer = async (fileOrArrayBuffer) => {
   });
 };
 
-// Cached pdfjs module reference (loaded once)
+// Cached pdfjs module reference (loaded once on first PDF usage)
 let _pdfjsLib = null;
-let _pdfWorkerUrl = null;
 
 const loadPdfJs = async () => {
-  if (_pdfjsLib) return { pdfjsLib: _pdfjsLib, pdfWorker: _pdfWorkerUrl };
-  const [lib, workerMod] = await Promise.all([
-    import('pdfjs-dist'),
-    import('pdfjs-dist/build/pdf.worker.min.mjs?url'),
-  ]);
+  if (_pdfjsLib) return _pdfjsLib;
+  // Dynamic import ensures the polyfill in index.html has already run
+  const lib = await import('pdfjs-dist');
   _pdfjsLib = lib;
-  _pdfWorkerUrl = workerMod.default;
   if (_pdfjsLib.GlobalWorkerOptions) {
-    _pdfjsLib.GlobalWorkerOptions.workerSrc = _pdfWorkerUrl;
+    _pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
   }
-  return { pdfjsLib: _pdfjsLib, pdfWorker: _pdfWorkerUrl };
+  return _pdfjsLib;
 };
 
 /**
@@ -53,7 +52,7 @@ const loadPdfJs = async () => {
  */
 export const extractTextFromPDF = async (fileOrArrayBuffer) => {
   try {
-    const { pdfjsLib } = await loadPdfJs();
+    const pdfjsLib = await loadPdfJs();
 
     const rawBuffer = await getFileArrayBuffer(fileOrArrayBuffer);
     const uint8Data = rawBuffer instanceof Uint8Array ? rawBuffer : new Uint8Array(rawBuffer);
