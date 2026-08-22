@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { extractTextFromPDF, parseRawInvoiceData } from '../utils/pdfParser';
 import { autoMatchProduct, findBestMatches } from '../utils/fuzzyMatcher';
+import { INITIAL_PRODUCTS } from '../data/defaultProducts';
 import { sounds } from '../utils/sound';
 import confetti from 'canvas-confetti';
 
@@ -32,6 +33,7 @@ export default function InvoicePdfImportModal({
   onOpenAdminModal,
   onAddNewProduct
 }) {
+  const catalog = (Array.isArray(products) && products.length > 0) ? products : INITIAL_PRODUCTS;
   const [step, setStep] = useState('upload'); // 'upload' | 'review'
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -58,7 +60,7 @@ export default function InvoicePdfImportModal({
     }
 
     const rows = rawItems.map((item, idx) => {
-      const matchResult = autoMatchProduct(item.rawName, products);
+      const matchResult = autoMatchProduct(item.rawName, catalog);
       const extractedQty = item.qty !== undefined && !isNaN(Number(item.qty)) ? Number(item.qty) : 1;
       const extractedPrice = item.price !== undefined && !isNaN(Number(item.price)) && Number(item.price) > 0
         ? Number(item.price)
@@ -511,7 +513,7 @@ export default function InvoicePdfImportModal({
                                 />
                               </div>
                               <div className="space-y-1">
-                                {products
+                                {catalog
                                   .filter(p => !searchCatalogQuery || p.name.toLowerCase().includes(searchCatalogQuery.toLowerCase()))
                                   .slice(0, 8)
                                   .map(p => (

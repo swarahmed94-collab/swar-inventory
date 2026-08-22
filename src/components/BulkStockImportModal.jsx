@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { extractTextFromPDF, parseRawInvoiceData } from '../utils/pdfParser';
 import { autoMatchProduct } from '../utils/fuzzyMatcher';
+import { INITIAL_PRODUCTS } from '../data/defaultProducts';
 import { sounds } from '../utils/sound';
 import confetti from 'canvas-confetti';
 
@@ -28,6 +29,7 @@ export default function BulkStockImportModal({
   onBulkUpdateStock, // ({ items, mode: 'add' | 'set', sourceName }) => void
   onOpenAdminModal
 }) {
+  const catalog = (Array.isArray(products) && products.length > 0) ? products : INITIAL_PRODUCTS;
   const [step, setStep] = useState('upload'); // 'upload' | 'preview'
   const [importMode, setImportMode] = useState('add'); // 'add' (إضافة على الحالي) | 'set' (تعيين كرصيد فعلي جديد)
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +52,7 @@ export default function BulkStockImportModal({
     }
 
     const rows = rawList.map((item, idx) => {
-      const match = autoMatchProduct(item.rawName, products);
+      const match = autoMatchProduct(item.rawName, catalog);
       const currentStock = match.matchedProduct ? Number(match.matchedProduct.currentStock) || 0 : 0;
       const importedQty = Number(item.qty) || 0;
 
@@ -392,7 +394,7 @@ export default function BulkStockImportModal({
                                 placeholder="ابحث في الكتالوج..."
                                 className="w-full p-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 outline-none mb-1"
                               />
-                              {products
+                              {catalog
                                 .filter(p => !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()))
                                 .slice(0, 7)
                                 .map(p => (
