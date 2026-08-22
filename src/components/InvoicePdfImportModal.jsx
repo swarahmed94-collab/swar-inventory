@@ -59,14 +59,19 @@ export default function InvoicePdfImportModal({
 
     const rows = rawItems.map((item, idx) => {
       const matchResult = autoMatchProduct(item.rawName, products);
+      const extractedQty = item.qty !== undefined && !isNaN(Number(item.qty)) ? Number(item.qty) : 1;
+      const extractedPrice = item.price !== undefined && !isNaN(Number(item.price)) && Number(item.price) > 0
+        ? Number(item.price)
+        : (matchResult.matchedProduct ? Number(matchResult.matchedProduct.price || 0) : 0);
+
       return {
         id: 'row-' + idx + '-' + Date.now(),
         rawName: item.rawName,
         matchedProduct: matchResult.matchedProduct,
         matchConfidence: matchResult.confidence, // 'high' | 'medium' | 'none'
         matchScore: matchResult.score,
-        qty: Number(item.qty) || 1,
-        price: Number(item.price) || (matchResult.matchedProduct ? Number(matchResult.matchedProduct.price) : 0),
+        qty: extractedQty,
+        price: extractedPrice,
         unit: matchResult.matchedProduct ? matchResult.matchedProduct.unit : 'وحدة',
         selected: true
       };

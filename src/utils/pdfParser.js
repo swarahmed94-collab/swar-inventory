@@ -75,21 +75,52 @@ export const extractTextFromPDF = async (fileOrArrayBuffer) => {
 };
 
 /**
+ * Check if a line is a report header, metadata, column header, or summary footer
+ */
+export const isReportHeaderOrMeta = (cleanLine) => {
+  if (!cleanLine || typeof cleanLine !== 'string') return true;
+  const line = cleanLine.trim();
+
+  // Too short
+  if (line.length < 2) return true;
+
+  // Header keywords (Dates, times, store headers, locations)
+  if (/^(date|time|التاريخ|الوقت|الساعة|تاريخ|وقت|العنوان|هاتف|تليفون|فاكس|فرع|المحلة|القاهرة|الإسكندرية)/i.test(line)) return true;
+  if (/^(\s*»|\s*«|\s*[-=_*#]{3,})/i.test(line)) return true;
+  if (/^(تقرير|بيان|كشف|فاتورة|سجل|أرشيف|سند)\s+(بالمنتجات|بالأصناف|بالمخزون|بالمبيعات|بالمشتريات|حركة|يومي|شهري)/i.test(line)) return true;
+  if (/^(صوار|SWAR|شركة|مؤسسة|مستودع|ثلاجة)\s+(لجميع|لتجارة|لتوزيع)/i.test(line)) return true;
+
+  // Table Column Header lines (contains multiple column titles)
+  const colHeaderWords = [
+    'اسم المنتج', 'اسم الصنف', 'رقم المنتج', 'كود الصنف', 'كود المنتج', 
+    'سعر البيع', 'سعر الشراء', 'السعر', 'الكمية', 'الكميه', 'الإجمالي', 
+    'الاجمالي', 'المجموع', 'الوحدة', 'الوحده', 'البيان', 'ملاحظات', 'مسلسل'
+  ];
+  let headerMatchCount = 0;
+  for (const h of colHeaderWords) {
+    if (line.includes(h)) headerMatchCount++;
+  }
+  if (headerMatchCount >= 2) return true;
+
+  // Footer / summary totals
+  if (/^(المجموع الكلي|الإجمالي الكلي|إجمالي التقرير|صافي القيمة|عدد الأصناف|Page\s*\d+|صفحة\s*\d+)/i.test(line)) return true;
+
+  return false;
+};
+
+/**
  * Parse a single line of text from an invoice/stock file into structured product data
  */
 export const parseInvoiceLine = (line) => {
   if (!line || typeof line !== 'string') return null;
   const clean = line.trim();
 
-  // Skip header lines or divider lines
-  if (/^(#|مسلسل|الرقم|الصنف|الاسم|البيان|الكمية|السعر|الإجمالي|الاجمالي|المجموع|تاريخ|فاتورة|كود)/i.test(clean)) {
-    return null;
-  }
-  if (clean.length < 3 || /^[-=_*#\s]{4,}$/.test(clean)) {
+  // 1. Skip report headers & metadata
+  if (isReportHeaderOrMeta(clean)) {
     return null;
   }
 
-  // Format 1: "اسم الصنف | الكمية: X | السعر: Y" or pipe separated
+  // Format 1: Delimited format ("اسم الصنف | الكمية: X | السعر: Y" or CSV)
   if (clean.includes('|')) {
     const parts = clean.split('|').map(p => p.trim());
     if (parts.length >= 2) {
@@ -103,7 +134,6 @@ export const parseInvoiceLine = (line) => {
         if (qtyMatch) qty = parseFloat(qtyMatch[1].replace(/,/g, '')) || 0;
         else if (priceMatch) price = parseFloat(priceMatch[1].replace(/,/g, '')) || 0;
         else {
-          // If pure number in column
           const num = parseFloat(part.replace(/,/g, ''));
           if (!isNaN(num)) {
             if (qty === 0) qty = num;
@@ -113,7 +143,7 @@ export const parseInvoiceLine = (line) => {
       });
 
       if (name && (qty > 0 || price > 0 || parts.length >= 3)) {
-        return { rawName: name, qty: qty || 1, price: price || 0 };
+        return { rawName: name, qty: qty || 0, price: price || 0 };
       }
     }
   }
@@ -128,14 +158,10 @@ export const parseInvoiceLine = (line) => {
         let qty = 0;
         let price = 0;
 
-        // Determine which columns are numbers
         cols.forEach((col, idx) => {
           const num = parseFloat(col.replace(/,/g, ''));
           if (isNaN(num) || (idx === 0 && isNaN(parseFloat(col)))) {
             if (!name) name = col;
-            else if (!isNaN(num)) {
-              // Could be unit or secondary description
-            }
           } else {
             if (qty === 0) qty = num;
             else if (price === 0) price = num;
@@ -143,45 +169,85 @@ export const parseInvoiceLine = (line) => {
         });
 
         if (name && (qty > 0 || price > 0)) {
-          return { rawName: name, qty: qty || 1, price: price || 0 };
+          return { rawName: name, qty: qty || 0, price: price || 0 };
         }
       }
     }
   }
 
-  // Format 3: Space separated / Table row from PDF
-  // Example: "استربس اطياب كيس 5 290 1450" or "فوارغ مخللات 986.3 10.00"
-  // Match numbers at the end of the line
-  const regexTrailingNumbers = /^(.*?)(?:\s+(\d+(?:\.\d+)?))?(?:\s+(\d+(?:\.\d+)?))?(?:\s+(\d+(?:\.\d+)?))?$/;
-  const match = clean.match(regexTrailingNumbers);
+  // Format 3: Intelligent POS / PDF Table line parser
+  // Example lines from user's report:
+  // "رصيد سابق 500.00 828.48 414,240.00 0923522943"
+  // "فوارغ مخللات 10.00 986.3 9,863.00 01111055237"
+  // "استربس اطياب 1 كجم [كيس] 290.00 6 1,740.00 0123456789"
 
-  if (match) {
-    const rawName = match[1]?.trim();
-    const num1 = match[2] ? parseFloat(match[2]) : null;
-    const num2 = match[3] ? parseFloat(match[3]) : null;
-    const num3 = match[4] ? parseFloat(match[4]) : null;
+  // Extract all numbers (handling comma thousand separators e.g. 414,240.00 -> 414240.00)
+  // Match tokens that look like numbers (with optional commas and decimals)
+  const rawTokens = clean.split(/\s+/);
+  const numberTokens = [];
+  const textTokens = [];
+
+  rawTokens.forEach(token => {
+    // Check if token is purely numeric (with optional commas/decimals)
+    const cleanNumStr = token.replace(/,/g, '');
+    if (/^[0-9]+(\.[0-9]+)?$/.test(cleanNumStr)) {
+      numberTokens.push({
+        raw: token,
+        num: parseFloat(cleanNumStr),
+        isBarcode: cleanNumStr.length >= 7 || cleanNumStr.startsWith('0') && cleanNumStr.length >= 5
+      });
+    } else {
+      textTokens.push(token);
+    }
+  });
+
+  // If we found text and numbers
+  if (textTokens.length > 0) {
+    const rawName = textTokens.join(' ')
+      .replace(/^[#\d\s.-]+(?=[^\d\s.-])/, '') // remove leading row index #1, 1.
+      .replace(/[»«:;]+$/g, '')
+      .trim();
+
+    // Filter non-barcode numbers
+    const validNumbers = numberTokens.filter(t => !t.isBarcode).map(t => t.num);
+
+    let price = 0;
+    let qty = 0;
+
+    if (validNumbers.length >= 3) {
+      // 3 numbers: Price, Qty, Total (e.g. 500.00, 828.48, 414240.00)
+      const [n1, n2, n3] = validNumbers;
+
+      // Check math: is n1 * n2 ≈ n3? (e.g. 500 * 828.48 = 414240)
+      if (Math.abs((n1 * n2) - n3) < Math.max(1, n3 * 0.05)) {
+        // Look at column standard: [سعر البيع, الكمية, الإجمالي]
+        price = n1;
+        qty = n2;
+      } else if (Math.abs((n2 * n3) - n1) < Math.max(1, n1 * 0.05)) {
+        price = n2;
+        qty = n3;
+      } else if (Math.abs((n1 * n3) - n2) < Math.max(1, n2 * 0.05)) {
+        price = n1;
+        qty = n3;
+      } else {
+        // Fallback by order: [Price, Qty, Total]
+        price = n1;
+        qty = n2;
+      }
+    } else if (validNumbers.length === 2) {
+      // [Price, Qty] or [Qty, Price]
+      price = validNumbers[0];
+      qty = validNumbers[1];
+    } else if (validNumbers.length === 1) {
+      qty = validNumbers[0];
+    }
 
     if (rawName && rawName.length >= 2) {
-      let qty = 1;
-      let price = 0;
-
-      if (num1 !== null && num2 !== null && num3 !== null) {
-        // [qty, price, total] or [idx, qty, price]
-        qty = num1;
-        price = num2;
-      } else if (num1 !== null && num2 !== null) {
-        // [qty, price]
-        qty = num1;
-        price = num2;
-      } else if (num1 !== null) {
-        qty = num1;
-      }
-
       return { rawName, qty, price };
     }
   }
 
-  return { rawName: clean, qty: 1, price: 0 };
+  return null;
 };
 
 /**
