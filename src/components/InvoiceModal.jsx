@@ -23,6 +23,7 @@ import {
   Pencil
 } from 'lucide-react';
 import { formatArabicDateTime } from '../utils/storage';
+import { generateInvoiceNumber } from '../utils/transactions';
 import { sounds } from '../utils/sound';
 
 export default function InvoiceModal({ 
@@ -37,7 +38,8 @@ export default function InvoiceModal({
   onDeleteInvoice,
   onEditInvoice,
   onOpenAdminModal,
-  onSettleCustomerDebt
+  onSettleCustomerDebt,
+  onOpenPdfImport
 }) {
   const safeProducts = Array.isArray(products) ? products : [];
   const safeInvoices = Array.isArray(invoices) ? invoices : [];
@@ -352,10 +354,10 @@ export default function InvoiceModal({
       }
     }
 
-    const prefix = invoiceType === 'sales' ? 'INV-' : 'PUR-';
+    const invoiceNum = generateInvoiceNumber(invoiceType, safeInvoices);
     const newInvoice = {
-      id: 'inv-' + Date.now(),
-      invoiceNumber: prefix + (safeInvoices.length + 1).toString().padStart(4, '0'),
+      id: 'inv-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
+      invoiceNumber: invoiceNum,
       type: invoiceType,
       customerName: customerName.trim() || (invoiceType === 'sales' ? 'عميل نقدي' : 'مورد عام'),
       customerPhone: customerPhone.trim(),
@@ -552,6 +554,26 @@ export default function InvoiceModal({
                 <span>📦 فاتورة مشتريات وتوريد (إضافة للمخزون)</span>
               </button>
             </div>
+
+            {/* Smart PDF Import Banner */}
+            {onOpenPdfImport && (
+              <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 flex items-center justify-between gap-2 shadow-sm">
+                <div className="flex items-center gap-2 text-xs font-bold text-emerald-900 dark:text-emerald-200">
+                  <span className="text-base">✨</span>
+                  <span>لديك فاتورة PDF أو جدول من مورد؟ وفّر وقتك واستخرج الأصناف والأسعار آلياً:</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onClose) onClose();
+                    onOpenPdfImport();
+                  }}
+                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-sm shrink-0 transition-all active:scale-95"
+                >
+                  ⚡ قراءة ومطابقة PDF
+                </button>
+              </div>
+            )}
 
             {/* Customer Live Debt Alert Banner */}
             {customerDebt > 0 && invoiceType === 'sales' && (

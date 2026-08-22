@@ -1,5 +1,20 @@
 import React from 'react';
-import { Plus, Moon, Sun, FileSpreadsheet, Smartphone, Cloud, ShoppingCart, Shield, Lock, Receipt, Wallet } from 'lucide-react';
+import { 
+  Plus, 
+  Moon, 
+  Sun, 
+  FileSpreadsheet, 
+  Smartphone, 
+  Cloud, 
+  ShoppingCart, 
+  Shield, 
+  Lock, 
+  Receipt, 
+  Wallet,
+  Sparkles,
+  Layers,
+  History
+} from 'lucide-react';
 
 export default function Navbar({
   theme, toggleTheme,
@@ -12,6 +27,9 @@ export default function Navbar({
   onOpenSync,
   onOpenInvoice,
   onOpenJournal,
+  onOpenPdfImport,
+  onOpenBulkImport,
+  onOpenAuditTrail
 }) {
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200/80 dark:border-slate-800/80 glass-panel no-print">
@@ -54,30 +72,59 @@ export default function Navbar({
               <span className="hidden sm:inline">{isAdmin ? 'Admin' : 'مشاهد'}</span>
             </button>
 
+            {/* PDF Invoice Smart Reader */}
+            <button 
+              onClick={onOpenPdfImport} 
+              className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-bold transition-all shadow-sm" 
+              title="قارئ فواتير الـ PDF والمطابقة الذكية"
+            >
+              <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 animate-pulse" />
+              <span className="hidden md:inline">قارئ PDF</span>
+            </button>
+
+            {/* Bulk Stock Import */}
+            <button 
+              onClick={onOpenBulkImport} 
+              className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 text-indigo-800 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-xs font-bold transition-all shadow-sm" 
+              title="استيراد وتحديث مجمع للمخزون"
+            >
+              <Layers className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+              <span className="hidden md:inline">استيراد بضاعة</span>
+            </button>
+
+            {/* Audit Trail / History */}
+            <button 
+              onClick={onOpenAuditTrail} 
+              className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-xs font-bold transition-all shadow-sm" 
+              title="سجل التدقيق والأثر الرجعي للفواتير"
+            >
+              <History className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+              <span className="hidden lg:inline">الأرشيف</span>
+            </button>
+
             {/* Cloud Sync */}
             <button onClick={onOpenSync} className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-sky-50 dark:bg-sky-950/60 hover:bg-sky-100 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800 text-xs font-bold transition-colors" title="مزامنة حية">
               <Cloud className="w-4 h-4 text-sky-500" />
-              <span className="hidden md:inline">مزامنة</span>
+              <span className="hidden xl:inline">مزامنة</span>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             </button>
 
             {/* Daily Cash Journal */}
-            <button onClick={onOpenJournal} className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-bold transition-colors" title="دفتر اليومية والخزينة">
-              <Wallet className="w-4 h-4 text-emerald-600" />
+            <button onClick={onOpenJournal} className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 text-xs font-bold transition-colors" title="دفتر اليومية والخزينة">
+              <Wallet className="w-4 h-4 text-amber-600" />
               <span className="hidden sm:inline">اليومية</span>
             </button>
 
             {/* Invoice */}
             <button onClick={onOpenInvoice} className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-violet-50 dark:bg-violet-950/50 hover:bg-violet-100 text-violet-800 dark:text-violet-300 border border-violet-200 dark:border-violet-800 text-xs font-bold transition-colors" title="إنشاء فاتورة مبيعات أو مشتريات">
-              <Receipt className="w-4 h-4" />
+              <Receipt className="w-4 h-4 text-violet-600" />
               <span className="hidden sm:inline">الفواتير</span>
             </button>
 
-
             {/* Purchase Order */}
-            <button onClick={onOpenPurchaseOrder} className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 text-xs font-bold transition-colors" title="طلبية شراء">
-              <ShoppingCart className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-              <span className="hidden lg:inline">طلبية</span>
+            <button onClick={onOpenPurchaseOrder} className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-teal-50 dark:bg-teal-950/60 hover:bg-teal-100 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-800 text-xs font-bold transition-colors" title="طلبية شراء">
+              <ShoppingCart className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+              <span className="hidden xl:inline">طلبية</span>
             </button>
 
             {/* Quick Audit - Admin only */}
