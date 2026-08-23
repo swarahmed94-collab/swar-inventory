@@ -21,7 +21,7 @@ import {
   Image as ImageIcon,
   SwitchCamera
 } from 'lucide-react';
-import { extractTextFromPDF, parseRawInvoiceData } from '../utils/pdfParser';
+import { extractStructuredInvoiceFromPDF, extractTextFromPDF, parseRawInvoiceData } from '../utils/pdfParser';
 import { extractTextFromImage, isHEICFile } from '../utils/imageOcr';
 import { autoMatchProduct, findBestMatches } from '../utils/fuzzyMatcher';
 import { INITIAL_PRODUCTS } from '../data/defaultProducts';
@@ -136,23 +136,52 @@ export default function InvoicePdfImportModal({
       return;
     }
 
+    const hasAnyPositiveQty = rawItems.some(i => Number(i.qty || 0) > 0);
+
     const rows = rawItems.map((item, idx) => {
-      const matchResult = autoMatchProduct(item.rawName, catalog);
-      const extractedQty = item.qty !== undefined && !isNaN(Number(item.qty)) ? Number(item.qty) : 1;
+      // 1. Try exact barcode match first if available
+      let matchedProduct = null;
+      let matchConfidence = 'none';
+      let matchScore = 0;
+
+      if (item.barcode) {
+        const cleanBc = String(item.barcode).trim();
+        matchedProduct = catalog.find(p => p.barcode && String(p.barcode).trim() === cleanBc) || null;
+        if (matchedProduct) {
+          matchConfidence = 'high';
+          matchScore = 1.0;
+        }
+      }
+
+      // 2. Fallback to intelligent fuzzy matching by product name
+      if (!matchedProduct) {
+        const matchResult = autoMatchProduct(item.rawName, catalog);
+        matchedProduct = matchResult.matchedProduct;
+        matchConfidence = matchResult.confidence;
+        matchScore = matchResult.score;
+      }
+
+      const extractedQty = item.qty !== undefined && !isNaN(Number(item.qty)) ? Number(item.qty) : 0;
       const extractedPrice = item.price !== undefined && !isNaN(Number(item.price)) && Number(item.price) > 0
         ? Number(item.price)
-        : (matchResult.matchedProduct ? Number(matchResult.matchedProduct.price || 0) : 0);
+        : (matchedProduct ? Number(matchedProduct.price || 0) : 0);
+
+      // Auto-select items that have positive quantities (or all if none have positive)
+      const shouldSelect = hasAnyPositiveQty ? extractedQty > 0 : true;
 
       return {
         id: 'row-' + idx + '-' + Date.now(),
         rawName: item.rawName,
-        matchedProduct: matchResult.matchedProduct,
-        matchConfidence: matchResult.confidence, // 'high' | 'medium' | 'none'
-        matchScore: matchResult.score,
+        barcode: item.barcode || '',
+        matchedProduct,
+        matchConfidence, // 'high' | 'medium' | 'none'
+        matchScore,
         qty: extractedQty,
         price: extractedPrice,
-        unit: matchResult.matchedProduct ? matchResult.matchedProduct.unit : 'وحدة',
-        selected: true
+        total: item.total || (extractedQty * extractedPrice),
+        isMathValid: item.isMathValid ?? true,
+        unit: matchedProduct ? matchedProduct.unit : 'وحدة',
+        selected: shouldSelect
       };
     });
 
@@ -203,14 +232,11 @@ export default function InvoicePdfImportModal({
       fileNameLower.endsWith('.pdf');
 
     // ─── Image detection (includes HEIC/HEIF from iPhone) ───────────────────
-    // iOS sometimes reports HEIC files with an empty or wrong MIME type, so we
-    // sniff the first 12 bytes via magic numbers as a reliable fallback.
     let isImage =
       fileType.startsWith('image/') ||
       /\.(jpg|jpeg|png|webp|bmp|gif|heic|heif)$/i.test(fileNameLower);
 
     if (!isImage && !isPdf) {
-      // Last-resort HEIC sniff for files with unknown MIME (e.g. iOS quirks)
       try {
         isImage = await isHEICFile(file);
       } catch {
@@ -222,8 +248,6 @@ export default function InvoicePdfImportModal({
     if (isImage) {
       handleImageFile(file);
     } else if (isPdf) {
-      // Mobile file-size warning (guard is also inside extractTextFromPDF,
-      // but showing it here gives instant feedback before loading starts)
       const isMobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile/i.test(
         navigator.userAgent
       );
@@ -237,11 +261,10 @@ export default function InvoicePdfImportModal({
       }
 
       setIsLoading(true);
-      setLoadingText('جاري قراءة ملف الـ PDF واستخراج الجداول...');
+      setLoadingText('جاري تحليل وتفكيك جدول الفاتورة هندسياً والتحقق الحسابي...');
       try {
-        const lines    = await extractTextFromPDF(file);
-        const rawItems = parseRawInvoiceData(lines);
-        processExtractedItems(rawItems);
+        const structuredItems = await extractStructuredInvoiceFromPDF(file);
+        processExtractedItems(structuredItems);
       } catch (err) {
         console.error('PDF parsing error:', err);
         setErrorMsg(err.message || 'حدث خطأ أثناء معالجة ملف الـ PDF.');
@@ -679,6 +702,38 @@ export default function InvoicePdfImportModal({
               </div>
             </div>
 
+            {/* Table Selection Helpers & Filters */}
+            <div className="px-4 py-2 bg-slate-50/50 dark:bg-slate-900/40 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-slate-500">تحديد:</span>
+                <button
+                  type="button"
+                  onClick={() => setParsedRows(prev => prev.map(r => ({ ...r, selected: Number(r.qty || 0) > 0 })))}
+                  className="px-2.5 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 hover:bg-emerald-200 text-emerald-800 dark:text-emerald-300 font-bold transition-all text-[11px]"
+                >
+                  🟢 الأصناف ذات الرصيد فقط ({parsedRows.filter(r => Number(r.qty || 0) > 0).length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleToggleSelectAll(true)}
+                  className="px-2 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-700 dark:text-slate-300 font-bold transition-all text-[11px]"
+                >
+                  الكل ({parsedRows.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleToggleSelectAll(false)}
+                  className="px-2 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-700 dark:text-slate-300 font-bold transition-all text-[11px]"
+                >
+                  إلغاء التحديد
+                </button>
+              </div>
+
+              <div className="text-[11px] font-bold text-slate-500">
+                المحدد للاستيراد: <span className="text-emerald-600 font-black">{selectedRows.length}</span> من {parsedRows.length} صنف
+              </div>
+            </div>
+
             {/* Main Interactive Table */}
             <div className="flex-1 overflow-y-auto p-4">
               <table className="w-full text-xs text-right border-collapse">
@@ -692,7 +747,7 @@ export default function InvoicePdfImportModal({
                         className="rounded text-emerald-600"
                       />
                     </th>
-                    <th className="p-2.5">الاسم المستخرج من الفاتورة</th>
+                    <th className="p-2.5">الاسم المستخرج والباركود</th>
                     <th className="p-2.5">الصنف المطابق في كتالوج صِـوار</th>
                     <th className="p-2.5 w-24 text-center">الكمية</th>
                     <th className="p-2.5 w-24 text-center">سعر الوحدة</th>
@@ -720,11 +775,16 @@ export default function InvoicePdfImportModal({
                           />
                         </td>
 
-                        {/* Raw name */}
+                        {/* Raw name & Barcode */}
                         <td className="p-2.5 font-bold text-slate-800 dark:text-slate-200">
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex items-center gap-1.5 flex-wrap">
                             <span className="font-mono text-[11px] text-slate-400">#{idx + 1}</span>
                             <span>{row.rawName}</span>
+                            {row.barcode && (
+                              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700">
+                                🏷️ {row.barcode}
+                              </span>
+                            )}
                           </div>
                         </td>
 
