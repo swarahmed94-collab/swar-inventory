@@ -25,6 +25,7 @@ import {
 import { formatArabicDateTime } from '../utils/storage';
 import { generateInvoiceNumber } from '../utils/transactions';
 import { sounds } from '../utils/sound';
+import VoiceInvoiceButton from './VoiceInvoiceButton';
 
 export default function InvoiceModal({ 
   isOpen, 
@@ -139,6 +140,38 @@ export default function InvoiceModal({
       }]);
     }
     setSearch('');
+  };
+
+  /**
+   * Called by VoiceInvoiceButton after the user confirms matched items.
+   * Adds each item to the invoice with the quantity spoken by the user.
+   */
+  const handleVoiceAddItems = (voiceItems) => {
+    if (!Array.isArray(voiceItems) || voiceItems.length === 0) return;
+    voiceItems.forEach(({ product, qty }) => {
+      if (!product) return;
+      const targetQty = Math.max(0.25, Number(qty) || 1);
+      setItems((prev) => {
+        const existing = prev.find((i) => i.productId === product.id);
+        if (existing) {
+          return prev.map((i) =>
+            i.productId === product.id ? { ...i, qty: i.qty + targetQty } : i
+          );
+        }
+        return [
+          ...prev,
+          {
+            productId: product.id,
+            name: `${product.emoji || ''} ${product.name || 'صنف'}`,
+            unit: product.unit || 'وحدة',
+            price: Number(product.price) || 0,
+            qty: targetQty,
+            availableStock: Number(product.currentStock) || 0,
+          },
+        ];
+      });
+    });
+    sounds.playSuccess?.();
   };
 
   const updateQty = (productId, delta) => {
@@ -656,9 +689,15 @@ export default function InvoiceModal({
 
             {/* Product Search & Add */}
             <div className="relative">
-              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">
-                🔍 ابحث عن صنف لإضافته ({invoiceType === 'sales' ? 'بيع وخصم' : 'شراء وتوريد'})
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-xs font-bold text-slate-600 dark:text-slate-400">
+                  🔍 ابحث عن صنف لإضافته ({invoiceType === 'sales' ? 'بيع وخصم' : 'شراء وتوريد'})
+                </label>
+                <VoiceInvoiceButton
+                  products={safeProducts}
+                  onAddItems={handleVoiceAddItems}
+                />
+              </div>
               <div className="relative">
                 <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
