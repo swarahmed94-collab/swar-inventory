@@ -3,7 +3,7 @@ import { HARDCODED_COST_PRICES } from '../data/hardcodedCostPrices.js';
 
 const STORAGE_KEY = 'swar_frozen_inventory_v2';
 const SCHEMA_KEY = 'swar_schema_version';
-const CURRENT_SCHEMA = 'v5_hardcoded_cost_prices_aug2026';
+const CURRENT_SCHEMA = 'v7_comprehensive_seeded_cost_prices_aug2026';
 const SETTINGS_KEY = 'swar_app_settings_v1';
 const INVOICES_KEY = 'swar_invoices_v1';
 const CUSTOMERS_KEY = 'swar_customers_v1';
@@ -15,6 +15,9 @@ INITIAL_PRODUCTS.forEach(item => {
   if (item?.id && item.cost_price !== undefined) {
     initialCostMap.set(item.id, Number(item.cost_price));
   }
+  if (item?.barcode && item.cost_price !== undefined) {
+    initialCostMap.set(item.barcode, Number(item.cost_price));
+  }
 });
 
 export const normalizeProduct = (p) => {
@@ -24,7 +27,7 @@ export const normalizeProduct = (p) => {
   // 1. Direct cost_price from product
   let cost_price = Number(p.cost_price ?? p.costPrice ?? 0);
 
-  // 2. If missing or 0, fallback to hardcoded PDF dataset lookup by barcode or name
+  // 2. If missing or 0, fallback to hardcoded dataset lookup by barcode or name or ID
   if (cost_price === 0) {
     if (p.barcode && HARDCODED_COST_PRICES[p.barcode] !== undefined) {
       cost_price = Number(HARDCODED_COST_PRICES[p.barcode]);
@@ -32,6 +35,8 @@ export const normalizeProduct = (p) => {
       cost_price = Number(HARDCODED_COST_PRICES[p.name]);
     } else if (p.id && initialCostMap.has(p.id)) {
       cost_price = initialCostMap.get(p.id);
+    } else if (p.barcode && initialCostMap.has(p.barcode)) {
+      cost_price = initialCostMap.get(p.barcode);
     }
   }
 
@@ -47,7 +52,7 @@ export const getStoredProducts = () => {
   try {
     const existingSchema = localStorage.getItem(SCHEMA_KEY);
     if (existingSchema !== CURRENT_SCHEMA) {
-      // Migrate stored products to v5 schema: populate hardcoded cost prices while preserving existing stock and audit logs
+      // Migrate stored products to v7 schema: populate hardcoded cost prices while preserving existing stock and audit logs
       localStorage.setItem(SCHEMA_KEY, CURRENT_SCHEMA);
       const data = localStorage.getItem(STORAGE_KEY);
       let existingProducts = [];
@@ -57,11 +62,14 @@ export const getStoredProducts = () => {
 
       const existingMap = new Map();
       if (Array.isArray(existingProducts)) {
-        existingProducts.forEach(p => { if (p?.id) existingMap.set(p.id, p); });
+        existingProducts.forEach(p => { 
+          if (p?.id) existingMap.set(p.id, p); 
+          if (p?.barcode) existingMap.set(p.barcode, p);
+        });
       }
 
       const merged = INITIAL_PRODUCTS.map(initProd => {
-        const stored = existingMap.get(initProd.id);
+        const stored = existingMap.get(initProd.id) || (initProd.barcode ? existingMap.get(initProd.barcode) : null);
         if (stored) {
           const customCost = Number(stored.cost_price ?? stored.costPrice ?? 0);
           const finalCost = customCost > 0 ? customCost : Number(initProd.cost_price ?? 0);
