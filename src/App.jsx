@@ -495,16 +495,17 @@ export default function App() {
 
     const itemsMap = new Map();
     items.forEach(item => {
+      const itemCost = Number(item.cost_price ?? item.price) || 0;
       itemsMap.set(item.productId, {
         qty: (itemsMap.get(item.productId)?.qty || 0) + Number(item.qty),
-        price: Number(item.price) || 0
+        cost_price: itemCost
       });
     });
 
-    // 1. Update product quantities & optional price updates
+    // 1. Update product quantities & optional cost price updates (PRESERVING selling_price & price 100%)
     const updatedProds = products.map(p => {
       if (!itemsMap.has(p.id)) return p;
-      const { qty: addQty, price: newPrice } = itemsMap.get(p.id);
+      const { qty: addQty, cost_price: newCostPrice } = itemsMap.get(p.id);
       const newStock = Number(p.currentStock) + addQty;
       
       const log = {
@@ -513,13 +514,20 @@ export default function App() {
         quantity: newStock,
         delta: +addQty,
         auditor: invoiceNum,
-        notes: `استيراد من فاتورة PDF (${vendorName})`
+        notes: `استيراد مشتريات من ملف (${vendorName})${updateProductPrices && newCostPrice > 0 ? ` - تحديث سعر التكلفة إلى ${newCostPrice} ج` : ''}`
       };
+
+      const currentSellingPrice = Number(p.selling_price ?? p.price ?? 0);
+      const updatedCostPrice = (updateProductPrices && newCostPrice > 0)
+        ? newCostPrice
+        : Number(p.cost_price ?? p.costPrice ?? 0);
 
       return {
         ...p,
         currentStock: newStock,
-        price: (updateProductPrices && newPrice > 0) ? newPrice : p.price,
+        cost_price: updatedCostPrice,
+        selling_price: currentSellingPrice, // MUST NOT MODIFY SELLING PRICE!
+        price: currentSellingPrice, // MUST NOT MODIFY SELLING PRICE!
         updatedAt: now,
         auditHistory: [...(p.auditHistory || []), log]
       };
@@ -533,13 +541,17 @@ export default function App() {
       customerName: vendorName || 'مورد بضاعة (استيراد PDF)',
       customerPhone: '',
       paymentType: paymentType || 'cash',
-      items: items.map(it => ({
-        productId: it.productId,
-        name: it.name,
-        unit: it.unit || 'وحدة',
-        price: Number(it.price) || 0,
-        qty: Number(it.qty) || 0
-      })),
+      items: items.map(it => {
+        const unitCost = Number(it.cost_price ?? it.price) || 0;
+        return {
+          productId: it.productId,
+          name: it.name,
+          unit: it.unit || 'وحدة',
+          cost_price: unitCost,
+          price: unitCost, // Unit cost for purchase invoice calculation
+          qty: Number(it.qty) || 0
+        };
+      }),
       total: totalAmount,
       totalUnits,
       amountPaid: paymentType === 'cash' ? totalAmount : 0,

@@ -1,4 +1,4 @@
-import { INITIAL_PRODUCTS } from '../data/defaultProducts';
+import { INITIAL_PRODUCTS } from '../data/defaultProducts.js';
 
 const STORAGE_KEY = 'swar_frozen_inventory_v2';
 const SCHEMA_KEY = 'swar_schema_version';
@@ -7,6 +7,18 @@ const SETTINGS_KEY = 'swar_app_settings_v1';
 const INVOICES_KEY = 'swar_invoices_v1';
 const CUSTOMERS_KEY = 'swar_customers_v1';
 const JOURNAL_KEY = 'swar_journal_v1';
+
+export const normalizeProduct = (p) => {
+  if (!p || typeof p !== 'object') return p;
+  const selling_price = Number(p.selling_price ?? p.price ?? 0);
+  const cost_price = Number(p.cost_price ?? p.costPrice ?? 0);
+  return {
+    ...p,
+    selling_price,
+    cost_price,
+    price: selling_price // backward compatibility alias for selling_price
+  };
+};
 
 export const getStoredProducts = () => {
   try {
@@ -18,26 +30,29 @@ export const getStoredProducts = () => {
       localStorage.removeItem('swar_cloud_sync_config_v1');
       localStorage.removeItem('swar_schema_version');
       localStorage.setItem(SCHEMA_KEY, CURRENT_SCHEMA);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_PRODUCTS));
-      return INITIAL_PRODUCTS;
+      const normalizedInitial = INITIAL_PRODUCTS.map(normalizeProduct);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizedInitial));
+      return normalizedInitial;
     }
 
     const data = localStorage.getItem(STORAGE_KEY);
     if (!data) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_PRODUCTS));
-      return INITIAL_PRODUCTS;
+      const normalizedInitial = INITIAL_PRODUCTS.map(normalizeProduct);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizedInitial));
+      return normalizedInitial;
     }
 
     const stored = JSON.parse(data);
     if (!Array.isArray(stored) || stored.length === 0) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_PRODUCTS));
-      return INITIAL_PRODUCTS;
+      const normalizedInitial = INITIAL_PRODUCTS.map(normalizeProduct);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizedInitial));
+      return normalizedInitial;
     }
 
-    return stored;
+    return stored.map(normalizeProduct);
   } catch (err) {
     console.error('Error loading products from localStorage:', err);
-    return INITIAL_PRODUCTS;
+    return INITIAL_PRODUCTS.map(normalizeProduct);
   }
 };
 

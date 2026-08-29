@@ -87,7 +87,7 @@ export default function ProductCard({
         </div>
 
         {/* Location & Details */}
-        <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 mb-3 flex-wrap">
+        <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 mb-2 flex-wrap">
           {product.freezerLocation && (
             <span className="inline-flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md font-medium">
               <MapPin className="w-3 h-3 text-sky-500" />
@@ -96,6 +96,16 @@ export default function ProductCard({
           )}
           <span className="bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md font-medium">
             الوحدة: {product.unit}
+          </span>
+        </div>
+
+        {/* Prices Display: Selling Price & Cost Price */}
+        <div className="flex items-center gap-2 text-xs font-bold mb-3 flex-wrap">
+          <span className="inline-flex items-center gap-1 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900 px-2 py-0.5 rounded-md">
+            💰 سعر البيع: {product.selling_price ?? product.price ?? 0} ج
+          </span>
+          <span className="inline-flex items-center gap-1 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-900 px-2 py-0.5 rounded-md">
+            🏷️ التكلفة: {product.cost_price ?? 0} ج
           </span>
         </div>
 

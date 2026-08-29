@@ -143,7 +143,9 @@ export const detectColumnTemplateFromHeaders = (rowItems) => {
   const colRules = [
     { type: 'total', regex: /(اجمالي|مجموع|قيمه|total|amount)/i },
     { type: 'qty', regex: /(الكميه|العدد|كميه|qty|quantity|count)/i },
-    { type: 'price', regex: /(سعر\s*البيع|سعر\s*الشراء|سعر\s*الوحده|السعر|سعر|price|rate)/i },
+    { type: 'cost_price', regex: /(التكلفه|التكلفة|تكلفه|تكلفة|سعر\s*التكلفه|سعر\s*التكلفة|سعر\s*الشراء|سعر\s*التوريد|cost|cost_price|purchase_price)/i },
+    { type: 'selling_price', regex: /(سعر\s*البيع|سعر\s*المستهلك|selling_price)/i },
+    { type: 'price', regex: /(سعر\s*الوحده|السعر|سعر|price|rate)/i },
     { type: 'name', regex: /(اسم\s*المنتج|اسم\s*الصنف|المنتج|الصنف|بيان|وصف|item|product|desc)/i },
     { type: 'barcode', regex: /(رقم\s*المنتج|كود\s*الصنف|كود\s*المنتج|باركود|كود|barcode|code|sku)/i },
     { type: 'index', regex: /(^#$|^مسلسل$|^م$|^ت$|^no\.?$|^idx$)/i },
@@ -170,7 +172,7 @@ export const detectColumnTemplateFromHeaders = (rowItems) => {
 
   // A valid table header row must have at least product name + at least one numeric column
   const hasName = detected.some(d => d.type === 'name');
-  const hasNumeric = detected.some(d => d.type === 'qty' || d.type === 'price' || d.type === 'total');
+  const hasNumeric = detected.some(d => d.type === 'qty' || d.type === 'cost_price' || d.type === 'selling_price' || d.type === 'price' || d.type === 'total');
 
   if (hasName && hasNumeric && detected.length >= 3) {
     return detected.sort((a, b) => a.midX - b.midX);
@@ -187,7 +189,7 @@ export const buildSpatialBands = (headerColumns, pageWidth = 600) => {
     return [
       { type: 'total', minX: 0, maxX: 115 },
       { type: 'qty', minX: 115, maxX: 185 },
-      { type: 'price', minX: 185, maxX: 265 },
+      { type: 'cost_price', minX: 185, maxX: 265 },
       { type: 'name', minX: 265, maxX: 445 },
       { type: 'barcode', minX: 445, maxX: 545 },
       { type: 'index', minX: 545, maxX: pageWidth }
@@ -223,6 +225,8 @@ export const mapRowToBands = (rowItems, bands) => {
   const cellMap = {
     name: [],
     qty: '',
+    cost_price: '',
+    selling_price: '',
     price: '',
     total: '',
     barcode: '',
@@ -238,6 +242,10 @@ export const mapRowToBands = (rowItems, bands) => {
       cellMap.name.push(it.text);
     } else if (bandType === 'qty') {
       cellMap.qty = (cellMap.qty ? cellMap.qty + ' ' : '') + it.text;
+    } else if (bandType === 'cost_price') {
+      cellMap.cost_price = (cellMap.cost_price ? cellMap.cost_price + ' ' : '') + it.text;
+    } else if (bandType === 'selling_price') {
+      cellMap.selling_price = (cellMap.selling_price ? cellMap.selling_price + ' ' : '') + it.text;
     } else if (bandType === 'price') {
       cellMap.price = (cellMap.price ? cellMap.price + ' ' : '') + it.text;
     } else if (bandType === 'total') {
@@ -251,19 +259,22 @@ export const mapRowToBands = (rowItems, bands) => {
 
   const rawName = decodeArabicPresentationForms(cellMap.name.join(' '));
   let qty = parseNumberSafe(cellMap.qty);
-  let price = parseNumberSafe(cellMap.price);
+  let cost_price = parseNumberSafe(cellMap.cost_price || cellMap.price);
+  let selling_price = parseNumberSafe(cellMap.selling_price);
+  let price = cost_price;
   let total = parseNumberSafe(cellMap.total);
 
-  // Mathematical validation & permutation integrity (Qty * Price ≈ Total)
+  // Mathematical validation & permutation integrity (Qty * Cost Price ≈ Total)
   let isMathValid = false;
-  const expectedTotal = qty * price;
+  const expectedTotal = qty * cost_price;
   if (Math.abs(expectedTotal - total) <= Math.max(1.0, total * 0.05)) {
     isMathValid = true;
-  } else if (qty > 0 && price === 0 && total > 0) {
-    price = total / qty;
+  } else if (qty > 0 && cost_price === 0 && total > 0) {
+    cost_price = total / qty;
+    price = cost_price;
     isMathValid = true;
-  } else if (price > 0 && total > 0 && qty === 0) {
-    if (Math.abs(price - total) < 0.1) {
+  } else if (cost_price > 0 && total > 0 && qty === 0) {
+    if (Math.abs(cost_price - total) < 0.1) {
       qty = 1;
       isMathValid = true;
     }
@@ -272,7 +283,9 @@ export const mapRowToBands = (rowItems, bands) => {
   return {
     rawName,
     qty,
-    price,
+    cost_price,
+    selling_price,
+    price: cost_price,
     total,
     barcode: cellMap.barcode.trim(),
     index: cellMap.index.trim(),
@@ -473,7 +486,7 @@ export const parseInvoiceLine = (line) => {
       });
 
       if (name && (qty >= 0 || price >= 0)) {
-        return { rawName: name, qty, price, total: total || qty * price };
+        return { rawName: name, qty, cost_price: price, price, total: total || qty * price };
       }
     }
   }
@@ -501,7 +514,7 @@ export const parseInvoiceLine = (line) => {
         });
 
         if (name && (qty >= 0 || price >= 0)) {
-          return { rawName: name, qty, price, total: total || qty * price };
+          return { rawName: name, qty, cost_price: price, price, total: total || qty * price };
         }
       }
     }
@@ -552,7 +565,7 @@ export const parseInvoiceLine = (line) => {
     }
 
     if (rawName && rawName.length >= 2) {
-      return { rawName, qty, price, total };
+      return { rawName, qty, cost_price: price, price, total };
     }
   }
 

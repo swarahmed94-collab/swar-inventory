@@ -27,6 +27,8 @@ export default function ProductFormModal({
     emoji: '🍗',
     category: 'poultry',
     unit: 'كيس',
+    selling_price: '',
+    cost_price: '',
     price: '',
     currentStock: 10,
     minCriticalThreshold: 5,
@@ -39,12 +41,16 @@ export default function ProductFormModal({
 
   useEffect(() => {
     if (productToEdit) {
+      const sellPrice = productToEdit.selling_price ?? productToEdit.price ?? '';
+      const costPrice = productToEdit.cost_price ?? '';
       setFormData({
         name: productToEdit.name || '',
         emoji: productToEdit.emoji || suggestEmojiForProductName(productToEdit.name, productToEdit.category),
         category: productToEdit.category || 'poultry',
         unit: productToEdit.unit || 'كيس',
-        price: productToEdit.price ?? '',
+        selling_price: sellPrice,
+        cost_price: costPrice,
+        price: sellPrice,
         currentStock: productToEdit.currentStock ?? 0,
         minCriticalThreshold: productToEdit.minCriticalThreshold ?? 5,
         healthyThreshold: productToEdit.healthyThreshold ?? 20,
@@ -57,6 +63,8 @@ export default function ProductFormModal({
         emoji: '🍗',
         category: 'poultry',
         unit: 'كيس',
+        selling_price: '',
+        cost_price: '',
         price: '',
         currentStock: 10,
         minCriticalThreshold: 5,
@@ -92,11 +100,16 @@ export default function ProductFormModal({
 
     sounds.playSuccess();
 
+    const sellPriceNum = formData.selling_price !== '' ? Number(formData.selling_price) : (formData.price !== '' ? Number(formData.price) : 0);
+    const costPriceNum = formData.cost_price !== '' ? Number(formData.cost_price) : 0;
+
     const productPayload = {
       ...formData,
       name: formData.name.trim(),
       emoji: formData.emoji || '🧊',
-      price: formData.price !== '' ? Number(formData.price) : null,
+      selling_price: sellPriceNum,
+      cost_price: costPriceNum,
+      price: sellPriceNum,
       currentStock: Number(formData.currentStock) || 0,
       minCriticalThreshold: Number(formData.minCriticalThreshold) || 5,
       healthyThreshold: Number(formData.healthyThreshold) || 20,
@@ -225,20 +238,40 @@ export default function ProductFormModal({
             </div>
           </div>
 
-          {/* Price Field */}
-          <div>
-            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-              💰 سعر الوحدة (بالجنيه) — اختياري:
-            </label>
-            <input
-              type="number"
-              min="0"
-              step="0.5"
-              value={formData.price}
-              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-              placeholder="مثال: 150"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm font-bold outline-none focus:ring-2 focus:ring-amber-400"
-            />
+          {/* Selling Price & Cost Price Fields */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-bold text-emerald-700 dark:text-emerald-400 mb-1">
+                💰 سعر البيع (Selling Price):
+              </label>
+              <input
+                type="number"
+                min="0"
+                step="0.5"
+                value={formData.selling_price}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setFormData({ ...formData, selling_price: val, price: val });
+                }}
+                placeholder="سعر البيع للعميل"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-emerald-200 dark:border-emerald-900/60 text-slate-900 dark:text-white text-sm font-bold outline-none focus:ring-2 focus:ring-emerald-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-amber-700 dark:text-amber-400 mb-1">
+                🏷️ سعر التكلفة (Cost Price):
+              </label>
+              <input
+                type="number"
+                min="0"
+                step="0.5"
+                value={formData.cost_price}
+                onChange={(e) => setFormData({ ...formData, cost_price: e.target.value })}
+                placeholder="سعر الشراء والتكلفة"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-amber-200 dark:border-amber-900/60 text-slate-900 dark:text-white text-sm font-bold outline-none focus:ring-2 focus:ring-amber-500"
+              />
+            </div>
           </div>
 
           {/* Stock Levels & Thresholds */}

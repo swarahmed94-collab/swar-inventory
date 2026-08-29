@@ -162,9 +162,15 @@ export default function InvoicePdfImportModal({
       }
 
       const extractedQty = item.qty !== undefined && !isNaN(Number(item.qty)) ? Number(item.qty) : 0;
-      const extractedPrice = item.price !== undefined && !isNaN(Number(item.price)) && Number(item.price) > 0
-        ? Number(item.price)
-        : (matchedProduct ? Number(matchedProduct.price || 0) : 0);
+      
+      // Extracted price from purchase PDF is strictly cost_price (Purchase / Cost price)
+      const extractedCostPrice = (item.cost_price !== undefined && !isNaN(Number(item.cost_price)) && Number(item.cost_price) > 0)
+        ? Number(item.cost_price)
+        : ((item.price !== undefined && !isNaN(Number(item.price)) && Number(item.price) > 0)
+            ? Number(item.price)
+            : (matchedProduct ? Number(matchedProduct.cost_price ?? 0) : 0));
+
+      const catalogSellingPrice = matchedProduct ? Number(matchedProduct.selling_price ?? 0) : 0;
 
       // Auto-select items that have positive quantities (or all if none have positive)
       const shouldSelect = hasAnyPositiveQty ? extractedQty > 0 : true;
@@ -177,8 +183,10 @@ export default function InvoicePdfImportModal({
         matchConfidence, // 'high' | 'medium' | 'none'
         matchScore,
         qty: extractedQty,
-        price: extractedPrice,
-        total: item.total || (extractedQty * extractedPrice),
+        cost_price: extractedCostPrice,
+        selling_price: catalogSellingPrice,
+        price: extractedCostPrice, // cost_price used for total purchase calculation
+        total: item.total || (extractedQty * extractedCostPrice),
         isMathValid: item.isMathValid ?? true,
         unit: matchedProduct ? matchedProduct.unit : 'وحدة',
         selected: shouldSelect
@@ -379,7 +387,8 @@ export default function InvoicePdfImportModal({
         name: r.matchedProduct.name,
         unit: r.unit || r.matchedProduct.unit || 'وحدة',
         qty: Number(r.qty) || 0,
-        price: Number(r.price) || 0,
+        cost_price: Number(r.cost_price || r.price) || 0,
+        price: Number(r.cost_price || r.price) || 0,
         rawName: r.rawName
       }));
 
@@ -689,7 +698,7 @@ export default function InvoicePdfImportModal({
                 </select>
               </div>
 
-              <div className="flex items-center gap-4 pt-4 sm:pt-6">
+              <div className="flex items-center gap-4 pt-4 sm:pt-6 flex-wrap">
                 <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-700 dark:text-slate-300">
                   <input
                     type="checkbox"
@@ -698,6 +707,18 @@ export default function InvoicePdfImportModal({
                     className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500"
                   />
                   <span>تسجيل في اليومية والخزينة</span>
+                </label>
+
+                <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-700 dark:text-slate-300">
+                  <input
+                    type="checkbox"
+                    checked={updateProductPrices}
+                    onChange={e => setUpdateProductPrices(e.target.checked)}
+                    className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500"
+                  />
+                  <span title="تحديث سعر التكلفة للمنتجات في الكتالوج بدون المساس بسعر البيع">
+                    تحديث سعر التكلفة (Cost Price) للمنتجات في الكتالوج
+                  </span>
                 </label>
               </div>
             </div>
@@ -750,7 +771,7 @@ export default function InvoicePdfImportModal({
                     <th className="p-2.5">الاسم المستخرج والباركود</th>
                     <th className="p-2.5">الصنف المطابق في كتالوج صِـوار</th>
                     <th className="p-2.5 w-24 text-center">الكمية</th>
-                    <th className="p-2.5 w-24 text-center">سعر الوحدة</th>
+                    <th className="p-2.5 w-28 text-center">سعر التكلفة (الشراء)</th>
                     <th className="p-2.5 w-24 text-center">الإجمالي</th>
                     <th className="p-2.5 w-12 text-center"></th>
                   </tr>
@@ -796,7 +817,9 @@ export default function InvoicePdfImportModal({
                                 <span className="text-base">{row.matchedProduct.emoji || '📦'}</span>
                                 <div className="truncate">
                                   <div className="font-black text-slate-900 dark:text-white truncate">{row.matchedProduct.name}</div>
-                                  <div className="text-[10px] text-slate-400">الرصيد الحالي: {row.matchedProduct.currentStock} {row.matchedProduct.unit}</div>
+                                  <div className="text-[10px] text-slate-400">
+                                    الرصيد: {row.matchedProduct.currentStock} | سعر البيع: {row.matchedProduct.selling_price ?? row.matchedProduct.price} ج | التكلفة: {row.matchedProduct.cost_price || 0} ج
+                                  </div>
                                 </div>
                               </div>
                               <div className="flex items-center gap-1 shrink-0">

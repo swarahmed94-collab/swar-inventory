@@ -120,10 +120,32 @@ export default function InvoiceModal({
     ).slice(0, 6);
   }, [customerName, safeCustomers]);
 
+  const handleSetInvoiceType = (type) => {
+    setInvoiceType(type);
+    setItems((prevItems) =>
+      prevItems.map((item) => {
+        const prod = safeProducts.find((p) => p.id === item.productId);
+        const selling_price = prod ? Number(prod.selling_price ?? 0) : Number(item.selling_price ?? 0);
+        const cost_price = prod ? Number(prod.cost_price ?? 0) : Number(item.cost_price ?? 0);
+        const price = type === 'sales' ? selling_price : cost_price;
+        return {
+          ...item,
+          selling_price,
+          cost_price,
+          price,
+        };
+      })
+    );
+  };
+
   const addItem = (product) => {
     if (!product) return;
     sounds.playClick();
     const existing = items.find(i => i.productId === product.id);
+    const selling_price = Number(product.selling_price ?? product.price ?? 0);
+    const cost_price = Number(product.cost_price ?? 0);
+    const initialPrice = invoiceType === 'sales' ? selling_price : cost_price;
+
     if (existing) {
       setItems(items.map(i => i.productId === product.id
         ? { ...i, qty: i.qty + 1 }
@@ -134,7 +156,9 @@ export default function InvoiceModal({
         productId: product.id,
         name: `${product.emoji || ''} ${product.name || 'صنف'}`,
         unit: product.unit || 'وحدة',
-        price: Number(product.price) || 0,
+        cost_price,
+        selling_price,
+        price: initialPrice,
         qty: 1,
         availableStock: Number(product.currentStock) || 0,
       }]);
@@ -151,6 +175,10 @@ export default function InvoiceModal({
     voiceItems.forEach(({ product, qty }) => {
       if (!product) return;
       const targetQty = Math.max(0.25, Number(qty) || 1);
+      const selling_price = Number(product.selling_price ?? product.price ?? 0);
+      const cost_price = Number(product.cost_price ?? 0);
+      const initialPrice = invoiceType === 'sales' ? selling_price : cost_price;
+
       setItems((prev) => {
         const existing = prev.find((i) => i.productId === product.id);
         if (existing) {
@@ -164,7 +192,9 @@ export default function InvoiceModal({
             productId: product.id,
             name: `${product.emoji || ''} ${product.name || 'صنف'}`,
             unit: product.unit || 'وحدة',
-            price: Number(product.price) || 0,
+            cost_price,
+            selling_price,
+            price: initialPrice,
             qty: targetQty,
             availableStock: Number(product.currentStock) || 0,
           },
@@ -563,7 +593,7 @@ export default function InvoiceModal({
             <div className="flex p-1.5 rounded-2xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
               <button
                 type="button"
-                onClick={() => setInvoiceType('sales')}
+                onClick={() => handleSetInvoiceType('sales')}
                 className={`flex-1 py-2.5 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all ${
                   invoiceType === 'sales'
                     ? 'bg-gradient-to-r from-sky-600 to-indigo-600 text-white shadow-md'
@@ -576,7 +606,7 @@ export default function InvoiceModal({
 
               <button
                 type="button"
-                onClick={() => setInvoiceType('purchase')}
+                onClick={() => handleSetInvoiceType('purchase')}
                 className={`flex-1 py-2.5 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all ${
                   invoiceType === 'purchase'
                     ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
@@ -729,7 +759,7 @@ export default function InvoiceModal({
                       </div>
                       <div className="flex items-center gap-3">
                         <span className="text-xs font-bold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 px-2 py-1 rounded-lg">
-                          {p.price ? `${p.price} ج` : 'بدون سعر'}
+                          {invoiceType === 'sales' ? `${p.selling_price ?? p.price ?? 0} ج` : `${p.cost_price ?? 0} ج`}
                         </span>
                         <div className="w-7 h-7 rounded-lg bg-violet-600 text-white flex items-center justify-center">
                           <Plus className="w-4 h-4" />
