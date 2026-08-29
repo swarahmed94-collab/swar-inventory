@@ -1,11 +1,39 @@
 export const DEFAULT_CATEGORIES = [
-  { id: 'all', name: 'جميع الأصناف', icon: 'Boxes' },
-  { id: 'poultry', name: 'دواجن ومجمدات أطياب والوادي', icon: 'Drumstick' },
-  { id: 'meat', name: 'لحوم ومصنعات الجوكر وميتلاند', icon: 'Beef' },
-  { id: 'dairy', name: 'أجبان ومنتجات ألبان', icon: 'Milk' },
-  { id: 'pickles', name: 'مخللات وطرشي', icon: 'Jar' },
-  { id: 'appetizers', name: 'مقبلات وسناكس', icon: 'Utensils' },
-  { id: 'vegetables', name: 'خضروات وفواكه مجمدة', icon: 'Carrot' },
+  {
+    "id": "all",
+    "name": "جميع الأصناف",
+    "icon": "Boxes"
+  },
+  {
+    "id": "poultry",
+    "name": "دواجن ومجمدات أطياب والوادي",
+    "icon": "Drumstick"
+  },
+  {
+    "id": "meat",
+    "name": "لحوم ومصنعات الجوكر وميتلاند",
+    "icon": "Beef"
+  },
+  {
+    "id": "dairy",
+    "name": "أجبان ومنتجات ألبان",
+    "icon": "Milk"
+  },
+  {
+    "id": "pickles",
+    "name": "مخللات وطرشي",
+    "icon": "Jar"
+  },
+  {
+    "id": "appetizers",
+    "name": "مقبلات وسناكس",
+    "icon": "Utensils"
+  },
+  {
+    "id": "vegetables",
+    "name": "خضروات وفواكه مجمدة",
+    "icon": "Carrot"
+  }
 ];
 
 export const INITIAL_PRODUCTS = [
@@ -32,7 +60,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 500,
+    "cost_price": 500
   },
   {
     "id": "prod-swar-0002",
@@ -57,7 +87,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 10,
+    "cost_price": 10
   },
   {
     "id": "prod-swar-0003",
@@ -82,7 +114,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 50,
+    "cost_price": 38.27
   },
   {
     "id": "prod-swar-0004",
@@ -107,7 +141,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 870,
+    "cost_price": 750
   },
   {
     "id": "prod-swar-0005",
@@ -132,7 +168,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2900,
+    "cost_price": 2580
   },
   {
     "id": "prod-swar-0006",
@@ -157,7 +195,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 290,
+    "cost_price": 258
   },
   {
     "id": "prod-swar-0007",
@@ -182,7 +222,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 3360,
+    "cost_price": 3024
   },
   {
     "id": "prod-swar-0008",
@@ -207,7 +249,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 140,
+    "cost_price": 126
   },
   {
     "id": "prod-swar-0009",
@@ -232,7 +276,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 205,
+    "cost_price": 160
   },
   {
     "id": "prod-swar-0010",
@@ -257,7 +303,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2460,
+    "cost_price": 1920
   },
   {
     "id": "prod-swar-0011",
@@ -282,7 +330,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2550,
+    "cost_price": 2450
   },
   {
     "id": "prod-swar-0012",
@@ -307,7 +357,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 255,
+    "cost_price": 245
   },
   {
     "id": "prod-swar-0013",
@@ -332,7 +384,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2150,
+    "cost_price": 2010
   },
   {
     "id": "prod-swar-0014",
@@ -357,7 +411,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 215,
+    "cost_price": 201
   },
   {
     "id": "prod-swar-0015",
@@ -382,7 +438,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 110,
+    "cost_price": 98.32
   },
   {
     "id": "prod-swar-0016",
@@ -407,7 +465,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1980,
+    "cost_price": 1769.75
   },
   {
     "id": "prod-swar-0017",
@@ -432,7 +492,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 175,
+    "cost_price": 145.5
   },
   {
     "id": "prod-swar-0018",
@@ -457,7 +519,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1750,
+    "cost_price": 1455
   },
   {
     "id": "prod-swar-0019",
@@ -482,7 +546,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 240,
+    "cost_price": 233
   },
   {
     "id": "prod-swar-0020",
@@ -507,7 +573,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 92,
+    "cost_price": 85.61
   },
   {
     "id": "prod-swar-0021",
@@ -532,7 +600,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 170,
+    "cost_price": 155
   },
   {
     "id": "prod-swar-0022",
@@ -557,7 +627,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 260,
+    "cost_price": 247
   },
   {
     "id": "prod-swar-0023",
@@ -582,7 +654,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2600,
+    "cost_price": 2470
   },
   {
     "id": "prod-swar-0024",
@@ -607,7 +681,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 550,
+    "cost_price": 520
   },
   {
     "id": "prod-swar-0025",
@@ -632,7 +708,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 425,
+    "cost_price": 350
   },
   {
     "id": "prod-swar-0026",
@@ -657,7 +735,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 212.5,
+    "cost_price": 175
   },
   {
     "id": "prod-swar-0027",
@@ -682,7 +762,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 400,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0028",
@@ -707,7 +789,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 245,
+    "cost_price": 232.5
   },
   {
     "id": "prod-swar-0029",
@@ -732,7 +816,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 55,
+    "cost_price": 47.5
   },
   {
     "id": "prod-swar-0030",
@@ -757,7 +843,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 30,
+    "cost_price": 22.9
   },
   {
     "id": "prod-swar-0031",
@@ -782,7 +870,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 58.5,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0032",
@@ -807,7 +897,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 190,
+    "cost_price": 177
   },
   {
     "id": "prod-swar-0033",
@@ -832,7 +924,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 95,
+    "cost_price": 88.75
   },
   {
     "id": "prod-swar-0034",
@@ -857,7 +951,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1900,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0035",
@@ -882,7 +978,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 220,
+    "cost_price": 190
   },
   {
     "id": "prod-swar-0036",
@@ -907,7 +1005,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 225,
+    "cost_price": 211.67
   },
   {
     "id": "prod-swar-0037",
@@ -932,7 +1032,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 73,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0038",
@@ -957,7 +1059,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 73,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0039",
@@ -982,7 +1086,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 25,
+    "cost_price": 17.89
   },
   {
     "id": "prod-swar-0040",
@@ -1007,7 +1113,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 35,
+    "cost_price": 29.57
   },
   {
     "id": "prod-swar-0041",
@@ -1032,7 +1140,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 17,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0042",
@@ -1057,7 +1167,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 800,
+    "cost_price": 660
   },
   {
     "id": "prod-swar-0043",
@@ -1082,7 +1194,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 40,
+    "cost_price": 33
   },
   {
     "id": "prod-swar-0044",
@@ -1107,7 +1221,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 41.5,
+    "cost_price": 35.2
   },
   {
     "id": "prod-swar-0045",
@@ -1132,7 +1248,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 300,
+    "cost_price": 254.4
   },
   {
     "id": "prod-swar-0046",
@@ -1157,7 +1275,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 15,
+    "cost_price": 12.72
   },
   {
     "id": "prod-swar-0047",
@@ -1182,7 +1302,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 30,
+    "cost_price": 27
   },
   {
     "id": "prod-swar-0048",
@@ -1207,7 +1329,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 500,
+    "cost_price": 420
   },
   {
     "id": "prod-swar-0049",
@@ -1232,7 +1356,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 25,
+    "cost_price": 21
   },
   {
     "id": "prod-swar-0050",
@@ -1257,7 +1383,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2220,
+    "cost_price": 1902
   },
   {
     "id": "prod-swar-0051",
@@ -1282,7 +1410,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 185,
+    "cost_price": 158.5
   },
   {
     "id": "prod-swar-0052",
@@ -1307,7 +1437,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 138.5,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0053",
@@ -1332,7 +1464,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2808,
+    "cost_price": 2400
   },
   {
     "id": "prod-swar-0054",
@@ -1357,7 +1491,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 117,
+    "cost_price": 100
   },
   {
     "id": "prod-swar-0055",
@@ -1382,7 +1518,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 130,
+    "cost_price": 118
   },
   {
     "id": "prod-swar-0056",
@@ -1407,7 +1545,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1560,
+    "cost_price": 1416
   },
   {
     "id": "prod-swar-0057",
@@ -1432,7 +1572,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 105,
+    "cost_price": 80
   },
   {
     "id": "prod-swar-0058",
@@ -1457,7 +1599,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1260,
+    "cost_price": 960
   },
   {
     "id": "prod-swar-0059",
@@ -1482,7 +1626,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 54,
+    "cost_price": 54
   },
   {
     "id": "prod-swar-0060",
@@ -1507,7 +1653,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1440,
+    "cost_price": 1272
   },
   {
     "id": "prod-swar-0061",
@@ -1532,7 +1680,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 120,
+    "cost_price": 106
   },
   {
     "id": "prod-swar-0062",
@@ -1557,7 +1707,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1224,
+    "cost_price": 1032.3
   },
   {
     "id": "prod-swar-0063",
@@ -1582,7 +1734,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 68,
+    "cost_price": 55
   },
   {
     "id": "prod-swar-0064",
@@ -1607,7 +1761,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1116,
+    "cost_price": 1080
   },
   {
     "id": "prod-swar-0065",
@@ -1632,7 +1788,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 70,
+    "cost_price": 61
   },
   {
     "id": "prod-swar-0066",
@@ -1657,7 +1815,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2208,
+    "cost_price": 1968
   },
   {
     "id": "prod-swar-0067",
@@ -1682,7 +1842,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 92,
+    "cost_price": 82
   },
   {
     "id": "prod-swar-0068",
@@ -1707,7 +1869,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 75,
+    "cost_price": 68
   },
   {
     "id": "prod-swar-0069",
@@ -1732,7 +1896,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 750,
+    "cost_price": 680
   },
   {
     "id": "prod-swar-0070",
@@ -1757,7 +1923,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 115,
+    "cost_price": 101
   },
   {
     "id": "prod-swar-0071",
@@ -1782,7 +1950,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 70,
+    "cost_price": 61.56
   },
   {
     "id": "prod-swar-0072",
@@ -1807,7 +1977,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 85,
+    "cost_price": 78.5
   },
   {
     "id": "prod-swar-0073",
@@ -1832,7 +2004,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2472,
+    "cost_price": 2006.4
   },
   {
     "id": "prod-swar-0074",
@@ -1857,7 +2031,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 115,
+    "cost_price": 92.3
   },
   {
     "id": "prod-swar-0075",
@@ -1882,7 +2058,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 720,
+    "cost_price": 647.01
   },
   {
     "id": "prod-swar-0076",
@@ -1907,7 +2085,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 80,
+    "cost_price": 71.89
   },
   {
     "id": "prod-swar-0077",
@@ -1932,7 +2112,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 684,
+    "cost_price": 606.06
   },
   {
     "id": "prod-swar-0078",
@@ -1957,7 +2139,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 38,
+    "cost_price": 33.67
   },
   {
     "id": "prod-swar-0079",
@@ -1982,7 +2166,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 100,
+    "cost_price": 91
   },
   {
     "id": "prod-swar-0080",
@@ -2007,7 +2193,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 936,
+    "cost_price": 851.76
   },
   {
     "id": "prod-swar-0081",
@@ -2032,7 +2220,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 52,
+    "cost_price": 47.32
   },
   {
     "id": "prod-swar-0082",
@@ -2057,7 +2247,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 85,
+    "cost_price": 75
   },
   {
     "id": "prod-swar-0083",
@@ -2082,7 +2274,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 513,
+    "cost_price": 466.83
   },
   {
     "id": "prod-swar-0084",
@@ -2107,7 +2301,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 333.75,
+    "cost_price": 318.68
   },
   {
     "id": "prod-swar-0085",
@@ -2132,7 +2328,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 80,
+    "cost_price": 74.5
   },
   {
     "id": "prod-swar-0086",
@@ -2157,7 +2355,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1680,
+    "cost_price": 1536
   },
   {
     "id": "prod-swar-0087",
@@ -2182,7 +2382,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 105,
+    "cost_price": 98
   },
   {
     "id": "prod-swar-0088",
@@ -2207,7 +2409,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 200,
+    "cost_price": 169.15
   },
   {
     "id": "prod-swar-0089",
@@ -2232,7 +2436,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 125,
+    "cost_price": 111
   },
   {
     "id": "prod-swar-0090",
@@ -2257,7 +2463,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1200,
+    "cost_price": 934
   },
   {
     "id": "prod-swar-0091",
@@ -2282,7 +2490,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 144,
+    "cost_price": 100
   },
   {
     "id": "prod-swar-0092",
@@ -2307,7 +2517,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 185,
+    "cost_price": 177
   },
   {
     "id": "prod-swar-0093",
@@ -2332,7 +2544,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1850,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0094",
@@ -2357,7 +2571,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 215,
+    "cost_price": 198
   },
   {
     "id": "prod-swar-0095",
@@ -2382,7 +2598,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 58,
+    "cost_price": 50.46
   },
   {
     "id": "prod-swar-0096",
@@ -2407,7 +2625,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 210,
+    "cost_price": 185
   },
   {
     "id": "prod-swar-0097",
@@ -2432,7 +2652,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2520,
+    "cost_price": 2220
   },
   {
     "id": "prod-swar-0098",
@@ -2457,7 +2679,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 73,
+    "cost_price": 67
   },
   {
     "id": "prod-swar-0099",
@@ -2482,7 +2706,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 37.5,
+    "cost_price": 31
   },
   {
     "id": "prod-swar-0100",
@@ -2507,7 +2733,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 675,
+    "cost_price": 558
   },
   {
     "id": "prod-swar-0101",
@@ -2532,7 +2760,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 200,
+    "cost_price": 186
   },
   {
     "id": "prod-swar-0102",
@@ -2557,7 +2787,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1600,
+    "cost_price": 1457.2
   },
   {
     "id": "prod-swar-0103",
@@ -2582,7 +2814,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 80,
+    "cost_price": 72.86
   },
   {
     "id": "prod-swar-0104",
@@ -2607,7 +2841,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 525,
+    "cost_price": 480
   },
   {
     "id": "prod-swar-0105",
@@ -2632,7 +2868,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 125,
+    "cost_price": 114
   },
   {
     "id": "prod-swar-0106",
@@ -2657,7 +2895,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 320,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0107",
@@ -2682,7 +2922,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 16,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0108",
@@ -2707,7 +2949,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 270,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0109",
@@ -2732,7 +2976,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 26.5,
+    "cost_price": 22.44
   },
   {
     "id": "prod-swar-0110",
@@ -2757,7 +3003,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 400,
+    "cost_price": 362
   },
   {
     "id": "prod-swar-0111",
@@ -2782,7 +3030,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 20,
+    "cost_price": 18.1
   },
   {
     "id": "prod-swar-0112",
@@ -2807,7 +3057,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 510,
+    "cost_price": 436
   },
   {
     "id": "prod-swar-0113",
@@ -2832,7 +3084,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 25.5,
+    "cost_price": 21.8
   },
   {
     "id": "prod-swar-0114",
@@ -2857,7 +3111,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 500,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0115",
@@ -2882,7 +3138,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 25,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0116",
@@ -2907,7 +3165,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 480,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0117",
@@ -2932,7 +3192,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 45,
+    "cost_price": 39.16
   },
   {
     "id": "prod-swar-0118",
@@ -2957,7 +3219,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 400,
+    "cost_price": 352
   },
   {
     "id": "prod-swar-0119",
@@ -2982,7 +3246,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 20,
+    "cost_price": 17.6
   },
   {
     "id": "prod-swar-0120",
@@ -3007,7 +3273,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 800,
+    "cost_price": 630
   },
   {
     "id": "prod-swar-0121",
@@ -3032,7 +3300,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 40,
+    "cost_price": 31.5
   },
   {
     "id": "prod-swar-0122",
@@ -3057,7 +3327,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 230,
+    "cost_price": 190
   },
   {
     "id": "prod-swar-0123",
@@ -3082,7 +3354,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 320,
+    "cost_price": 250
   },
   {
     "id": "prod-swar-0124",
@@ -3107,7 +3381,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 110,
+    "cost_price": 100
   },
   {
     "id": "prod-swar-0125",
@@ -3132,7 +3408,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 50,
+    "cost_price": 43
   },
   {
     "id": "prod-swar-0126",
@@ -3157,7 +3435,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 500,
+    "cost_price": 430
   },
   {
     "id": "prod-swar-0127",
@@ -3182,7 +3462,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 560,
+    "cost_price": 460
   },
   {
     "id": "prod-swar-0128",
@@ -3207,7 +3489,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 140,
+    "cost_price": 115
   },
   {
     "id": "prod-swar-0129",
@@ -3232,7 +3516,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 70,
+    "cost_price": 62.08
   },
   {
     "id": "prod-swar-0130",
@@ -3257,7 +3543,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 840,
+    "cost_price": 745
   },
   {
     "id": "prod-swar-0131",
@@ -3282,7 +3570,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 142,
+    "cost_price": 132
   },
   {
     "id": "prod-swar-0132",
@@ -3307,7 +3597,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 710,
+    "cost_price": 660
   },
   {
     "id": "prod-swar-0133",
@@ -3332,7 +3624,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 700,
+    "cost_price": 570
   },
   {
     "id": "prod-swar-0134",
@@ -3357,7 +3651,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 140,
+    "cost_price": 114
   },
   {
     "id": "prod-swar-0135",
@@ -3382,7 +3678,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 22,
+    "cost_price": 20
   },
   {
     "id": "prod-swar-0136",
@@ -3407,7 +3705,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 360,
+    "cost_price": 335
   },
   {
     "id": "prod-swar-0137",
@@ -3432,7 +3732,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 3600,
+    "cost_price": 3350
   },
   {
     "id": "prod-swar-0138",
@@ -3457,7 +3759,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 270,
+    "cost_price": 258
   },
   {
     "id": "prod-swar-0139",
@@ -3482,7 +3786,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 200,
+    "cost_price": 176.67
   },
   {
     "id": "prod-swar-0140",
@@ -3507,7 +3813,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1200,
+    "cost_price": 1060
   },
   {
     "id": "prod-swar-0141",
@@ -3532,7 +3840,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 275,
+    "cost_price": 255
   },
   {
     "id": "prod-swar-0142",
@@ -3557,7 +3867,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1650,
+    "cost_price": 1530
   },
   {
     "id": "prod-swar-0143",
@@ -3582,7 +3894,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 245,
+    "cost_price": 231
   },
   {
     "id": "prod-swar-0144",
@@ -3607,7 +3921,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1475,
+    "cost_price": 1375
   },
   {
     "id": "prod-swar-0145",
@@ -3632,7 +3948,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 350,
+    "cost_price": 250
   },
   {
     "id": "prod-swar-0146",
@@ -3657,7 +3975,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 107,
+    "cost_price": 100
   },
   {
     "id": "prod-swar-0147",
@@ -3682,7 +4002,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 275,
+    "cost_price": 225
   },
   {
     "id": "prod-swar-0148",
@@ -3707,7 +4029,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 600,
+    "cost_price": 475
   },
   {
     "id": "prod-swar-0149",
@@ -3732,7 +4056,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1350,
+    "cost_price": 1275
   },
   {
     "id": "prod-swar-0150",
@@ -3757,7 +4083,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1100,
+    "cost_price": 950
   },
   {
     "id": "prod-swar-0151",
@@ -3782,7 +4110,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 45.5,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0152",
@@ -3807,7 +4137,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 45,
+    "cost_price": 35
   },
   {
     "id": "prod-swar-0153",
@@ -3832,7 +4164,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 85,
+    "cost_price": 65
   },
   {
     "id": "prod-swar-0154",
@@ -3857,7 +4191,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 390,
+    "cost_price": 310
   },
   {
     "id": "prod-swar-0155",
@@ -3882,7 +4218,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 13,
+    "cost_price": 10.33
   },
   {
     "id": "prod-swar-0156",
@@ -3907,7 +4245,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 340,
+    "cost_price": 275
   },
   {
     "id": "prod-swar-0157",
@@ -3932,7 +4272,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 11.33,
+    "cost_price": 9.17
   },
   {
     "id": "prod-swar-0158",
@@ -3957,7 +4299,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 45,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0159",
@@ -3982,7 +4326,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1080,
+    "cost_price": 931.2
   },
   {
     "id": "prod-swar-0160",
@@ -4007,7 +4353,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 142,
+    "cost_price": 132.41
   },
   {
     "id": "prod-swar-0161",
@@ -4032,7 +4380,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2640,
+    "cost_price": 2374.56
   },
   {
     "id": "prod-swar-0162",
@@ -4057,7 +4407,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 210,
+    "cost_price": 198.85
   },
   {
     "id": "prod-swar-0163",
@@ -4082,7 +4434,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 700,
+    "cost_price": 660
   },
   {
     "id": "prod-swar-0164",
@@ -4107,7 +4461,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 100,
+    "cost_price": 81.76
   },
   {
     "id": "prod-swar-0165",
@@ -4132,7 +4488,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 255,
+    "cost_price": 144.6
   },
   {
     "id": "prod-swar-0166",
@@ -4157,7 +4515,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 175,
+    "cost_price": 163
   },
   {
     "id": "prod-swar-0167",
@@ -4182,7 +4542,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 20,
+    "cost_price": 17.8
   },
   {
     "id": "prod-swar-0168",
@@ -4207,7 +4569,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 600,
+    "cost_price": 534
   },
   {
     "id": "prod-swar-0169",
@@ -4232,7 +4596,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 345,
+    "cost_price": 332
   },
   {
     "id": "prod-swar-0170",
@@ -4257,7 +4623,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 330,
+    "cost_price": 290
   },
   {
     "id": "prod-swar-0171",
@@ -4282,7 +4650,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 33,
+    "cost_price": 29
   },
   {
     "id": "prod-swar-0172",
@@ -4307,7 +4677,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 248,
+    "cost_price": 242
   },
   {
     "id": "prod-swar-0173",
@@ -4332,7 +4704,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 300,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0174",
@@ -4357,7 +4731,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 22.5,
+    "cost_price": 17.75
   },
   {
     "id": "prod-swar-0175",
@@ -4382,7 +4758,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 480,
+    "cost_price": 420
   },
   {
     "id": "prod-swar-0176",
@@ -4407,7 +4785,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 24,
+    "cost_price": 21
   },
   {
     "id": "prod-swar-0177",
@@ -4432,7 +4812,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 180,
+    "cost_price": 150
   },
   {
     "id": "prod-swar-0178",
@@ -4457,7 +4839,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 650,
+    "cost_price": 600
   },
   {
     "id": "prod-swar-0179",
@@ -4482,7 +4866,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 240,
+    "cost_price": 204
   },
   {
     "id": "prod-swar-0180",
@@ -4507,7 +4893,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 107,
+    "cost_price": 99
   },
   {
     "id": "prod-swar-0181",
@@ -4532,7 +4920,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 7.64,
+    "cost_price": 7.07
   },
   {
     "id": "prod-swar-0182",
@@ -4557,7 +4947,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 100,
+    "cost_price": 85.67
   },
   {
     "id": "prod-swar-0183",
@@ -4582,7 +4974,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2800,
+    "cost_price": 2600
   },
   {
     "id": "prod-swar-0184",
@@ -4607,7 +5001,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 130,
+    "cost_price": 119
   },
   {
     "id": "prod-swar-0185",
@@ -4632,7 +5028,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 140,
+    "cost_price": 133.3
   },
   {
     "id": "prod-swar-0186",
@@ -4657,7 +5055,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 265,
+    "cost_price": 248
   },
   {
     "id": "prod-swar-0187",
@@ -4682,7 +5082,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 30,
+    "cost_price": 23
   },
   {
     "id": "prod-swar-0188",
@@ -4707,7 +5109,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1625,
+    "cost_price": 1386
   },
   {
     "id": "prod-swar-0189",
@@ -4732,7 +5136,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 80,
+    "cost_price": 71.25
   },
   {
     "id": "prod-swar-0190",
@@ -4757,7 +5163,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 85,
+    "cost_price": 73
   },
   {
     "id": "prod-swar-0191",
@@ -4782,7 +5190,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 80,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0192",
@@ -4807,7 +5217,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 225,
+    "cost_price": 200
   },
   {
     "id": "prod-swar-0193",
@@ -4832,7 +5244,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 240,
+    "cost_price": 215
   },
   {
     "id": "prod-swar-0194",
@@ -4857,7 +5271,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 230,
+    "cost_price": 208
   },
   {
     "id": "prod-swar-0195",
@@ -4882,7 +5298,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1500,
+    "cost_price": 1430
   },
   {
     "id": "prod-swar-0196",
@@ -4907,7 +5325,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 150,
+    "cost_price": 143
   },
   {
     "id": "prod-swar-0197",
@@ -4932,7 +5352,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 380,
+    "cost_price": 360
   },
   {
     "id": "prod-swar-0198",
@@ -4957,7 +5379,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 61,
+    "cost_price": 59.5
   },
   {
     "id": "prod-swar-0199",
@@ -4982,7 +5406,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 260,
+    "cost_price": 165
   },
   {
     "id": "prod-swar-0200",
@@ -5007,7 +5433,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 27,
+    "cost_price": 25.83
   },
   {
     "id": "prod-swar-0201",
@@ -5032,7 +5460,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 450,
+    "cost_price": 390
   },
   {
     "id": "prod-swar-0202",
@@ -5057,7 +5487,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 450,
+    "cost_price": 380
   },
   {
     "id": "prod-swar-0203",
@@ -5082,7 +5514,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 375,
+    "cost_price": 300
   },
   {
     "id": "prod-swar-0204",
@@ -5107,7 +5541,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 550,
+    "cost_price": 425
   },
   {
     "id": "prod-swar-0205",
@@ -5132,7 +5568,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 850,
+    "cost_price": 590
   },
   {
     "id": "prod-swar-0206",
@@ -5157,7 +5595,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 550,
+    "cost_price": 450
   },
   {
     "id": "prod-swar-0207",
@@ -5182,7 +5622,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 725,
+    "cost_price": 550
   },
   {
     "id": "prod-swar-0208",
@@ -5207,7 +5649,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 200,
+    "cost_price": 175
   },
   {
     "id": "prod-swar-0209",
@@ -5232,7 +5676,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 550,
+    "cost_price": 480
   },
   {
     "id": "prod-swar-0210",
@@ -5257,7 +5703,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 450,
+    "cost_price": 380
   },
   {
     "id": "prod-swar-0211",
@@ -5282,7 +5730,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 51,
+    "cost_price": 48.38
   },
   {
     "id": "prod-swar-0212",
@@ -5307,7 +5757,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2250,
+    "cost_price": 2082.6
   },
   {
     "id": "prod-swar-0213",
@@ -5332,7 +5784,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 133,
+    "cost_price": 126.72
   },
   {
     "id": "prod-swar-0214",
@@ -5357,7 +5811,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 36,
+    "cost_price": 32
   },
   {
     "id": "prod-swar-0215",
@@ -5382,7 +5838,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 738,
+    "cost_price": 655.2
   },
   {
     "id": "prod-swar-0216",
@@ -5407,7 +5865,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 41,
+    "cost_price": 36.4
   },
   {
     "id": "prod-swar-0217",
@@ -5432,7 +5892,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 846,
+    "cost_price": 769.86
   },
   {
     "id": "prod-swar-0218",
@@ -5457,7 +5919,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 47,
+    "cost_price": 42.77
   },
   {
     "id": "prod-swar-0219",
@@ -5482,7 +5946,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 405,
+    "cost_price": 365.04
   },
   {
     "id": "prod-swar-0220",
@@ -5507,7 +5973,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 22.5,
+    "cost_price": 20.28
   },
   {
     "id": "prod-swar-0221",
@@ -5532,7 +6000,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 450,
+    "cost_price": 355
   },
   {
     "id": "prod-swar-0222",
@@ -5557,7 +6027,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 60,
+    "cost_price": 40
   },
   {
     "id": "prod-swar-0223",
@@ -5582,7 +6054,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 700,
+    "cost_price": 639
   },
   {
     "id": "prod-swar-0224",
@@ -5607,7 +6081,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 112.5,
+    "cost_price": 106.25
   },
   {
     "id": "prod-swar-0225",
@@ -5632,7 +6108,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 100,
+    "cost_price": 91
   },
   {
     "id": "prod-swar-0226",
@@ -5657,7 +6135,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 222,
+    "cost_price": 180.4
   },
   {
     "id": "prod-swar-0227",
@@ -5682,7 +6162,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 37.5,
+    "cost_price": 33
   },
   {
     "id": "prod-swar-0228",
@@ -5707,7 +6189,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 675,
+    "cost_price": 594
   },
   {
     "id": "prod-swar-0229",
@@ -5732,7 +6216,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 145,
+    "cost_price": 135
   },
   {
     "id": "prod-swar-0230",
@@ -5757,7 +6243,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1700,
+    "cost_price": 1481
   },
   {
     "id": "prod-swar-0231",
@@ -5782,7 +6270,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 85,
+    "cost_price": 74.05
   },
   {
     "id": "prod-swar-0232",
@@ -5807,7 +6297,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 140,
+    "cost_price": 128
   },
   {
     "id": "prod-swar-0233",
@@ -5832,7 +6324,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 125,
+    "cost_price": 110
   },
   {
     "id": "prod-swar-0234",
@@ -5857,7 +6351,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 350,
+    "cost_price": 250
   },
   {
     "id": "prod-swar-0235",
@@ -5882,7 +6378,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 27,
+    "cost_price": 22
   },
   {
     "id": "prod-swar-0236",
@@ -5907,7 +6405,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 330,
+    "cost_price": 275
   },
   {
     "id": "prod-swar-0237",
@@ -5932,7 +6432,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 270,
+    "cost_price": 259.5
   },
   {
     "id": "prod-swar-0238",
@@ -5957,7 +6459,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 95,
+    "cost_price": 86
   },
   {
     "id": "prod-swar-0239",
@@ -5982,7 +6486,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 450,
+    "cost_price": 363.64
   },
   {
     "id": "prod-swar-0240",
@@ -6007,7 +6513,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 65,
+    "cost_price": 58.2
   },
   {
     "id": "prod-swar-0241",
@@ -6032,7 +6540,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 370,
+    "cost_price": 320
   },
   {
     "id": "prod-swar-0242",
@@ -6057,7 +6567,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 65,
+    "cost_price": 58.2
   },
   {
     "id": "prod-swar-0243",
@@ -6082,7 +6594,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 175,
+    "cost_price": 161.18
   },
   {
     "id": "prod-swar-0244",
@@ -6107,7 +6621,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 200,
+    "cost_price": 150
   },
   {
     "id": "prod-swar-0245",
@@ -6132,7 +6648,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 150,
+    "cost_price": 140
   },
   {
     "id": "prod-swar-0246",
@@ -6157,7 +6675,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 300,
+    "cost_price": 220.5
   },
   {
     "id": "prod-swar-0247",
@@ -6182,7 +6702,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 65,
+    "cost_price": 59.5
   },
   {
     "id": "prod-swar-0248",
@@ -6207,7 +6729,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 80,
+    "cost_price": 68
   },
   {
     "id": "prod-swar-0249",
@@ -6232,7 +6756,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2743,
+    "cost_price": 2621.28
   },
   {
     "id": "prod-swar-0250",
@@ -6257,7 +6783,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 215,
+    "cost_price": 208
   },
   {
     "id": "prod-swar-0251",
@@ -6282,7 +6810,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 175,
+    "cost_price": 155.36
   },
   {
     "id": "prod-swar-0252",
@@ -6307,7 +6837,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 220,
+    "cost_price": 210
   },
   {
     "id": "prod-swar-0253",
@@ -6332,7 +6864,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 185,
+    "cost_price": 165
   },
   {
     "id": "prod-swar-0254",
@@ -6357,7 +6891,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 265,
+    "cost_price": 250
   },
   {
     "id": "prod-swar-0255",
@@ -6382,7 +6918,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 35,
+    "cost_price": 25
   },
   {
     "id": "prod-swar-0256",
@@ -6407,7 +6945,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 135,
+    "cost_price": 110
   },
   {
     "id": "prod-swar-0257",
@@ -6432,7 +6972,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 95,
+    "cost_price": 75
   },
   {
     "id": "prod-swar-0258",
@@ -6457,7 +6999,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1000,
+    "cost_price": 960
   },
   {
     "id": "prod-swar-0259",
@@ -6482,7 +7026,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 100,
+    "cost_price": 90
   },
   {
     "id": "prod-swar-0260",
@@ -6507,7 +7053,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 92.5,
+    "cost_price": 83
   },
   {
     "id": "prod-swar-0261",
@@ -6532,7 +7080,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 555,
+    "cost_price": 498
   },
   {
     "id": "prod-swar-0262",
@@ -6557,7 +7107,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 32,
+    "cost_price": 26
   },
   {
     "id": "prod-swar-0263",
@@ -6582,7 +7134,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 320,
+    "cost_price": 260
   },
   {
     "id": "prod-swar-0264",
@@ -6607,7 +7161,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 26.5,
+    "cost_price": 23
   },
   {
     "id": "prod-swar-0265",
@@ -6632,7 +7188,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 530,
+    "cost_price": 460
   },
   {
     "id": "prod-swar-0266",
@@ -6657,7 +7215,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 100,
+    "cost_price": 83
   },
   {
     "id": "prod-swar-0267",
@@ -6682,7 +7242,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 20,
+    "cost_price": 15.9
   },
   {
     "id": "prod-swar-0268",
@@ -6707,7 +7269,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 320,
+    "cost_price": 248
   },
   {
     "id": "prod-swar-0269",
@@ -6732,7 +7296,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 40,
+    "cost_price": 34.4
   },
   {
     "id": "prod-swar-0270",
@@ -6757,7 +7323,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 250,
+    "cost_price": 221.76
   },
   {
     "id": "prod-swar-0271",
@@ -6782,7 +7350,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 220,
+    "cost_price": 200.86
   },
   {
     "id": "prod-swar-0272",
@@ -6807,7 +7377,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2160,
+    "cost_price": 2016
   },
   {
     "id": "prod-swar-0273",
@@ -6832,7 +7404,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 192,
+    "cost_price": 173
   },
   {
     "id": "prod-swar-0274",
@@ -6857,7 +7431,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1900,
+    "cost_price": 1805.7
   },
   {
     "id": "prod-swar-0275",
@@ -6882,7 +7458,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 210,
+    "cost_price": 180.57
   },
   {
     "id": "prod-swar-0276",
@@ -6907,7 +7485,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 170,
+    "cost_price": 152.75
   },
   {
     "id": "prod-swar-0277",
@@ -6932,7 +7512,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1700,
+    "cost_price": 1537.5
   },
   {
     "id": "prod-swar-0278",
@@ -6957,7 +7539,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 17,
+    "cost_price": 15.25
   },
   {
     "id": "prod-swar-0279",
@@ -6982,7 +7566,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 34,
+    "cost_price": 29.04
   },
   {
     "id": "prod-swar-0280",
@@ -7007,7 +7593,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 220,
+    "cost_price": 198
   },
   {
     "id": "prod-swar-0281",
@@ -7032,7 +7620,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 3300,
+    "cost_price": 2970
   },
   {
     "id": "prod-swar-0282",
@@ -7057,7 +7647,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 16,
+    "cost_price": 12.5
   },
   {
     "id": "prod-swar-0283",
@@ -7082,7 +7674,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 180,
+    "cost_price": 150
   },
   {
     "id": "prod-swar-0284",
@@ -7107,7 +7701,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 41,
+    "cost_price": 38
   },
   {
     "id": "prod-swar-0285",
@@ -7132,7 +7728,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 55,
+    "cost_price": 45
   },
   {
     "id": "prod-swar-0286",
@@ -7157,7 +7755,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 936,
+    "cost_price": 924
   },
   {
     "id": "prod-swar-0287",
@@ -7182,7 +7782,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 325,
+    "cost_price": 285
   },
   {
     "id": "prod-swar-0288",
@@ -7207,7 +7809,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 350,
+    "cost_price": 320
   },
   {
     "id": "prod-swar-0289",
@@ -7232,7 +7836,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 205,
+    "cost_price": 194.28
   },
   {
     "id": "prod-swar-0290",
@@ -7257,7 +7863,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 255,
+    "cost_price": 245.68
   },
   {
     "id": "prod-swar-0291",
@@ -7282,7 +7890,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 275,
+    "cost_price": 264.65
   },
   {
     "id": "prod-swar-0292",
@@ -7307,7 +7917,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2900,
+    "cost_price": 2750
   },
   {
     "id": "prod-swar-0293",
@@ -7332,7 +7944,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 27,
+    "cost_price": 22.88
   },
   {
     "id": "prod-swar-0294",
@@ -7357,7 +7971,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 33,
+    "cost_price": 28
   },
   {
     "id": "prod-swar-0295",
@@ -7382,7 +7998,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 35,
+    "cost_price": 31
   },
   {
     "id": "prod-swar-0296",
@@ -7407,7 +8025,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 195,
+    "cost_price": 155
   },
   {
     "id": "prod-swar-0297",
@@ -7432,7 +8052,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 165,
+    "cost_price": 144
   },
   {
     "id": "prod-swar-0298",
@@ -7457,7 +8079,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 125,
+    "cost_price": 110
   },
   {
     "id": "prod-swar-0299",
@@ -7482,7 +8106,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 238,
+    "cost_price": 231
   },
   {
     "id": "prod-swar-0300",
@@ -7507,7 +8133,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 212,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0301",
@@ -7532,7 +8160,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 62.5,
+    "cost_price": 51.5
   },
   {
     "id": "prod-swar-0302",
@@ -7557,7 +8187,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 70,
+    "cost_price": 58.5
   },
   {
     "id": "prod-swar-0303",
@@ -7582,7 +8214,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 35,
+    "cost_price": 29.25
   },
   {
     "id": "prod-swar-0304",
@@ -7607,7 +8241,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 77,
+    "cost_price": 67.5
   },
   {
     "id": "prod-swar-0305",
@@ -7632,7 +8268,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 67,
+    "cost_price": 63
   },
   {
     "id": "prod-swar-0306",
@@ -7657,7 +8295,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 49.75,
+    "cost_price": 47.52
   },
   {
     "id": "prod-swar-0307",
@@ -7682,7 +8322,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2016,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0308",
@@ -7707,7 +8349,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 92.5,
+    "cost_price": 88.5
   },
   {
     "id": "prod-swar-0309",
@@ -7732,7 +8376,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1850,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0310",
@@ -7757,7 +8403,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 185,
+    "cost_price": 177
   },
   {
     "id": "prod-swar-0311",
@@ -7782,7 +8430,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1850,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0312",
@@ -7807,7 +8457,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2000,
+    "cost_price": 106.05
   },
   {
     "id": "prod-swar-0313",
@@ -7832,7 +8484,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 112,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0314",
@@ -7857,7 +8511,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 630,
+    "cost_price": 556.92
   },
   {
     "id": "prod-swar-0315",
@@ -7882,7 +8538,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 35,
+    "cost_price": 30.94
   },
   {
     "id": "prod-swar-0316",
@@ -7907,7 +8565,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 600,
+    "cost_price": 546
   },
   {
     "id": "prod-swar-0317",
@@ -7932,7 +8592,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 75,
+    "cost_price": 68.25
   },
   {
     "id": "prod-swar-0318",
@@ -7957,7 +8619,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 864,
+    "cost_price": 786.24
   },
   {
     "id": "prod-swar-0319",
@@ -7982,7 +8646,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 48,
+    "cost_price": 43.68
   },
   {
     "id": "prod-swar-0320",
@@ -8007,7 +8673,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 55,
+    "cost_price": 45
   },
   {
     "id": "prod-swar-0321",
@@ -8032,7 +8700,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 825,
+    "cost_price": 696
   },
   {
     "id": "prod-swar-0322",
@@ -8057,7 +8727,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 75,
+    "cost_price": 67
   },
   {
     "id": "prod-swar-0323",
@@ -8082,7 +8754,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 405,
+    "cost_price": 301.95
   },
   {
     "id": "prod-swar-0324",
@@ -8107,7 +8781,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 700,
+    "cost_price": 594
   },
   {
     "id": "prod-swar-0325",
@@ -8132,7 +8808,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 92,
+    "cost_price": 84
   },
   {
     "id": "prod-swar-0326",
@@ -8157,7 +8835,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 27,
+    "cost_price": 23.83
   },
   {
     "id": "prod-swar-0327",
@@ -8182,7 +8862,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 80,
+    "cost_price": 77.81
   },
   {
     "id": "prod-swar-0328",
@@ -8207,7 +8889,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 22.5,
+    "cost_price": 16.78
   },
   {
     "id": "prod-swar-0329",
@@ -8232,7 +8916,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 250,
+    "cost_price": 214.87
   },
   {
     "id": "prod-swar-0330",
@@ -8257,7 +8943,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 37.5,
+    "cost_price": 31
   },
   {
     "id": "prod-swar-0331",
@@ -8282,7 +8970,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 675,
+    "cost_price": 558
   },
   {
     "id": "prod-swar-0332",
@@ -8307,7 +8997,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 75,
+    "cost_price": 67.5
   },
   {
     "id": "prod-swar-0333",
@@ -8332,7 +9024,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 550,
+    "cost_price": 543.5
   },
   {
     "id": "prod-swar-0334",
@@ -8357,7 +9051,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 65,
+    "cost_price": 59.75
   },
   {
     "id": "prod-swar-0335",
@@ -8382,7 +9078,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1400,
+    "cost_price": 1254.5
   },
   {
     "id": "prod-swar-0336",
@@ -8407,7 +9105,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 70,
+    "cost_price": 62.73
   },
   {
     "id": "prod-swar-0337",
@@ -8432,7 +9132,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 175,
+    "cost_price": 157
   },
   {
     "id": "prod-swar-0338",
@@ -8457,7 +9159,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 800,
+    "cost_price": 665.8
   },
   {
     "id": "prod-swar-0339",
@@ -8482,7 +9186,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 85,
+    "cost_price": 77
   },
   {
     "id": "prod-swar-0340",
@@ -8507,7 +9213,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 130,
+    "cost_price": 100
   },
   {
     "id": "prod-swar-0341",
@@ -8532,7 +9240,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 4900,
+    "cost_price": 4630
   },
   {
     "id": "prod-swar-0342",
@@ -8557,7 +9267,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1225,
+    "cost_price": 1157.5
   },
   {
     "id": "prod-swar-0343",
@@ -8582,7 +9294,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 70,
+    "cost_price": 62.11
   },
   {
     "id": "prod-swar-0344",
@@ -8607,7 +9321,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1500,
+    "cost_price": 1250
   },
   {
     "id": "prod-swar-0345",
@@ -8632,7 +9348,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 250,
+    "cost_price": 208.33
   },
   {
     "id": "prod-swar-0346",
@@ -8657,7 +9375,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 36,
+    "cost_price": 32.5
   },
   {
     "id": "prod-swar-0347",
@@ -8682,7 +9402,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1296,
+    "cost_price": 1170
   },
   {
     "id": "prod-swar-0348",
@@ -8707,7 +9429,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 35,
+    "cost_price": 27.5
   },
   {
     "id": "prod-swar-0349",
@@ -8732,7 +9456,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 15,
+    "cost_price": 10
   },
   {
     "id": "prod-swar-0350",
@@ -8757,7 +9483,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 18,
+    "cost_price": 15
   },
   {
     "id": "prod-swar-0351",
@@ -8782,7 +9510,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 45,
+    "cost_price": 38.75
   },
   {
     "id": "prod-swar-0352",
@@ -8807,7 +9537,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1320,
+    "cost_price": 1250
   },
   {
     "id": "prod-swar-0353",
@@ -8832,7 +9564,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 220,
+    "cost_price": 208.33
   },
   {
     "id": "prod-swar-0354",
@@ -8857,7 +9591,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 620,
+    "cost_price": 581.25
   },
   {
     "id": "prod-swar-0355",
@@ -8882,7 +9618,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 150,
+    "cost_price": 135
   },
   {
     "id": "prod-swar-0356",
@@ -8907,7 +9645,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 290,
+    "cost_price": 270.83
   },
   {
     "id": "prod-swar-0357",
@@ -8932,7 +9672,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1740,
+    "cost_price": 1625
   },
   {
     "id": "prod-swar-0358",
@@ -8957,7 +9699,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 145,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0359",
@@ -8982,7 +9726,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 260,
+    "cost_price": 233.33
   },
   {
     "id": "prod-swar-0360",
@@ -9007,7 +9753,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1560,
+    "cost_price": 1400
   },
   {
     "id": "prod-swar-0361",
@@ -9032,7 +9780,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 210,
+    "cost_price": 186.66
   },
   {
     "id": "prod-swar-0362",
@@ -9057,7 +9807,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 36,
+    "cost_price": 31.94
   },
   {
     "id": "prod-swar-0363",
@@ -9082,7 +9834,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1800,
+    "cost_price": 1710
   },
   {
     "id": "prod-swar-0364",
@@ -9107,7 +9861,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 300,
+    "cost_price": 285
   },
   {
     "id": "prod-swar-0365",
@@ -9132,7 +9888,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 4100,
+    "cost_price": 3500
   },
   {
     "id": "prod-swar-0366",
@@ -9157,7 +9915,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1025,
+    "cost_price": 875
   },
   {
     "id": "prod-swar-0367",
@@ -9182,7 +9942,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 3250,
+    "cost_price": 2650.2
   },
   {
     "id": "prod-swar-0368",
@@ -9207,7 +9969,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 325,
+    "cost_price": 265.02
   },
   {
     "id": "prod-swar-0369",
@@ -9232,7 +9996,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 24000,
+    "cost_price": 23980
   },
   {
     "id": "prod-swar-0370",
@@ -9257,7 +10023,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 3500,
+    "cost_price": 2795
   },
   {
     "id": "prod-swar-0371",
@@ -9282,7 +10050,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 350,
+    "cost_price": 279.5
   },
   {
     "id": "prod-swar-0372",
@@ -9307,7 +10077,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 75,
+    "cost_price": 47
   },
   {
     "id": "prod-swar-0373",
@@ -9332,7 +10104,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 16,
+    "cost_price": 14.17
   },
   {
     "id": "prod-swar-0374",
@@ -9357,7 +10131,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 175,
+    "cost_price": 135
   },
   {
     "id": "prod-swar-0375",
@@ -9382,7 +10158,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 16,
+    "cost_price": 13.33
   },
   {
     "id": "prod-swar-0376",
@@ -9407,7 +10185,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 140,
+    "cost_price": 100
   },
   {
     "id": "prod-swar-0377",
@@ -9432,7 +10212,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 180,
+    "cost_price": 155
   },
   {
     "id": "prod-swar-0378",
@@ -9457,7 +10239,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 16,
+    "cost_price": 15
   },
   {
     "id": "prod-swar-0379",
@@ -9482,7 +10266,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 60,
+    "cost_price": 50
   },
   {
     "id": "prod-swar-0380",
@@ -9507,7 +10293,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 270,
+    "cost_price": 257.75
   },
   {
     "id": "prod-swar-0381",
@@ -9532,7 +10320,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 128,
+    "cost_price": 117
   },
   {
     "id": "prod-swar-0382",
@@ -9557,7 +10347,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 315,
+    "cost_price": 306
   },
   {
     "id": "prod-swar-0383",
@@ -9582,7 +10374,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 100,
+    "cost_price": 83
   },
   {
     "id": "prod-swar-0384",
@@ -9607,7 +10401,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 486,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0385",
@@ -9632,7 +10428,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 740,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0386",
@@ -9657,7 +10455,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 36,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0387",
@@ -9682,7 +10482,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 245,
+    "cost_price": 237
   },
   {
     "id": "prod-swar-0388",
@@ -9707,7 +10509,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 45,
+    "cost_price": 36.75
   },
   {
     "id": "prod-swar-0389",
@@ -9732,7 +10536,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 63,
+    "cost_price": 48
   },
   {
     "id": "prod-swar-0390",
@@ -9757,7 +10563,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 80,
+    "cost_price": 73.5
   },
   {
     "id": "prod-swar-0391",
@@ -9782,7 +10590,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 200,
+    "cost_price": 176.75
   },
   {
     "id": "prod-swar-0392",
@@ -9807,7 +10617,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 10,
+    "cost_price": 8.84
   },
   {
     "id": "prod-swar-0393",
@@ -9832,7 +10644,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 400,
+    "cost_price": 291.1
   },
   {
     "id": "prod-swar-0394",
@@ -9857,7 +10671,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 20,
+    "cost_price": 14.56
   },
   {
     "id": "prod-swar-0395",
@@ -9882,7 +10698,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 400,
+    "cost_price": 293
   },
   {
     "id": "prod-swar-0396",
@@ -9907,7 +10725,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 20,
+    "cost_price": 14.65
   },
   {
     "id": "prod-swar-0397",
@@ -9932,7 +10752,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 37,
+    "cost_price": 32
   },
   {
     "id": "prod-swar-0398",
@@ -9957,7 +10779,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0399",
@@ -9982,7 +10806,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 170,
+    "cost_price": 157
   },
   {
     "id": "prod-swar-0400",
@@ -10007,7 +10833,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 85,
+    "cost_price": 78.5
   },
   {
     "id": "prod-swar-0401",
@@ -10032,7 +10860,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 138,
+    "cost_price": 134
   },
   {
     "id": "prod-swar-0402",
@@ -10057,7 +10887,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1380,
+    "cost_price": 1340
   },
   {
     "id": "prod-swar-0403",
@@ -10082,7 +10914,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 29,
+    "cost_price": 27.1
   },
   {
     "id": "prod-swar-0404",
@@ -10107,7 +10941,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1450,
+    "cost_price": 1355
   },
   {
     "id": "prod-swar-0405",
@@ -10132,7 +10968,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 58,
+    "cost_price": 52
   },
   {
     "id": "prod-swar-0406",
@@ -10157,7 +10995,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1450,
+    "cost_price": 1300
   },
   {
     "id": "prod-swar-0407",
@@ -10182,7 +11022,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 72.5,
+    "cost_price": 67.25
   },
   {
     "id": "prod-swar-0408",
@@ -10207,7 +11049,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1450,
+    "cost_price": 1345
   },
   {
     "id": "prod-swar-0409",
@@ -10232,7 +11076,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 430,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0410",
@@ -10257,7 +11103,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 43,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0411",
@@ -10282,7 +11130,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 80,
+    "cost_price": 72
   },
   {
     "id": "prod-swar-0412",
@@ -10307,7 +11157,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 25,
+    "cost_price": 21.5
   },
   {
     "id": "prod-swar-0413",
@@ -10332,7 +11184,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1350,
+    "cost_price": 1265
   },
   {
     "id": "prod-swar-0414",
@@ -10357,7 +11211,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 135,
+    "cost_price": 126.5
   },
   {
     "id": "prod-swar-0415",
@@ -10382,7 +11238,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1120,
+    "cost_price": 1050
   },
   {
     "id": "prod-swar-0416",
@@ -10407,7 +11265,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 28,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0417",
@@ -10432,7 +11292,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 500,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0418",
@@ -10457,7 +11319,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 20,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0419",
@@ -10482,7 +11346,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 65,
+    "cost_price": 60.5
   },
   {
     "id": "prod-swar-0420",
@@ -10507,7 +11373,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1040,
+    "cost_price": 968
   },
   {
     "id": "prod-swar-0421",
@@ -10532,7 +11400,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 420,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0422",
@@ -10557,7 +11427,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 590,
+    "cost_price": 550
   },
   {
     "id": "prod-swar-0423",
@@ -10582,7 +11454,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1320,
+    "cost_price": 1220
   },
   {
     "id": "prod-swar-0424",
@@ -10607,7 +11481,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 132,
+    "cost_price": 122
   },
   {
     "id": "prod-swar-0425",
@@ -10632,7 +11508,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 28,
+    "cost_price": 25.9
   },
   {
     "id": "prod-swar-0426",
@@ -10657,7 +11535,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1400,
+    "cost_price": 1295
   },
   {
     "id": "prod-swar-0427",
@@ -10682,7 +11562,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 67.5,
+    "cost_price": 63.75
   },
   {
     "id": "prod-swar-0428",
@@ -10707,7 +11589,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 1350,
+    "cost_price": 1275
   },
   {
     "id": "prod-swar-0429",
@@ -10732,7 +11616,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 42.5,
+    "cost_price": 38.34
   },
   {
     "id": "prod-swar-0430",
@@ -10757,7 +11643,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 89,
+    "cost_price": 82
   },
   {
     "id": "prod-swar-0431",
@@ -10782,7 +11670,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 36,
+    "cost_price": 0
   },
   {
     "id": "prod-swar-0432",
@@ -10807,7 +11697,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 880,
+    "cost_price": 780
   },
   {
     "id": "prod-swar-0433",
@@ -10832,7 +11724,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 75,
+    "cost_price": 67.5
   },
   {
     "id": "prod-swar-0434",
@@ -10857,7 +11751,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 200,
+    "cost_price": 187.2
   },
   {
     "id": "prod-swar-0435",
@@ -10882,7 +11778,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 120,
+    "cost_price": 103.67
   },
   {
     "id": "prod-swar-0436",
@@ -10907,7 +11805,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 87,
+    "cost_price": 78.85
   },
   {
     "id": "prod-swar-0437",
@@ -10932,7 +11832,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 36,
+    "cost_price": 32
   },
   {
     "id": "prod-swar-0438",
@@ -10957,7 +11859,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 38,
+    "cost_price": 32.25
   },
   {
     "id": "prod-swar-0439",
@@ -10982,7 +11886,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 55,
+    "cost_price": 46
   },
   {
     "id": "prod-swar-0440",
@@ -11007,7 +11913,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 215,
+    "cost_price": 195
   },
   {
     "id": "prod-swar-0441",
@@ -11032,7 +11940,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 2520,
+    "cost_price": 2340
   },
   {
     "id": "prod-swar-0442",
@@ -11057,7 +11967,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 100,
+    "cost_price": 85
   },
   {
     "id": "prod-swar-0443",
@@ -11082,7 +11994,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 160,
+    "cost_price": 144.5
   },
   {
     "id": "prod-swar-0444",
@@ -11107,7 +12021,9 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 290,
+    "cost_price": 279.56
   },
   {
     "id": "prod-swar-0445",
@@ -11132,6 +12048,8 @@ export const INITIAL_PRODUCTS = [
         "auditor": "مسؤول الجرد",
         "notes": "الرصيد الافتتاحي المحدث"
       }
-    ]
+    ],
+    "selling_price": 33,
+    "cost_price": 26.67
   }
 ];

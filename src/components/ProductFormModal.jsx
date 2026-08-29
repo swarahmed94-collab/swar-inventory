@@ -274,6 +274,23 @@ export default function ProductFormModal({
             </div>
           </div>
 
+          {/* Live Profit Margin Badge */}
+          {Number(formData.selling_price) > 0 && Number(formData.cost_price) > 0 && (
+            <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs font-bold">
+              <span className="text-slate-600 dark:text-slate-300">
+                📈 هامش الربح المتوقع للوحدة:
+              </span>
+              <div className="flex items-center gap-2">
+                <span className={`font-black ${Number(formData.selling_price) >= Number(formData.cost_price) ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600'}`}>
+                  {(Number(formData.selling_price) - Number(formData.cost_price)).toFixed(2)} ج
+                </span>
+                <span className="text-[11px] text-slate-500">
+                  ({(( (Number(formData.selling_price) - Number(formData.cost_price)) / Number(formData.cost_price) ) * 100).toFixed(1)}%)
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* Stock Levels & Thresholds */}
           <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 space-y-3">
             <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">

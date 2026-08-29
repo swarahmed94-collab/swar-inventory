@@ -47,7 +47,7 @@ export default function InvoicePdfImportModal({
   const [vendorName, setVendorName] = useState('');
   const [paymentType, setPaymentType] = useState('cash');
   const [recordInJournal, setRecordInJournal] = useState(true);
-  const [updateProductPrices, setUpdateProductPrices] = useState(false);
+  const [updateProductPrices, setUpdateProductPrices] = useState(true);
   const [pastedText, setPastedText] = useState('');
   const [showPasteArea, setShowPasteArea] = useState(false);
 

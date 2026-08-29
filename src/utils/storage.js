@@ -2,16 +2,30 @@ import { INITIAL_PRODUCTS } from '../data/defaultProducts.js';
 
 const STORAGE_KEY = 'swar_frozen_inventory_v2';
 const SCHEMA_KEY = 'swar_schema_version';
-const CURRENT_SCHEMA = 'v3_445_products_aug2026';
+const CURRENT_SCHEMA = 'v4_cost_prices_populated_aug2026';
 const SETTINGS_KEY = 'swar_app_settings_v1';
 const INVOICES_KEY = 'swar_invoices_v1';
 const CUSTOMERS_KEY = 'swar_customers_v1';
 const JOURNAL_KEY = 'swar_journal_v1';
 
+// Build fast lookup map for initial catalog cost prices
+const initialCostMap = new Map();
+INITIAL_PRODUCTS.forEach(item => {
+  if (item?.id && item.cost_price !== undefined) {
+    initialCostMap.set(item.id, Number(item.cost_price));
+  }
+});
+
 export const normalizeProduct = (p) => {
   if (!p || typeof p !== 'object') return p;
   const selling_price = Number(p.selling_price ?? p.price ?? 0);
-  const cost_price = Number(p.cost_price ?? p.costPrice ?? 0);
+  
+  // If cost_price is missing or 0 in an older item, retrieve it from the initial populated catalog
+  let cost_price = Number(p.cost_price ?? p.costPrice ?? 0);
+  if (cost_price === 0 && p.id && initialCostMap.has(p.id)) {
+    cost_price = initialCostMap.get(p.id);
+  }
+
   return {
     ...p,
     selling_price,
@@ -24,15 +38,39 @@ export const getStoredProducts = () => {
   try {
     const existingSchema = localStorage.getItem(SCHEMA_KEY);
     if (existingSchema !== CURRENT_SCHEMA) {
-      // Full wipe of all old keys and reload fresh 445 products
-      localStorage.removeItem('swar_frozen_inventory_v1');
-      localStorage.removeItem('swar_frozen_inventory_v2');
-      localStorage.removeItem('swar_cloud_sync_config_v1');
-      localStorage.removeItem('swar_schema_version');
+      // Migrate stored products to v4 schema: populate cost prices while preserving existing stock and audit logs
       localStorage.setItem(SCHEMA_KEY, CURRENT_SCHEMA);
-      const normalizedInitial = INITIAL_PRODUCTS.map(normalizeProduct);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizedInitial));
-      return normalizedInitial;
+      const data = localStorage.getItem(STORAGE_KEY);
+      let existingProducts = [];
+      try {
+        if (data) existingProducts = JSON.parse(data);
+      } catch (_) {}
+
+      const existingMap = new Map();
+      if (Array.isArray(existingProducts)) {
+        existingProducts.forEach(p => { if (p?.id) existingMap.set(p.id, p); });
+      }
+
+      const merged = INITIAL_PRODUCTS.map(initProd => {
+        const stored = existingMap.get(initProd.id);
+        if (stored) {
+          return {
+            ...initProd,
+            currentStock: stored.currentStock !== undefined ? stored.currentStock : initProd.currentStock,
+            auditHistory: Array.isArray(stored.auditHistory) && stored.auditHistory.length > 0 ? stored.auditHistory : initProd.auditHistory,
+            // Use custom cost_price if stored, or initial catalog cost price
+            cost_price: Number(stored.cost_price ?? initProd.cost_price ?? 0),
+            selling_price: Number(stored.selling_price ?? stored.price ?? initProd.selling_price ?? initProd.price ?? 0),
+            price: Number(stored.selling_price ?? stored.price ?? initProd.selling_price ?? initProd.price ?? 0),
+            notes: stored.notes || initProd.notes,
+            freezerLocation: stored.freezerLocation || initProd.freezerLocation
+          };
+        }
+        return normalizeProduct(initProd);
+      });
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+      return merged;
     }
 
     const data = localStorage.getItem(STORAGE_KEY);

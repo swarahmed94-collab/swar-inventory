@@ -101,12 +101,27 @@ export default function ProductCard({
 
         {/* Prices Display: Selling Price & Cost Price */}
         <div className="flex items-center gap-2 text-xs font-bold mb-3 flex-wrap">
-          <span className="inline-flex items-center gap-1 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900 px-2 py-0.5 rounded-md">
-            💰 سعر البيع: {product.selling_price ?? product.price ?? 0} ج
-          </span>
-          <span className="inline-flex items-center gap-1 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-900 px-2 py-0.5 rounded-md">
-            🏷️ التكلفة: {product.cost_price ?? 0} ج
-          </span>
+          <button
+            type="button"
+            onClick={() => isAdmin && onEditProduct && onEditProduct(product)}
+            className="inline-flex items-center gap-1 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900 px-2 py-1 rounded-lg transition-colors text-right"
+            title={isAdmin ? "انقر لتعديل أسعار الصنف" : "سعر البيع للجمهور"}
+          >
+            <span>💰 سعر البيع:</span>
+            <span className="font-black">{Number(product.selling_price ?? product.price ?? 0).toFixed(2)} ج</span>
+            {isAdmin && <Edit3 className="w-3 h-3 opacity-60 ml-0.5" />}
+          </button>
+          
+          <button
+            type="button"
+            onClick={() => isAdmin && onEditProduct && onEditProduct(product)}
+            className="inline-flex items-center gap-1 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-900 px-2 py-1 rounded-lg transition-colors text-right"
+            title={isAdmin ? "انقر لتعديل أسعار الصنف" : "سعر الشراء والتكلفة"}
+          >
+            <span>📦 التكلفة:</span>
+            <span className="font-black">{Number(product.cost_price ?? 0).toFixed(2)} ج</span>
+            {isAdmin && <Edit3 className="w-3 h-3 opacity-60 ml-0.5" />}
+          </button>
         </div>
 
         {/* Main Stock Quantity Display */}
