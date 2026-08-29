@@ -62,7 +62,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 500,
-    "cost_price": 500
+    "cost_price": 500,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0002",
@@ -89,7 +90,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 10,
-    "cost_price": 10
+    "cost_price": 10,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0003",
@@ -116,7 +118,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 50,
-    "cost_price": 38.27
+    "cost_price": 38.27,
+    "barcode": "201015034634"
   },
   {
     "id": "prod-swar-0004",
@@ -143,7 +146,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 870,
-    "cost_price": 750
+    "cost_price": 750,
+    "barcode": "220417533551"
   },
   {
     "id": "prod-swar-0005",
@@ -170,7 +174,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2900,
-    "cost_price": 2580
+    "cost_price": 2580,
+    "barcode": "200819030416"
   },
   {
     "id": "prod-swar-0006",
@@ -197,7 +202,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 290,
-    "cost_price": 258
+    "cost_price": 258,
+    "barcode": "200819042722"
   },
   {
     "id": "prod-swar-0007",
@@ -224,7 +230,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 3360,
-    "cost_price": 3024
+    "cost_price": 3024,
+    "barcode": "200818573868"
   },
   {
     "id": "prod-swar-0008",
@@ -251,7 +258,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 140,
-    "cost_price": 126
+    "cost_price": 103.67,
+    "barcode": "201218441175"
   },
   {
     "id": "prod-swar-0009",
@@ -278,7 +286,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 205,
-    "cost_price": 160
+    "cost_price": 160,
+    "barcode": "240115413785"
   },
   {
     "id": "prod-swar-0010",
@@ -305,7 +314,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2460,
-    "cost_price": 1920
+    "cost_price": 1920,
+    "barcode": "250403234848"
   },
   {
     "id": "prod-swar-0011",
@@ -332,7 +342,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2550,
-    "cost_price": 2450
+    "cost_price": 2450,
+    "barcode": "200819122180"
   },
   {
     "id": "prod-swar-0012",
@@ -359,7 +370,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 255,
-    "cost_price": 245
+    "cost_price": 245,
+    "barcode": "200819135004"
   },
   {
     "id": "prod-swar-0013",
@@ -386,7 +398,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2150,
-    "cost_price": 2010
+    "cost_price": 2010,
+    "barcode": "200819110216"
   },
   {
     "id": "prod-swar-0014",
@@ -413,7 +426,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 215,
-    "cost_price": 201
+    "cost_price": 201,
+    "barcode": "200819115414"
   },
   {
     "id": "prod-swar-0015",
@@ -440,7 +454,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 110,
-    "cost_price": 98.32
+    "cost_price": 98.32,
+    "barcode": "220515245090"
   },
   {
     "id": "prod-swar-0016",
@@ -467,7 +482,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1980,
-    "cost_price": 1769.75
+    "cost_price": 1769.75,
+    "barcode": "230113445194"
   },
   {
     "id": "prod-swar-0017",
@@ -494,7 +510,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 175,
-    "cost_price": 145.5
+    "cost_price": 145.5,
+    "barcode": "241216570497"
   },
   {
     "id": "prod-swar-0018",
@@ -521,7 +538,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1750,
-    "cost_price": 1455
+    "cost_price": 1455,
+    "barcode": "250215052004"
   },
   {
     "id": "prod-swar-0019",
@@ -548,7 +566,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 240,
-    "cost_price": 233
+    "cost_price": 233,
+    "barcode": "240415041409"
   },
   {
     "id": "prod-swar-0020",
@@ -575,7 +594,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 92,
-    "cost_price": 85.61
+    "cost_price": 85.61,
+    "barcode": "240515201026"
   },
   {
     "id": "prod-swar-0021",
@@ -602,7 +622,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 170,
-    "cost_price": 155
+    "cost_price": 155,
+    "barcode": "240415222974"
   },
   {
     "id": "prod-swar-0022",
@@ -629,7 +650,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 260,
-    "cost_price": 247
+    "cost_price": 247,
+    "barcode": "231219031195"
   },
   {
     "id": "prod-swar-0023",
@@ -656,7 +678,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2600,
-    "cost_price": 2470
+    "cost_price": 2470,
+    "barcode": "240718504941"
   },
   {
     "id": "prod-swar-0024",
@@ -683,7 +706,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 550,
-    "cost_price": 520
+    "cost_price": 520,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0025",
@@ -710,7 +734,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 425,
-    "cost_price": 350
+    "cost_price": 350,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0026",
@@ -737,7 +762,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 212.5,
-    "cost_price": 175
+    "cost_price": 175,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0027",
@@ -764,7 +790,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 400,
-    "cost_price": 0
+    "cost_price": 350,
+    "barcode": "200920322980"
   },
   {
     "id": "prod-swar-0028",
@@ -791,7 +818,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 245,
-    "cost_price": 232.5
+    "cost_price": 232.5,
+    "barcode": "240116375298"
   },
   {
     "id": "prod-swar-0029",
@@ -818,7 +846,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 55,
-    "cost_price": 47.5
+    "cost_price": 47.5,
+    "barcode": "250818003831"
   },
   {
     "id": "prod-swar-0030",
@@ -845,7 +874,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 30,
-    "cost_price": 22.9
+    "cost_price": 22.9,
+    "barcode": "220716233133"
   },
   {
     "id": "prod-swar-0031",
@@ -872,7 +902,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 58.5,
-    "cost_price": 0
+    "cost_price": 88.75,
+    "barcode": "250618483586"
   },
   {
     "id": "prod-swar-0032",
@@ -899,7 +930,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 190,
-    "cost_price": 177
+    "cost_price": 177,
+    "barcode": "260414205694"
   },
   {
     "id": "prod-swar-0033",
@@ -926,7 +958,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 95,
-    "cost_price": 88.75
+    "cost_price": 88.75,
+    "barcode": "250618483586"
   },
   {
     "id": "prod-swar-0034",
@@ -953,7 +986,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1900,
-    "cost_price": 0
+    "cost_price": 1345,
+    "barcode": "241004280331"
   },
   {
     "id": "prod-swar-0035",
@@ -980,7 +1014,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 220,
-    "cost_price": 190
+    "cost_price": 190,
+    "barcode": "260117051163"
   },
   {
     "id": "prod-swar-0036",
@@ -1007,7 +1042,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 225,
-    "cost_price": 211.67
+    "cost_price": 211.67,
+    "barcode": "260116570370"
   },
   {
     "id": "prod-swar-0037",
@@ -1034,7 +1070,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 73,
-    "cost_price": 0
+    "cost_price": 0,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0038",
@@ -1061,7 +1098,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 73,
-    "cost_price": 0
+    "cost_price": 248,
+    "barcode": "220716212482"
   },
   {
     "id": "prod-swar-0039",
@@ -1088,7 +1126,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 25,
-    "cost_price": 17.89
+    "cost_price": 17.89,
+    "barcode": "200921002612"
   },
   {
     "id": "prod-swar-0040",
@@ -1115,7 +1154,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 35,
-    "cost_price": 29.57
+    "cost_price": 29.57,
+    "barcode": "200920593468"
   },
   {
     "id": "prod-swar-0041",
@@ -1142,7 +1182,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 17,
-    "cost_price": 0
+    "cost_price": 17.89,
+    "barcode": "200921002612"
   },
   {
     "id": "prod-swar-0042",
@@ -1169,7 +1210,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 800,
-    "cost_price": 660
+    "cost_price": 660,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0043",
@@ -1196,7 +1238,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 40,
-    "cost_price": 33
+    "cost_price": 33,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0044",
@@ -1223,7 +1266,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 41.5,
-    "cost_price": 35.2
+    "cost_price": 35.2,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0045",
@@ -1250,7 +1294,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 300,
-    "cost_price": 254.4
+    "cost_price": 254.4,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0046",
@@ -1277,7 +1322,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 15,
-    "cost_price": 12.72
+    "cost_price": 12.72,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0047",
@@ -1304,7 +1350,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 30,
-    "cost_price": 27
+    "cost_price": 27,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0048",
@@ -1331,7 +1378,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 500,
-    "cost_price": 420
+    "cost_price": 420,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0049",
@@ -1358,7 +1406,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 25,
-    "cost_price": 21
+    "cost_price": 21,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0050",
@@ -1385,7 +1434,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2220,
-    "cost_price": 1902
+    "cost_price": 1902,
+    "barcode": "200818595272"
   },
   {
     "id": "prod-swar-0051",
@@ -1412,7 +1462,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 185,
-    "cost_price": 158.5
+    "cost_price": 158.5,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0052",
@@ -1439,7 +1490,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 138.5,
-    "cost_price": 0
+    "cost_price": 132,
+    "barcode": "210816392449"
   },
   {
     "id": "prod-swar-0053",
@@ -1466,7 +1518,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2808,
-    "cost_price": 2400
+    "cost_price": 2400,
+    "barcode": "200818551671"
   },
   {
     "id": "prod-swar-0054",
@@ -1493,7 +1546,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 117,
-    "cost_price": 100
+    "cost_price": 161.18,
+    "barcode": "210914201266"
   },
   {
     "id": "prod-swar-0055",
@@ -1520,7 +1574,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 130,
-    "cost_price": 118
+    "cost_price": 118,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0056",
@@ -1547,7 +1602,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1560,
-    "cost_price": 1416
+    "cost_price": 1416,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0057",
@@ -1574,7 +1630,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 105,
-    "cost_price": 80
+    "cost_price": 80,
+    "barcode": "201119405582"
   },
   {
     "id": "prod-swar-0058",
@@ -1601,7 +1658,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1260,
-    "cost_price": 960
+    "cost_price": 960,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0059",
@@ -1628,7 +1686,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 54,
-    "cost_price": 54
+    "cost_price": 54,
+    "barcode": "201101253640"
   },
   {
     "id": "prod-swar-0060",
@@ -1655,7 +1714,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1440,
-    "cost_price": 1272
+    "cost_price": 1272,
+    "barcode": "200819094071"
   },
   {
     "id": "prod-swar-0061",
@@ -1682,7 +1742,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 120,
-    "cost_price": 106
+    "cost_price": 106,
+    "barcode": "200819103994"
   },
   {
     "id": "prod-swar-0062",
@@ -1709,7 +1770,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1224,
-    "cost_price": 1032.3
+    "cost_price": 1032.3,
+    "barcode": "200819075150"
   },
   {
     "id": "prod-swar-0063",
@@ -1736,7 +1798,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 68,
-    "cost_price": 55
+    "cost_price": 55,
+    "barcode": "200819085504"
   },
   {
     "id": "prod-swar-0064",
@@ -1763,7 +1826,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1116,
-    "cost_price": 1080
+    "cost_price": 1080,
+    "barcode": "200819141080"
   },
   {
     "id": "prod-swar-0065",
@@ -1790,7 +1854,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 70,
-    "cost_price": 61
+    "cost_price": 61,
+    "barcode": "200819161731"
   },
   {
     "id": "prod-swar-0066",
@@ -1817,7 +1882,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2208,
-    "cost_price": 1968
+    "cost_price": 1968,
+    "barcode": "200818524228"
   },
   {
     "id": "prod-swar-0067",
@@ -1844,7 +1910,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 92,
-    "cost_price": 82
+    "cost_price": 82,
+    "barcode": "200818544303"
   },
   {
     "id": "prod-swar-0068",
@@ -1871,7 +1938,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 75,
-    "cost_price": 68
+    "cost_price": 68,
+    "barcode": "210116414924"
   },
   {
     "id": "prod-swar-0069",
@@ -1898,7 +1966,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 750,
-    "cost_price": 680
+    "cost_price": 680,
+    "barcode": "260114414191"
   },
   {
     "id": "prod-swar-0070",
@@ -1925,7 +1994,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 115,
-    "cost_price": 101
+    "cost_price": 101,
+    "barcode": "240415030967"
   },
   {
     "id": "prod-swar-0071",
@@ -1952,7 +2022,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 70,
-    "cost_price": 61.56
+    "cost_price": 61.56,
+    "barcode": "240515224661"
   },
   {
     "id": "prod-swar-0072",
@@ -1979,7 +2050,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 85,
-    "cost_price": 78.5
+    "cost_price": 78.5,
+    "barcode": "201215332338"
   },
   {
     "id": "prod-swar-0073",
@@ -2006,7 +2078,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2472,
-    "cost_price": 2006.4
+    "cost_price": 606.06,
+    "barcode": "200802581073"
   },
   {
     "id": "prod-swar-0074",
@@ -2033,7 +2106,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 115,
-    "cost_price": 92.3
+    "cost_price": 161.18,
+    "barcode": "210914201266"
   },
   {
     "id": "prod-swar-0075",
@@ -2060,7 +2134,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 720,
-    "cost_price": 647.01
+    "cost_price": 647.01,
+    "barcode": "200803073547"
   },
   {
     "id": "prod-swar-0076",
@@ -2087,7 +2162,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 80,
-    "cost_price": 71.89
+    "cost_price": 91,
+    "barcode": "240415225884"
   },
   {
     "id": "prod-swar-0077",
@@ -2114,7 +2190,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 684,
-    "cost_price": 606.06
+    "cost_price": 606.06,
+    "barcode": "200802581073"
   },
   {
     "id": "prod-swar-0078",
@@ -2141,7 +2218,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 38,
-    "cost_price": 33.67
+    "cost_price": 33.67,
+    "barcode": "200803000350"
   },
   {
     "id": "prod-swar-0079",
@@ -2168,7 +2246,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 100,
-    "cost_price": 91
+    "cost_price": 91,
+    "barcode": "240415225884"
   },
   {
     "id": "prod-swar-0080",
@@ -2195,7 +2274,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 936,
-    "cost_price": 851.76
+    "cost_price": 606.06,
+    "barcode": "200802581073"
   },
   {
     "id": "prod-swar-0081",
@@ -2222,7 +2302,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 52,
-    "cost_price": 47.32
+    "cost_price": 33.67,
+    "barcode": "200803000350"
   },
   {
     "id": "prod-swar-0082",
@@ -2249,7 +2330,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 85,
-    "cost_price": 75
+    "cost_price": 75,
+    "barcode": "201111523917"
   },
   {
     "id": "prod-swar-0083",
@@ -2276,7 +2358,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 513,
-    "cost_price": 466.83
+    "cost_price": 606.06,
+    "barcode": "200802581073"
   },
   {
     "id": "prod-swar-0084",
@@ -2303,7 +2386,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 333.75,
-    "cost_price": 318.68
+    "cost_price": 318.68,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0085",
@@ -2330,7 +2414,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 80,
-    "cost_price": 74.5
+    "cost_price": 74.5,
+    "barcode": "200920401131"
   },
   {
     "id": "prod-swar-0086",
@@ -2357,7 +2442,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1680,
-    "cost_price": 1536
+    "cost_price": 606.06,
+    "barcode": "200802581073"
   },
   {
     "id": "prod-swar-0087",
@@ -2384,7 +2470,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 105,
-    "cost_price": 98
+    "cost_price": 33.67,
+    "barcode": "200803000350"
   },
   {
     "id": "prod-swar-0088",
@@ -2411,7 +2498,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 200,
-    "cost_price": 169.15
+    "cost_price": 169.15,
+    "barcode": "201217201663"
   },
   {
     "id": "prod-swar-0089",
@@ -2438,7 +2526,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 125,
-    "cost_price": 111
+    "cost_price": 111,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0090",
@@ -2465,7 +2554,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1200,
-    "cost_price": 934
+    "cost_price": 934,
+    "barcode": "200814061891"
   },
   {
     "id": "prod-swar-0091",
@@ -2492,7 +2582,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 144,
-    "cost_price": 100
+    "cost_price": 100,
+    "barcode": "200814085647"
   },
   {
     "id": "prod-swar-0092",
@@ -2519,7 +2610,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 185,
-    "cost_price": 177
+    "cost_price": 177,
+    "barcode": "211013582878"
   },
   {
     "id": "prod-swar-0093",
@@ -2546,7 +2638,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1850,
-    "cost_price": 0
+    "cost_price": 177,
+    "barcode": "211013582878"
   },
   {
     "id": "prod-swar-0094",
@@ -2573,7 +2666,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 215,
-    "cost_price": 198
+    "cost_price": 198,
+    "barcode": "210617365235"
   },
   {
     "id": "prod-swar-0095",
@@ -2600,7 +2694,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 58,
-    "cost_price": 50.46
+    "cost_price": 33.67,
+    "barcode": "200803000350"
   },
   {
     "id": "prod-swar-0096",
@@ -2627,7 +2722,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 210,
-    "cost_price": 185
+    "cost_price": 185,
+    "barcode": "200920104567"
   },
   {
     "id": "prod-swar-0097",
@@ -2654,7 +2750,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2520,
-    "cost_price": 2220
+    "cost_price": 2220,
+    "barcode": "210102404490"
   },
   {
     "id": "prod-swar-0098",
@@ -2681,7 +2778,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 73,
-    "cost_price": 67
+    "cost_price": 67,
+    "barcode": "240816523002"
   },
   {
     "id": "prod-swar-0099",
@@ -2708,7 +2806,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 37.5,
-    "cost_price": 31
+    "cost_price": 31,
+    "barcode": "240115533409"
   },
   {
     "id": "prod-swar-0100",
@@ -2735,7 +2834,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 675,
-    "cost_price": 558
+    "cost_price": 558,
+    "barcode": "240706151123"
   },
   {
     "id": "prod-swar-0101",
@@ -2762,7 +2862,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 200,
-    "cost_price": 186
+    "cost_price": 186,
+    "barcode": "210315224978"
   },
   {
     "id": "prod-swar-0102",
@@ -2789,7 +2890,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1600,
-    "cost_price": 1457.2
+    "cost_price": 606.06,
+    "barcode": "200802581073"
   },
   {
     "id": "prod-swar-0103",
@@ -2816,7 +2918,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 80,
-    "cost_price": 72.86
+    "cost_price": 33.67,
+    "barcode": "200803000350"
   },
   {
     "id": "prod-swar-0104",
@@ -2843,7 +2946,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 525,
-    "cost_price": 480
+    "cost_price": 480,
+    "barcode": "200920421091"
   },
   {
     "id": "prod-swar-0105",
@@ -2870,7 +2974,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 125,
-    "cost_price": 114
+    "cost_price": 114,
+    "barcode": "200917131138"
   },
   {
     "id": "prod-swar-0106",
@@ -2897,7 +3002,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 320,
-    "cost_price": 0
+    "cost_price": 362,
+    "barcode": "230817205082"
   },
   {
     "id": "prod-swar-0107",
@@ -2924,7 +3030,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 16,
-    "cost_price": 0
+    "cost_price": 18.1,
+    "barcode": "230816475979"
   },
   {
     "id": "prod-swar-0108",
@@ -2951,7 +3058,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 270,
-    "cost_price": 0
+    "cost_price": 362,
+    "barcode": "230817205082"
   },
   {
     "id": "prod-swar-0109",
@@ -2978,7 +3086,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 26.5,
-    "cost_price": 22.44
+    "cost_price": 22.44,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0110",
@@ -3005,7 +3114,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 400,
-    "cost_price": 362
+    "cost_price": 362,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0111",
@@ -3032,7 +3142,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 20,
-    "cost_price": 18.1
+    "cost_price": 18.1,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0112",
@@ -3059,7 +3170,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 510,
-    "cost_price": 436
+    "cost_price": 436,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0113",
@@ -3086,7 +3198,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 25.5,
-    "cost_price": 21.8
+    "cost_price": 21.8,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0114",
@@ -3113,7 +3226,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 500,
-    "cost_price": 0
+    "cost_price": 630,
+    "barcode": "200902234082"
   },
   {
     "id": "prod-swar-0115",
@@ -3140,7 +3254,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 25,
-    "cost_price": 0
+    "cost_price": 17.6,
+    "barcode": "230915423996"
   },
   {
     "id": "prod-swar-0116",
@@ -3167,7 +3282,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 480,
-    "cost_price": 0
+    "cost_price": 352,
+    "barcode": "230915405292"
   },
   {
     "id": "prod-swar-0117",
@@ -3194,7 +3310,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 45,
-    "cost_price": 39.16
+    "cost_price": 39.16,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0118",
@@ -3221,7 +3338,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 400,
-    "cost_price": 352
+    "cost_price": 352,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0119",
@@ -3248,7 +3366,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 20,
-    "cost_price": 17.6
+    "cost_price": 17.6,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0120",
@@ -3275,7 +3394,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 800,
-    "cost_price": 630
+    "cost_price": 630,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0121",
@@ -3302,7 +3422,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 40,
-    "cost_price": 31.5
+    "cost_price": 31.5,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0122",
@@ -3329,7 +3450,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 230,
-    "cost_price": 190
+    "cost_price": 190,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0123",
@@ -3356,7 +3478,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 320,
-    "cost_price": 250
+    "cost_price": 250,
+    "barcode": "210320142129"
   },
   {
     "id": "prod-swar-0124",
@@ -3383,7 +3506,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 110,
-    "cost_price": 100
+    "cost_price": 100,
+    "barcode": "220619563357"
   },
   {
     "id": "prod-swar-0125",
@@ -3410,7 +3534,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 50,
-    "cost_price": 43
+    "cost_price": 43,
+    "barcode": "201101234864"
   },
   {
     "id": "prod-swar-0126",
@@ -3437,7 +3562,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 500,
-    "cost_price": 430
+    "cost_price": 430,
+    "barcode": "210101002407"
   },
   {
     "id": "prod-swar-0127",
@@ -3464,7 +3590,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 560,
-    "cost_price": 460
+    "cost_price": 460,
+    "barcode": "200819440154"
   },
   {
     "id": "prod-swar-0128",
@@ -3491,7 +3618,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 140,
-    "cost_price": 115
+    "cost_price": 115,
+    "barcode": "200819465805"
   },
   {
     "id": "prod-swar-0129",
@@ -3518,7 +3646,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 70,
-    "cost_price": 62.08
+    "cost_price": 62.08,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0130",
@@ -3545,7 +3674,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 840,
-    "cost_price": 745
+    "cost_price": 745,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0131",
@@ -3572,7 +3702,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 142,
-    "cost_price": 132
+    "cost_price": 132,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0132",
@@ -3599,7 +3730,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 710,
-    "cost_price": 660
+    "cost_price": 660,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0133",
@@ -3626,7 +3758,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 700,
-    "cost_price": 570
+    "cost_price": 570,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0134",
@@ -3653,7 +3786,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 140,
-    "cost_price": 114
+    "cost_price": 114,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0135",
@@ -3680,7 +3814,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 22,
-    "cost_price": 20
+    "cost_price": 20,
+    "barcode": "230916464172"
   },
   {
     "id": "prod-swar-0136",
@@ -3707,7 +3842,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 360,
-    "cost_price": 335
+    "cost_price": 335,
+    "barcode": "200901534024"
   },
   {
     "id": "prod-swar-0137",
@@ -3734,7 +3870,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 3600,
-    "cost_price": 3350
+    "cost_price": 3350,
+    "barcode": "221002013352"
   },
   {
     "id": "prod-swar-0138",
@@ -3761,7 +3898,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 270,
-    "cost_price": 258
+    "cost_price": 258,
+    "barcode": "230315281105"
   },
   {
     "id": "prod-swar-0139",
@@ -3788,7 +3926,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 200,
-    "cost_price": 176.67
+    "cost_price": 176.67,
+    "barcode": "221019123901"
   },
   {
     "id": "prod-swar-0140",
@@ -3815,7 +3954,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1200,
-    "cost_price": 1060
+    "cost_price": 1060,
+    "barcode": "221102343784"
   },
   {
     "id": "prod-swar-0141",
@@ -3842,7 +3982,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 275,
-    "cost_price": 255
+    "cost_price": 255,
+    "barcode": "231018255254"
   },
   {
     "id": "prod-swar-0142",
@@ -3869,7 +4010,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1650,
-    "cost_price": 1530
+    "cost_price": 1530,
+    "barcode": "250815090870"
   },
   {
     "id": "prod-swar-0143",
@@ -3896,7 +4038,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 245,
-    "cost_price": 231
+    "cost_price": 231,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0144",
@@ -3923,7 +4066,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1475,
-    "cost_price": 1375
+    "cost_price": 1375,
+    "barcode": "200920240808"
   },
   {
     "id": "prod-swar-0145",
@@ -3950,7 +4094,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 350,
-    "cost_price": 250
+    "cost_price": 250,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0146",
@@ -3977,7 +4122,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 107,
-    "cost_price": 100
+    "cost_price": 100,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0147",
@@ -4004,7 +4150,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 275,
-    "cost_price": 225
+    "cost_price": 225,
+    "barcode": "210321275780"
   },
   {
     "id": "prod-swar-0148",
@@ -4031,7 +4178,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 600,
-    "cost_price": 475
+    "cost_price": 475,
+    "barcode": "210316271750"
   },
   {
     "id": "prod-swar-0149",
@@ -4058,7 +4206,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1350,
-    "cost_price": 1275
+    "cost_price": 1275,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0150",
@@ -4085,7 +4234,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1100,
-    "cost_price": 950
+    "cost_price": 950,
+    "barcode": "200920261971"
   },
   {
     "id": "prod-swar-0151",
@@ -4112,7 +4262,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 45.5,
-    "cost_price": 0
+    "cost_price": 27.5,
+    "barcode": "200920431035"
   },
   {
     "id": "prod-swar-0152",
@@ -4139,7 +4290,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 45,
-    "cost_price": 35
+    "cost_price": 35,
+    "barcode": "251116504880"
   },
   {
     "id": "prod-swar-0153",
@@ -4166,7 +4318,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 85,
-    "cost_price": 65
+    "cost_price": 65,
+    "barcode": "251116520893"
   },
   {
     "id": "prod-swar-0154",
@@ -4193,7 +4346,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 390,
-    "cost_price": 310
+    "cost_price": 310,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0155",
@@ -4220,7 +4374,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 13,
-    "cost_price": 10.33
+    "cost_price": 10.33,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0156",
@@ -4247,7 +4402,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 340,
-    "cost_price": 275
+    "cost_price": 275,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0157",
@@ -4274,7 +4430,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 11.33,
-    "cost_price": 9.17
+    "cost_price": 9.17,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0158",
@@ -4301,7 +4458,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 45,
-    "cost_price": 0
+    "cost_price": 198.85,
+    "barcode": "200902211233"
   },
   {
     "id": "prod-swar-0159",
@@ -4328,7 +4486,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1080,
-    "cost_price": 931.2
+    "cost_price": 931.2,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0160",
@@ -4355,7 +4514,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 142,
-    "cost_price": 132.41
+    "cost_price": 132.41,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0161",
@@ -4382,7 +4542,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2640,
-    "cost_price": 2374.56
+    "cost_price": 2374.56,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0162",
@@ -4409,7 +4570,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 210,
-    "cost_price": 198.85
+    "cost_price": 198.85,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0163",
@@ -4436,7 +4598,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 700,
-    "cost_price": 660
+    "cost_price": 660,
+    "barcode": "210317084041"
   },
   {
     "id": "prod-swar-0164",
@@ -4463,7 +4626,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 100,
-    "cost_price": 81.76
+    "cost_price": 81.76,
+    "barcode": "220116482149"
   },
   {
     "id": "prod-swar-0165",
@@ -4490,7 +4654,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 255,
-    "cost_price": 144.6
+    "cost_price": 144.6,
+    "barcode": "210914233294"
   },
   {
     "id": "prod-swar-0166",
@@ -4517,7 +4682,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 175,
-    "cost_price": 163
+    "cost_price": 163,
+    "barcode": "240115441631"
   },
   {
     "id": "prod-swar-0167",
@@ -4544,7 +4710,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 20,
-    "cost_price": 17.8
+    "cost_price": 17.8,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0168",
@@ -4571,7 +4738,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 600,
-    "cost_price": 534
+    "cost_price": 534,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0169",
@@ -4598,7 +4766,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 345,
-    "cost_price": 332
+    "cost_price": 332,
+    "barcode": "260116551181"
   },
   {
     "id": "prod-swar-0170",
@@ -4625,7 +4794,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 330,
-    "cost_price": 290
+    "cost_price": 290,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0171",
@@ -4652,7 +4822,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 33,
-    "cost_price": 29
+    "cost_price": 29,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0172",
@@ -4679,7 +4850,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 248,
-    "cost_price": 242
+    "cost_price": 242,
+    "barcode": "210219345395"
   },
   {
     "id": "prod-swar-0173",
@@ -4706,7 +4878,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 300,
-    "cost_price": 0
+    "cost_price": 420,
+    "barcode": "200917454768"
   },
   {
     "id": "prod-swar-0174",
@@ -4733,7 +4906,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 22.5,
-    "cost_price": 17.75
+    "cost_price": 17.75,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0175",
@@ -4760,7 +4934,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 480,
-    "cost_price": 420
+    "cost_price": 420,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0176",
@@ -4787,7 +4962,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 24,
-    "cost_price": 21
+    "cost_price": 21,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0177",
@@ -4814,7 +4990,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 180,
-    "cost_price": 150
+    "cost_price": 150,
+    "barcode": "210321091693"
   },
   {
     "id": "prod-swar-0178",
@@ -4841,7 +5018,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 650,
-    "cost_price": 600
+    "cost_price": 600,
+    "barcode": "201114424243"
   },
   {
     "id": "prod-swar-0179",
@@ -4868,7 +5046,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 240,
-    "cost_price": 204
+    "cost_price": 204,
+    "barcode": "200920291876"
   },
   {
     "id": "prod-swar-0180",
@@ -4895,7 +5074,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 107,
-    "cost_price": 99
+    "cost_price": 99,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0181",
@@ -4922,7 +5102,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 7.64,
-    "cost_price": 7.07
+    "cost_price": 7.07,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0182",
@@ -4949,7 +5130,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 100,
-    "cost_price": 85.67
+    "cost_price": 85.67,
+    "barcode": "240416022138"
   },
   {
     "id": "prod-swar-0183",
@@ -4976,7 +5158,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2800,
-    "cost_price": 2600
+    "cost_price": 2600,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0184",
@@ -5003,7 +5186,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 130,
-    "cost_price": 119
+    "cost_price": 119,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0185",
@@ -5030,7 +5214,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 140,
-    "cost_price": 133.3
+    "cost_price": 133.3,
+    "barcode": "220715000656"
   },
   {
     "id": "prod-swar-0186",
@@ -5057,7 +5242,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 265,
-    "cost_price": 248
+    "cost_price": 248,
+    "barcode": "220716212482"
   },
   {
     "id": "prod-swar-0187",
@@ -5084,7 +5270,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 30,
-    "cost_price": 23
+    "cost_price": 23,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0188",
@@ -5111,7 +5298,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1625,
-    "cost_price": 1386
+    "cost_price": 1386,
+    "barcode": "200920522262"
   },
   {
     "id": "prod-swar-0189",
@@ -5138,7 +5326,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 80,
-    "cost_price": 71.25
+    "cost_price": 71.25,
+    "barcode": "200920535492"
   },
   {
     "id": "prod-swar-0190",
@@ -5165,7 +5354,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 85,
-    "cost_price": 73
+    "cost_price": 73,
+    "barcode": "200920231895"
   },
   {
     "id": "prod-swar-0191",
@@ -5192,7 +5382,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 80,
-    "cost_price": 0
+    "cost_price": 122,
+    "barcode": "200819354267"
   },
   {
     "id": "prod-swar-0192",
@@ -5219,7 +5410,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 225,
-    "cost_price": 200
+    "cost_price": 200,
+    "barcode": "200919534647"
   },
   {
     "id": "prod-swar-0193",
@@ -5246,7 +5438,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 240,
-    "cost_price": 215
+    "cost_price": 215,
+    "barcode": "200902023089"
   },
   {
     "id": "prod-swar-0194",
@@ -5273,7 +5466,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 230,
-    "cost_price": 208
+    "cost_price": 208,
+    "barcode": "210317463034"
   },
   {
     "id": "prod-swar-0195",
@@ -5300,7 +5494,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1500,
-    "cost_price": 1430
+    "cost_price": 1430,
+    "barcode": "200920541740"
   },
   {
     "id": "prod-swar-0196",
@@ -5327,7 +5522,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 150,
-    "cost_price": 143
+    "cost_price": 143,
+    "barcode": "200920552272"
   },
   {
     "id": "prod-swar-0197",
@@ -5354,7 +5550,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 380,
-    "cost_price": 360
+    "cost_price": 360,
+    "barcode": "200916261338"
   },
   {
     "id": "prod-swar-0198",
@@ -5381,7 +5578,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 61,
-    "cost_price": 59.5
+    "cost_price": 59.5,
+    "barcode": "200916295224"
   },
   {
     "id": "prod-swar-0199",
@@ -5408,7 +5606,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 260,
-    "cost_price": 165
+    "cost_price": 165,
+    "barcode": "200920375487"
   },
   {
     "id": "prod-swar-0200",
@@ -5435,7 +5634,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 27,
-    "cost_price": 25.83
+    "cost_price": 25.83,
+    "barcode": "210320105721"
   },
   {
     "id": "prod-swar-0201",
@@ -5462,7 +5662,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 450,
-    "cost_price": 390
+    "cost_price": 390,
+    "barcode": "201220355302"
   },
   {
     "id": "prod-swar-0202",
@@ -5489,7 +5690,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 450,
-    "cost_price": 380
+    "cost_price": 380,
+    "barcode": "201213061704"
   },
   {
     "id": "prod-swar-0203",
@@ -5516,7 +5718,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 375,
-    "cost_price": 300
+    "cost_price": 300,
+    "barcode": "210322201521"
   },
   {
     "id": "prod-swar-0204",
@@ -5543,7 +5746,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 550,
-    "cost_price": 425
+    "cost_price": 425,
+    "barcode": "200920381989"
   },
   {
     "id": "prod-swar-0205",
@@ -5570,7 +5774,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 850,
-    "cost_price": 590
+    "cost_price": 590,
+    "barcode": "200920371465"
   },
   {
     "id": "prod-swar-0206",
@@ -5597,7 +5802,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 550,
-    "cost_price": 450
+    "cost_price": 450,
+    "barcode": "201015402876"
   },
   {
     "id": "prod-swar-0207",
@@ -5624,7 +5830,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 725,
-    "cost_price": 550
+    "cost_price": 550,
+    "barcode": "201112571584"
   },
   {
     "id": "prod-swar-0208",
@@ -5651,7 +5858,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 200,
-    "cost_price": 175
+    "cost_price": 175,
+    "barcode": "210322190620"
   },
   {
     "id": "prod-swar-0209",
@@ -5678,7 +5886,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 550,
-    "cost_price": 480
+    "cost_price": 480,
+    "barcode": "210320115830"
   },
   {
     "id": "prod-swar-0210",
@@ -5705,7 +5914,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 450,
-    "cost_price": 380
+    "cost_price": 380,
+    "barcode": "240315424606"
   },
   {
     "id": "prod-swar-0211",
@@ -5732,7 +5942,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 51,
-    "cost_price": 48.38
+    "cost_price": 48.38,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0212",
@@ -5759,7 +5970,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2250,
-    "cost_price": 2082.6
+    "cost_price": 2082.6,
+    "barcode": "200813552891"
   },
   {
     "id": "prod-swar-0213",
@@ -5786,7 +5998,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 133,
-    "cost_price": 126.72
+    "cost_price": 126.72,
+    "barcode": "200813564092"
   },
   {
     "id": "prod-swar-0214",
@@ -5813,7 +6026,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 36,
-    "cost_price": 32
+    "cost_price": 32,
+    "barcode": "220514573576"
   },
   {
     "id": "prod-swar-0215",
@@ -5840,7 +6054,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 738,
-    "cost_price": 655.2
+    "cost_price": 655.2,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0216",
@@ -5867,7 +6082,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 41,
-    "cost_price": 36.4
+    "cost_price": 36.4,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0217",
@@ -5894,7 +6110,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 846,
-    "cost_price": 769.86
+    "cost_price": 655.2,
+    "barcode": "200803004288"
   },
   {
     "id": "prod-swar-0218",
@@ -5921,7 +6138,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 47,
-    "cost_price": 42.77
+    "cost_price": 36.4,
+    "barcode": "200803021644"
   },
   {
     "id": "prod-swar-0219",
@@ -5948,7 +6166,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 405,
-    "cost_price": 365.04
+    "cost_price": 365.04,
+    "barcode": "230215262839"
   },
   {
     "id": "prod-swar-0220",
@@ -5975,7 +6194,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 22.5,
-    "cost_price": 20.28
+    "cost_price": 20.28,
+    "barcode": "230215282805"
   },
   {
     "id": "prod-swar-0221",
@@ -6002,7 +6222,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 450,
-    "cost_price": 355
+    "cost_price": 355,
+    "barcode": "200814193142"
   },
   {
     "id": "prod-swar-0222",
@@ -6029,7 +6250,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 60,
-    "cost_price": 40
+    "cost_price": 40,
+    "barcode": "201119450360"
   },
   {
     "id": "prod-swar-0223",
@@ -6056,7 +6278,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 700,
-    "cost_price": 639
+    "cost_price": 655.2,
+    "barcode": "200803004288"
   },
   {
     "id": "prod-swar-0224",
@@ -6083,7 +6306,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 112.5,
-    "cost_price": 106.25
+    "cost_price": 36.4,
+    "barcode": "200803021644"
   },
   {
     "id": "prod-swar-0225",
@@ -6110,7 +6334,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 100,
-    "cost_price": 91
+    "cost_price": 91,
+    "barcode": "241015403175"
   },
   {
     "id": "prod-swar-0226",
@@ -6137,7 +6362,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 222,
-    "cost_price": 180.4
+    "cost_price": 180.4,
+    "barcode": "201016011574"
   },
   {
     "id": "prod-swar-0227",
@@ -6164,7 +6390,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 37.5,
-    "cost_price": 33
+    "cost_price": 33,
+    "barcode": "240115550639"
   },
   {
     "id": "prod-swar-0228",
@@ -6191,7 +6418,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 675,
-    "cost_price": 594
+    "cost_price": 594,
+    "barcode": "240706160764"
   },
   {
     "id": "prod-swar-0229",
@@ -6218,7 +6446,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 145,
-    "cost_price": 135
+    "cost_price": 135,
+    "barcode": "210315252613"
   },
   {
     "id": "prod-swar-0230",
@@ -6245,7 +6474,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1700,
-    "cost_price": 1481
+    "cost_price": 1481,
+    "barcode": "200814042892"
   },
   {
     "id": "prod-swar-0231",
@@ -6272,7 +6502,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 85,
-    "cost_price": 74.05
+    "cost_price": 74.05,
+    "barcode": "200814054118"
   },
   {
     "id": "prod-swar-0232",
@@ -6299,7 +6530,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 140,
-    "cost_price": 128
+    "cost_price": 128,
+    "barcode": "230200071976"
   },
   {
     "id": "prod-swar-0233",
@@ -6326,7 +6558,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 125,
-    "cost_price": 110
+    "cost_price": 110,
+    "barcode": "251116534213"
   },
   {
     "id": "prod-swar-0234",
@@ -6353,7 +6586,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 350,
-    "cost_price": 250
+    "cost_price": 250,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0235",
@@ -6380,7 +6614,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 27,
-    "cost_price": 22
+    "cost_price": 22,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0236",
@@ -6407,7 +6642,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 330,
-    "cost_price": 275
+    "cost_price": 275,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0237",
@@ -6434,7 +6670,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 270,
-    "cost_price": 259.5
+    "cost_price": 259.5,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0238",
@@ -6461,7 +6698,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 95,
-    "cost_price": 86
+    "cost_price": 86,
+    "barcode": "210414410777"
   },
   {
     "id": "prod-swar-0239",
@@ -6488,7 +6726,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 450,
-    "cost_price": 363.64
+    "cost_price": 363.64,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0240",
@@ -6515,7 +6754,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 65,
-    "cost_price": 58.2
+    "cost_price": 58.2,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0241",
@@ -6542,7 +6782,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 370,
-    "cost_price": 320
+    "cost_price": 320,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0242",
@@ -6569,7 +6810,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 65,
-    "cost_price": 58.2
+    "cost_price": 58.2,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0243",
@@ -6596,7 +6838,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 175,
-    "cost_price": 161.18
+    "cost_price": 161.18,
+    "barcode": "210914201266"
   },
   {
     "id": "prod-swar-0244",
@@ -6623,7 +6866,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 200,
-    "cost_price": 150
+    "cost_price": 150,
+    "barcode": "230218303698"
   },
   {
     "id": "prod-swar-0245",
@@ -6650,7 +6894,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 150,
-    "cost_price": 140
+    "cost_price": 140,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0246",
@@ -6677,7 +6922,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 300,
-    "cost_price": 220.5
+    "cost_price": 220.5,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0247",
@@ -6704,7 +6950,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 65,
-    "cost_price": 59.5
+    "cost_price": 59.5,
+    "barcode": "240514505836"
   },
   {
     "id": "prod-swar-0248",
@@ -6731,7 +6978,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 80,
-    "cost_price": 68
+    "cost_price": 68,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0249",
@@ -6758,7 +7006,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2743,
-    "cost_price": 2621.28
+    "cost_price": 2621.28,
+    "barcode": "200819050363"
   },
   {
     "id": "prod-swar-0250",
@@ -6785,7 +7034,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 215,
-    "cost_price": 208
+    "cost_price": 208,
+    "barcode": "200819070450"
   },
   {
     "id": "prod-swar-0251",
@@ -6812,7 +7062,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 175,
-    "cost_price": 155.36
+    "cost_price": 161.18,
+    "barcode": "210914201266"
   },
   {
     "id": "prod-swar-0252",
@@ -6839,7 +7090,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 220,
-    "cost_price": 210
+    "cost_price": 165,
+    "barcode": "230117391811"
   },
   {
     "id": "prod-swar-0253",
@@ -6866,7 +7118,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 185,
-    "cost_price": 165
+    "cost_price": 165,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0254",
@@ -6893,7 +7146,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 265,
-    "cost_price": 250
+    "cost_price": 250,
+    "barcode": "240117132587"
   },
   {
     "id": "prod-swar-0255",
@@ -6920,7 +7174,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 35,
-    "cost_price": 25
+    "cost_price": 25,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0256",
@@ -6947,7 +7202,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 135,
-    "cost_price": 110
+    "cost_price": 110,
+    "barcode": "200920350037"
   },
   {
     "id": "prod-swar-0257",
@@ -6974,7 +7230,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 95,
-    "cost_price": 75
+    "cost_price": 75,
+    "barcode": "200920340530"
   },
   {
     "id": "prod-swar-0258",
@@ -7001,7 +7258,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1000,
-    "cost_price": 960
+    "cost_price": 960,
+    "barcode": "240819302550"
   },
   {
     "id": "prod-swar-0259",
@@ -7028,7 +7286,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 100,
-    "cost_price": 90
+    "cost_price": 90,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0260",
@@ -7055,7 +7314,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 92.5,
-    "cost_price": 83
+    "cost_price": 83,
+    "barcode": "210317363073"
   },
   {
     "id": "prod-swar-0261",
@@ -7082,7 +7342,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 555,
-    "cost_price": 498
+    "cost_price": 498,
+    "barcode": "231217055848"
   },
   {
     "id": "prod-swar-0262",
@@ -7109,7 +7370,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 32,
-    "cost_price": 26
+    "cost_price": 26,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0263",
@@ -7136,7 +7398,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 320,
-    "cost_price": 260
+    "cost_price": 260,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0264",
@@ -7163,7 +7426,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 26.5,
-    "cost_price": 23
+    "cost_price": 23,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0265",
@@ -7190,7 +7454,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 530,
-    "cost_price": 460
+    "cost_price": 460,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0266",
@@ -7217,7 +7482,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 100,
-    "cost_price": 83
+    "cost_price": 83,
+    "barcode": "201016030140"
   },
   {
     "id": "prod-swar-0267",
@@ -7244,7 +7510,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 20,
-    "cost_price": 15.9
+    "cost_price": 15.9,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0268",
@@ -7271,7 +7538,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 320,
-    "cost_price": 248
+    "cost_price": 248,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0269",
@@ -7298,7 +7566,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 40,
-    "cost_price": 34.4
+    "cost_price": 34.4,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0270",
@@ -7325,7 +7594,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 250,
-    "cost_price": 221.76
+    "cost_price": 221.76,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0271",
@@ -7352,7 +7622,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 220,
-    "cost_price": 200.86
+    "cost_price": 200.86,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0272",
@@ -7379,7 +7650,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2160,
-    "cost_price": 2016
+    "cost_price": 2016,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0273",
@@ -7406,7 +7678,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 192,
-    "cost_price": 173
+    "cost_price": 173,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0274",
@@ -7433,7 +7706,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1900,
-    "cost_price": 1805.7
+    "cost_price": 1805.7,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0275",
@@ -7460,7 +7734,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 210,
-    "cost_price": 180.57
+    "cost_price": 180.57,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0276",
@@ -7487,7 +7762,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 170,
-    "cost_price": 152.75
+    "cost_price": 152.75,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0277",
@@ -7514,7 +7790,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1700,
-    "cost_price": 1537.5
+    "cost_price": 1537.5,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0278",
@@ -7541,7 +7818,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 17,
-    "cost_price": 15.25
+    "cost_price": 15.25,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0279",
@@ -7568,7 +7846,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 34,
-    "cost_price": 29.04
+    "cost_price": 29.04,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0280",
@@ -7595,7 +7874,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 220,
-    "cost_price": 198
+    "cost_price": 198,
+    "barcode": "201019491203"
   },
   {
     "id": "prod-swar-0281",
@@ -7622,7 +7902,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 3300,
-    "cost_price": 2970
+    "cost_price": 2970,
+    "barcode": "210820215645"
   },
   {
     "id": "prod-swar-0282",
@@ -7649,7 +7930,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 16,
-    "cost_price": 12.5
+    "cost_price": 12.5,
+    "barcode": "220318052647"
   },
   {
     "id": "prod-swar-0283",
@@ -7676,7 +7958,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 180,
-    "cost_price": 150
+    "cost_price": 150,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0284",
@@ -7703,7 +7986,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 41,
-    "cost_price": 38
+    "cost_price": 38,
+    "barcode": "210816002944"
   },
   {
     "id": "prod-swar-0285",
@@ -7730,7 +8014,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 55,
-    "cost_price": 45
+    "cost_price": 45,
+    "barcode": "231216132535"
   },
   {
     "id": "prod-swar-0286",
@@ -7757,7 +8042,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 936,
-    "cost_price": 924
+    "cost_price": 924,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0287",
@@ -7784,7 +8070,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 325,
-    "cost_price": 285
+    "cost_price": 285,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0288",
@@ -7811,7 +8098,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 350,
-    "cost_price": 320
+    "cost_price": 320,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0289",
@@ -7838,7 +8126,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 205,
-    "cost_price": 194.28
+    "cost_price": 194.28,
+    "barcode": "201114120096"
   },
   {
     "id": "prod-swar-0290",
@@ -7865,7 +8154,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 255,
-    "cost_price": 245.68
+    "cost_price": 245.68,
+    "barcode": "200819400460"
   },
   {
     "id": "prod-swar-0291",
@@ -7892,7 +8182,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 275,
-    "cost_price": 264.65
+    "cost_price": 264.65,
+    "barcode": "201114155128"
   },
   {
     "id": "prod-swar-0292",
@@ -7919,7 +8210,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2900,
-    "cost_price": 2750
+    "cost_price": 2750,
+    "barcode": "230200090728"
   },
   {
     "id": "prod-swar-0293",
@@ -7946,7 +8238,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 27,
-    "cost_price": 22.88
+    "cost_price": 22.88,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0294",
@@ -7973,7 +8266,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 33,
-    "cost_price": 28
+    "cost_price": 28,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0295",
@@ -8000,7 +8294,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 35,
-    "cost_price": 31
+    "cost_price": 31,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0296",
@@ -8027,7 +8322,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 195,
-    "cost_price": 155
+    "cost_price": 155,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0297",
@@ -8054,7 +8350,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 165,
-    "cost_price": 144
+    "cost_price": 144,
+    "barcode": "200920304570"
   },
   {
     "id": "prod-swar-0298",
@@ -8081,7 +8378,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 125,
-    "cost_price": 110
+    "cost_price": 110,
+    "barcode": "251116524592"
   },
   {
     "id": "prod-swar-0299",
@@ -8108,7 +8406,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 238,
-    "cost_price": 231
+    "cost_price": 231,
+    "barcode": "200913162802"
   },
   {
     "id": "prod-swar-0300",
@@ -8135,7 +8434,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 212,
-    "cost_price": 0
+    "cost_price": 0,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0301",
@@ -8162,7 +8462,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 62.5,
-    "cost_price": 51.5
+    "cost_price": 51.5,
+    "barcode": "200919473799"
   },
   {
     "id": "prod-swar-0302",
@@ -8189,7 +8490,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 70,
-    "cost_price": 58.5
+    "cost_price": 58.5,
+    "barcode": "230116285679"
   },
   {
     "id": "prod-swar-0303",
@@ -8216,7 +8518,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 35,
-    "cost_price": 29.25
+    "cost_price": 29.25,
+    "barcode": "240602233560"
   },
   {
     "id": "prod-swar-0304",
@@ -8243,7 +8546,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 77,
-    "cost_price": 67.5
+    "cost_price": 67.5,
+    "barcode": "200813464306"
   },
   {
     "id": "prod-swar-0305",
@@ -8270,7 +8574,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 67,
-    "cost_price": 63
+    "cost_price": 63,
+    "barcode": "250313584439"
   },
   {
     "id": "prod-swar-0306",
@@ -8297,7 +8602,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 49.75,
-    "cost_price": 47.52
+    "cost_price": 47.52,
+    "barcode": "221014492706"
   },
   {
     "id": "prod-swar-0307",
@@ -8324,7 +8630,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2016,
-    "cost_price": 0
+    "cost_price": 696,
+    "barcode": "200814221643"
   },
   {
     "id": "prod-swar-0308",
@@ -8351,7 +8658,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 92.5,
-    "cost_price": 88.5
+    "cost_price": 91,
+    "barcode": "241015403175"
   },
   {
     "id": "prod-swar-0309",
@@ -8378,7 +8686,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1850,
-    "cost_price": 0
+    "cost_price": 91,
+    "barcode": "241015403175"
   },
   {
     "id": "prod-swar-0310",
@@ -8405,7 +8714,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 185,
-    "cost_price": 177
+    "cost_price": 177,
+    "barcode": "211013582878"
   },
   {
     "id": "prod-swar-0311",
@@ -8432,7 +8742,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1850,
-    "cost_price": 0
+    "cost_price": 177,
+    "barcode": "211013582878"
   },
   {
     "id": "prod-swar-0312",
@@ -8459,7 +8770,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2000,
-    "cost_price": 106.05
+    "cost_price": 106.05,
+    "barcode": "200813591560"
   },
   {
     "id": "prod-swar-0313",
@@ -8486,7 +8798,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 112,
-    "cost_price": 0
+    "cost_price": 106.05,
+    "barcode": "200813591560"
   },
   {
     "id": "prod-swar-0314",
@@ -8513,7 +8826,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 630,
-    "cost_price": 556.92
+    "cost_price": 556.92,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0315",
@@ -8540,7 +8854,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 35,
-    "cost_price": 30.94
+    "cost_price": 30.94,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0316",
@@ -8567,7 +8882,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 600,
-    "cost_price": 546
+    "cost_price": 546,
+    "barcode": "200803035664"
   },
   {
     "id": "prod-swar-0317",
@@ -8594,7 +8910,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 75,
-    "cost_price": 68.25
+    "cost_price": 68.25,
+    "barcode": "200803060369"
   },
   {
     "id": "prod-swar-0318",
@@ -8621,7 +8938,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 864,
-    "cost_price": 786.24
+    "cost_price": 556.92,
+    "barcode": "200802515411"
   },
   {
     "id": "prod-swar-0319",
@@ -8648,7 +8966,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 48,
-    "cost_price": 43.68
+    "cost_price": 30.94,
+    "barcode": "200802571140"
   },
   {
     "id": "prod-swar-0320",
@@ -8675,7 +8994,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 55,
-    "cost_price": 45
+    "cost_price": 45,
+    "barcode": "210116412406"
   },
   {
     "id": "prod-swar-0321",
@@ -8702,7 +9022,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 825,
-    "cost_price": 696
+    "cost_price": 696,
+    "barcode": "200814221643"
   },
   {
     "id": "prod-swar-0322",
@@ -8729,7 +9050,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 75,
-    "cost_price": 67
+    "cost_price": 67,
+    "barcode": "200814241833"
   },
   {
     "id": "prod-swar-0323",
@@ -8756,7 +9078,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 405,
-    "cost_price": 301.95
+    "cost_price": 301.95,
+    "barcode": "230215145017"
   },
   {
     "id": "prod-swar-0324",
@@ -8783,7 +9106,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 700,
-    "cost_price": 594
+    "cost_price": 556.92,
+    "barcode": "200802515411"
   },
   {
     "id": "prod-swar-0325",
@@ -8810,7 +9134,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 92,
-    "cost_price": 84
+    "cost_price": 30.94,
+    "barcode": "200802571140"
   },
   {
     "id": "prod-swar-0326",
@@ -8837,7 +9162,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 27,
-    "cost_price": 23.83
+    "cost_price": 23.83,
+    "barcode": "220516164747"
   },
   {
     "id": "prod-swar-0327",
@@ -8864,7 +9190,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 80,
-    "cost_price": 77.81
+    "cost_price": 77.81,
+    "barcode": "220516151157"
   },
   {
     "id": "prod-swar-0328",
@@ -8891,7 +9218,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 22.5,
-    "cost_price": 16.78
+    "cost_price": 16.78,
+    "barcode": "230215224784"
   },
   {
     "id": "prod-swar-0329",
@@ -8918,7 +9246,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 250,
-    "cost_price": 214.87
+    "cost_price": 214.87,
+    "barcode": "201115313182"
   },
   {
     "id": "prod-swar-0330",
@@ -8945,7 +9274,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 37.5,
-    "cost_price": 31
+    "cost_price": 31,
+    "barcode": "240115542216"
   },
   {
     "id": "prod-swar-0331",
@@ -8972,7 +9302,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 675,
-    "cost_price": 558
+    "cost_price": 558,
+    "barcode": "240706164303"
   },
   {
     "id": "prod-swar-0332",
@@ -8999,7 +9330,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 75,
-    "cost_price": 67.5
+    "cost_price": 67.5,
+    "barcode": "240817230571"
   },
   {
     "id": "prod-swar-0333",
@@ -9026,7 +9358,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 550,
-    "cost_price": 543.5
+    "cost_price": 543.5,
+    "barcode": "200814073309"
   },
   {
     "id": "prod-swar-0334",
@@ -9053,7 +9386,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 65,
-    "cost_price": 59.75
+    "cost_price": 59.75,
+    "barcode": "200814093753"
   },
   {
     "id": "prod-swar-0335",
@@ -9080,7 +9414,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1400,
-    "cost_price": 1254.5
+    "cost_price": 556.92,
+    "barcode": "200802515411"
   },
   {
     "id": "prod-swar-0336",
@@ -9107,7 +9442,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 70,
-    "cost_price": 62.73
+    "cost_price": 30.94,
+    "barcode": "200802571140"
   },
   {
     "id": "prod-swar-0337",
@@ -9134,7 +9470,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 175,
-    "cost_price": 157
+    "cost_price": 157,
+    "barcode": "210817434969"
   },
   {
     "id": "prod-swar-0338",
@@ -9161,7 +9498,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 800,
-    "cost_price": 665.8
+    "cost_price": 665.8,
+    "barcode": "200814160417"
   },
   {
     "id": "prod-swar-0339",
@@ -9188,7 +9526,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 85,
-    "cost_price": 77
+    "cost_price": 77,
+    "barcode": "200814171721"
   },
   {
     "id": "prod-swar-0340",
@@ -9215,7 +9554,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 130,
-    "cost_price": 100
+    "cost_price": 100,
+    "barcode": "230317444328"
   },
   {
     "id": "prod-swar-0341",
@@ -9242,7 +9582,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 4900,
-    "cost_price": 4630
+    "cost_price": 4630,
+    "barcode": "200920470124"
   },
   {
     "id": "prod-swar-0342",
@@ -9269,7 +9610,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1225,
-    "cost_price": 1157.5
+    "cost_price": 1157.5,
+    "barcode": "200920485292"
   },
   {
     "id": "prod-swar-0343",
@@ -9296,7 +9638,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 70,
-    "cost_price": 62.11
+    "cost_price": 62.11,
+    "barcode": "211014363981"
   },
   {
     "id": "prod-swar-0344",
@@ -9323,7 +9666,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1500,
-    "cost_price": 1250
+    "cost_price": 1250,
+    "barcode": "200920455076"
   },
   {
     "id": "prod-swar-0345",
@@ -9350,7 +9694,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 250,
-    "cost_price": 208.33
+    "cost_price": 208.33,
+    "barcode": "200920463384"
   },
   {
     "id": "prod-swar-0346",
@@ -9377,7 +9722,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 36,
-    "cost_price": 32.5
+    "cost_price": 27.5,
+    "barcode": "200920431035"
   },
   {
     "id": "prod-swar-0347",
@@ -9404,7 +9750,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1296,
-    "cost_price": 1170
+    "cost_price": 1170,
+    "barcode": "210413002652"
   },
   {
     "id": "prod-swar-0348",
@@ -9431,7 +9778,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 35,
-    "cost_price": 27.5
+    "cost_price": 27.5,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0349",
@@ -9458,7 +9806,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 15,
-    "cost_price": 10
+    "cost_price": 10,
+    "barcode": "250215395245"
   },
   {
     "id": "prod-swar-0350",
@@ -9485,7 +9834,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 18,
-    "cost_price": 15
+    "cost_price": 15,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0351",
@@ -9512,7 +9862,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 45,
-    "cost_price": 38.75
+    "cost_price": 38.75,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0352",
@@ -9539,7 +9890,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1320,
-    "cost_price": 1250
+    "cost_price": 1250,
+    "barcode": "200920440807"
   },
   {
     "id": "prod-swar-0353",
@@ -9566,7 +9918,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 220,
-    "cost_price": 208.33
+    "cost_price": 208.33,
+    "barcode": "220616221697"
   },
   {
     "id": "prod-swar-0354",
@@ -9593,7 +9946,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 620,
-    "cost_price": 581.25
+    "cost_price": 581.25,
+    "barcode": "201016044911"
   },
   {
     "id": "prod-swar-0355",
@@ -9620,7 +9974,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 150,
-    "cost_price": 135
+    "cost_price": 135,
+    "barcode": "210313385442"
   },
   {
     "id": "prod-swar-0356",
@@ -9647,7 +10002,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 290,
-    "cost_price": 270.83
+    "cost_price": 270.83,
+    "barcode": "201014353439"
   },
   {
     "id": "prod-swar-0357",
@@ -9674,7 +10030,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1740,
-    "cost_price": 1625
+    "cost_price": 1625,
+    "barcode": "211022445486"
   },
   {
     "id": "prod-swar-0358",
@@ -9701,7 +10058,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 145,
-    "cost_price": 0
+    "cost_price": 1157.5,
+    "barcode": "200920485292"
   },
   {
     "id": "prod-swar-0359",
@@ -9728,7 +10086,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 260,
-    "cost_price": 233.33
+    "cost_price": 233.33,
+    "barcode": "200920435207"
   },
   {
     "id": "prod-swar-0360",
@@ -9755,7 +10114,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1560,
-    "cost_price": 1400
+    "cost_price": 1400,
+    "barcode": "240818163711"
   },
   {
     "id": "prod-swar-0361",
@@ -9782,7 +10142,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 210,
-    "cost_price": 186.66
+    "cost_price": 186.66,
+    "barcode": "240116051289"
   },
   {
     "id": "prod-swar-0362",
@@ -9809,7 +10170,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 36,
-    "cost_price": 31.94
+    "cost_price": 27.5,
+    "barcode": "200920431035"
   },
   {
     "id": "prod-swar-0363",
@@ -9836,7 +10198,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1800,
-    "cost_price": 1710
+    "cost_price": 1710,
+    "barcode": "200920422980"
   },
   {
     "id": "prod-swar-0364",
@@ -9863,7 +10226,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 300,
-    "cost_price": 285
+    "cost_price": 285,
+    "barcode": "200920431274"
   },
   {
     "id": "prod-swar-0365",
@@ -9890,7 +10254,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 4100,
-    "cost_price": 3500
+    "cost_price": 3500,
+    "barcode": "200920495852"
   },
   {
     "id": "prod-swar-0366",
@@ -9917,7 +10282,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1025,
-    "cost_price": 875
+    "cost_price": 875,
+    "barcode": "200920510466"
   },
   {
     "id": "prod-swar-0367",
@@ -9944,7 +10310,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 3250,
-    "cost_price": 2650.2
+    "cost_price": 2650.2,
+    "barcode": "200920390004"
   },
   {
     "id": "prod-swar-0368",
@@ -9971,7 +10338,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 325,
-    "cost_price": 265.02
+    "cost_price": 265.02,
+    "barcode": "200920401902"
   },
   {
     "id": "prod-swar-0369",
@@ -9998,7 +10366,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 24000,
-    "cost_price": 23980
+    "cost_price": 23980,
+    "barcode": "201014103608"
   },
   {
     "id": "prod-swar-0370",
@@ -10025,7 +10394,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 3500,
-    "cost_price": 2795
+    "cost_price": 2795,
+    "barcode": "200920405574"
   },
   {
     "id": "prod-swar-0371",
@@ -10052,7 +10422,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 350,
-    "cost_price": 279.5
+    "cost_price": 279.5,
+    "barcode": "200920415295"
   },
   {
     "id": "prod-swar-0372",
@@ -10079,7 +10450,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 75,
-    "cost_price": 47
+    "cost_price": 47,
+    "barcode": "200917573135"
   },
   {
     "id": "prod-swar-0373",
@@ -10106,7 +10478,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 16,
-    "cost_price": 14.17
+    "cost_price": 14.17,
+    "barcode": "210320123913"
   },
   {
     "id": "prod-swar-0374",
@@ -10133,7 +10506,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 175,
-    "cost_price": 135
+    "cost_price": 135,
+    "barcode": "201115174107"
   },
   {
     "id": "prod-swar-0375",
@@ -10160,7 +10534,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 16,
-    "cost_price": 13.33
+    "cost_price": 13.33,
+    "barcode": "210320135611"
   },
   {
     "id": "prod-swar-0376",
@@ -10187,7 +10562,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 140,
-    "cost_price": 100
+    "cost_price": 100,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0377",
@@ -10214,7 +10590,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 180,
-    "cost_price": 155
+    "cost_price": 155,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0378",
@@ -10241,7 +10618,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 16,
-    "cost_price": 15
+    "cost_price": 15,
+    "barcode": "220318092758"
   },
   {
     "id": "prod-swar-0379",
@@ -10268,7 +10646,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 60,
-    "cost_price": 50
+    "cost_price": 50,
+    "barcode": "220318083266"
   },
   {
     "id": "prod-swar-0380",
@@ -10295,7 +10674,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 270,
-    "cost_price": 257.75
+    "cost_price": 257.75,
+    "barcode": "260214112646"
   },
   {
     "id": "prod-swar-0381",
@@ -10322,7 +10702,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 128,
-    "cost_price": 117
+    "cost_price": 117,
+    "barcode": "260214133791"
   },
   {
     "id": "prod-swar-0382",
@@ -10349,7 +10730,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 315,
-    "cost_price": 306
+    "cost_price": 306,
+    "barcode": "240215335675"
   },
   {
     "id": "prod-swar-0383",
@@ -10376,7 +10758,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 100,
-    "cost_price": 83
+    "cost_price": 83,
+    "barcode": "200919495721"
   },
   {
     "id": "prod-swar-0384",
@@ -10403,7 +10786,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 486,
-    "cost_price": 0
+    "cost_price": 606.06,
+    "barcode": "200802581073"
   },
   {
     "id": "prod-swar-0385",
@@ -10430,7 +10814,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 740,
-    "cost_price": 0
+    "cost_price": 2450,
+    "barcode": "200819122180"
   },
   {
     "id": "prod-swar-0386",
@@ -10457,7 +10842,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 36,
-    "cost_price": 0
+    "cost_price": 98,
+    "barcode": "200814134717"
   },
   {
     "id": "prod-swar-0387",
@@ -10484,7 +10870,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 245,
-    "cost_price": 237
+    "cost_price": 237,
+    "barcode": "201220260823"
   },
   {
     "id": "prod-swar-0388",
@@ -10511,7 +10898,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 45,
-    "cost_price": 36.75
+    "cost_price": 36.75,
+    "barcode": "240316083203"
   },
   {
     "id": "prod-swar-0389",
@@ -10538,7 +10926,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 63,
-    "cost_price": 48
+    "cost_price": 48,
+    "barcode": "201021415355"
   },
   {
     "id": "prod-swar-0390",
@@ -10565,7 +10954,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 80,
-    "cost_price": 73.5
+    "cost_price": 73.5,
+    "barcode": "200813495178"
   },
   {
     "id": "prod-swar-0391",
@@ -10592,7 +10982,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 200,
-    "cost_price": 176.75
+    "cost_price": 176.75,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0392",
@@ -10619,7 +11010,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 10,
-    "cost_price": 8.84
+    "cost_price": 8.84,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0393",
@@ -10646,7 +11038,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 400,
-    "cost_price": 291.1
+    "cost_price": 291.1,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0394",
@@ -10673,7 +11066,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 20,
-    "cost_price": 14.56
+    "cost_price": 14.56,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0395",
@@ -10700,7 +11094,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 400,
-    "cost_price": 293
+    "cost_price": 293,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0396",
@@ -10727,7 +11122,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 20,
-    "cost_price": 14.65
+    "cost_price": 14.65,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0397",
@@ -10754,7 +11150,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 37,
-    "cost_price": 32
+    "cost_price": 32,
+    "barcode": "201021394650"
   },
   {
     "id": "prod-swar-0398",
@@ -10781,7 +11178,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1,
-    "cost_price": 0
+    "cost_price": 68,
+    "barcode": "210103102207"
   },
   {
     "id": "prod-swar-0399",
@@ -10808,7 +11206,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 170,
-    "cost_price": 157
+    "cost_price": 157,
+    "barcode": "210604301060"
   },
   {
     "id": "prod-swar-0400",
@@ -10835,7 +11234,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 85,
-    "cost_price": 78.5
+    "cost_price": 78.5,
+    "barcode": "220315262890"
   },
   {
     "id": "prod-swar-0401",
@@ -10862,7 +11262,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 138,
-    "cost_price": 134
+    "cost_price": 134,
+    "barcode": "210120285056"
   },
   {
     "id": "prod-swar-0402",
@@ -10889,7 +11290,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1380,
-    "cost_price": 1340
+    "cost_price": 1340,
+    "barcode": "220315292532"
   },
   {
     "id": "prod-swar-0403",
@@ -10916,7 +11318,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 29,
-    "cost_price": 27.1
+    "cost_price": 25.9,
+    "barcode": "230314222131"
   },
   {
     "id": "prod-swar-0404",
@@ -10943,7 +11346,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1450,
-    "cost_price": 1355
+    "cost_price": 1295,
+    "barcode": "230605541974"
   },
   {
     "id": "prod-swar-0405",
@@ -10970,7 +11374,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 58,
-    "cost_price": 52
+    "cost_price": 52,
+    "barcode": "210119231378"
   },
   {
     "id": "prod-swar-0406",
@@ -10997,7 +11402,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1450,
-    "cost_price": 1300
+    "cost_price": 1300,
+    "barcode": "220315322486"
   },
   {
     "id": "prod-swar-0407",
@@ -11024,7 +11430,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 72.5,
-    "cost_price": 67.25
+    "cost_price": 67.25,
+    "barcode": "200920412327"
   },
   {
     "id": "prod-swar-0408",
@@ -11051,7 +11458,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1450,
-    "cost_price": 1345
+    "cost_price": 1345,
+    "barcode": "241004280331"
   },
   {
     "id": "prod-swar-0409",
@@ -11078,7 +11486,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 430,
-    "cost_price": 0
+    "cost_price": 157,
+    "barcode": "210604301060"
   },
   {
     "id": "prod-swar-0410",
@@ -11105,7 +11514,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 43,
-    "cost_price": 0
+    "cost_price": 72,
+    "barcode": "210116544934"
   },
   {
     "id": "prod-swar-0411",
@@ -11132,7 +11542,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 80,
-    "cost_price": 72
+    "cost_price": 72,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0412",
@@ -11159,7 +11570,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 25,
-    "cost_price": 21.5
+    "cost_price": 21.5,
+    "barcode": "200819273473"
   },
   {
     "id": "prod-swar-0413",
@@ -11186,7 +11598,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1350,
-    "cost_price": 1265
+    "cost_price": 1265,
+    "barcode": "200819235389"
   },
   {
     "id": "prod-swar-0414",
@@ -11213,7 +11626,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 135,
-    "cost_price": 126.5
+    "cost_price": 126.5,
+    "barcode": "200819244177"
   },
   {
     "id": "prod-swar-0415",
@@ -11240,7 +11654,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1120,
-    "cost_price": 1050
+    "cost_price": 1050,
+    "barcode": "200819170144"
   },
   {
     "id": "prod-swar-0416",
@@ -11267,7 +11682,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 28,
-    "cost_price": 0
+    "cost_price": 25.9,
+    "barcode": "230314222131"
   },
   {
     "id": "prod-swar-0417",
@@ -11294,7 +11710,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 500,
-    "cost_price": 0
+    "cost_price": 1265,
+    "barcode": "200819235389"
   },
   {
     "id": "prod-swar-0418",
@@ -11321,7 +11738,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 20,
-    "cost_price": 0
+    "cost_price": 29.04,
+    "barcode": "250918215168"
   },
   {
     "id": "prod-swar-0419",
@@ -11348,7 +11766,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 65,
-    "cost_price": 60.5
+    "cost_price": 60.5,
+    "barcode": "201015275447"
   },
   {
     "id": "prod-swar-0420",
@@ -11375,7 +11794,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1040,
-    "cost_price": 968
+    "cost_price": 968,
+    "barcode": "210116584614"
   },
   {
     "id": "prod-swar-0421",
@@ -11402,7 +11822,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 420,
-    "cost_price": 0
+    "cost_price": 1340,
+    "barcode": "220315292532"
   },
   {
     "id": "prod-swar-0422",
@@ -11429,7 +11850,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 590,
-    "cost_price": 550
+    "cost_price": 550,
+    "barcode": "251122050029"
   },
   {
     "id": "prod-swar-0423",
@@ -11456,7 +11878,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1320,
-    "cost_price": 1220
+    "cost_price": 1220,
+    "barcode": "200819342267"
   },
   {
     "id": "prod-swar-0424",
@@ -11483,7 +11906,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 132,
-    "cost_price": 122
+    "cost_price": 122,
+    "barcode": "200819354267"
   },
   {
     "id": "prod-swar-0425",
@@ -11510,7 +11934,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 28,
-    "cost_price": 25.9
+    "cost_price": 25.9,
+    "barcode": "230314222131"
   },
   {
     "id": "prod-swar-0426",
@@ -11537,7 +11962,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1400,
-    "cost_price": 1295
+    "cost_price": 1295,
+    "barcode": "230605541974"
   },
   {
     "id": "prod-swar-0427",
@@ -11564,7 +11990,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 67.5,
-    "cost_price": 63.75
+    "cost_price": 63.75,
+    "barcode": "210119213095"
   },
   {
     "id": "prod-swar-0428",
@@ -11591,7 +12018,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 1350,
-    "cost_price": 1275
+    "cost_price": 1275,
+    "barcode": "220315295331"
   },
   {
     "id": "prod-swar-0429",
@@ -11618,7 +12046,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 42.5,
-    "cost_price": 38.34
+    "cost_price": 38.34,
+    "barcode": "230917185094"
   },
   {
     "id": "prod-swar-0430",
@@ -11645,7 +12074,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 89,
-    "cost_price": 82
+    "cost_price": 82,
+    "barcode": "230917111587"
   },
   {
     "id": "prod-swar-0431",
@@ -11672,7 +12102,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 36,
-    "cost_price": 0
+    "cost_price": 155,
+    "barcode": "200920314702"
   },
   {
     "id": "prod-swar-0432",
@@ -11699,7 +12130,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 880,
-    "cost_price": 780
+    "cost_price": 780,
+    "barcode": "200819280256"
   },
   {
     "id": "prod-swar-0433",
@@ -11726,7 +12158,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 75,
-    "cost_price": 67.5
+    "cost_price": 67.5,
+    "barcode": "200819320033"
   },
   {
     "id": "prod-swar-0434",
@@ -11753,7 +12186,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 200,
-    "cost_price": 187.2
+    "cost_price": 187.2,
+    "barcode": "201012392516"
   },
   {
     "id": "prod-swar-0435",
@@ -11780,7 +12214,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 120,
-    "cost_price": 103.67
+    "cost_price": 103.67,
+    "barcode": "201218441175"
   },
   {
     "id": "prod-swar-0436",
@@ -11807,7 +12242,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 87,
-    "cost_price": 78.85
+    "cost_price": 103.67,
+    "barcode": "201218441175"
   },
   {
     "id": "prod-swar-0437",
@@ -11834,7 +12270,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 36,
-    "cost_price": 32
+    "cost_price": 32,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0438",
@@ -11861,7 +12298,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 38,
-    "cost_price": 32.25
+    "cost_price": 32.25,
+    "barcode": "200920575841"
   },
   {
     "id": "prod-swar-0439",
@@ -11888,7 +12326,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 55,
-    "cost_price": 46
+    "cost_price": 46,
+    "barcode": "201020404312"
   },
   {
     "id": "prod-swar-0440",
@@ -11915,7 +12354,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 215,
-    "cost_price": 195
+    "cost_price": 195,
+    "barcode": "201020382539"
   },
   {
     "id": "prod-swar-0441",
@@ -11942,7 +12382,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 2520,
-    "cost_price": 2340
+    "cost_price": 2340,
+    "barcode": "230200162127"
   },
   {
     "id": "prod-swar-0442",
@@ -11969,7 +12410,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 100,
-    "cost_price": 85
+    "cost_price": 85,
+    "barcode": "210119212236"
   },
   {
     "id": "prod-swar-0443",
@@ -11996,7 +12438,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 160,
-    "cost_price": 144.5
+    "cost_price": 144.5,
+    "barcode": "200913090442"
   },
   {
     "id": "prod-swar-0444",
@@ -12023,7 +12466,8 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 290,
-    "cost_price": 279.56
+    "cost_price": 279.56,
+    "barcode": ""
   },
   {
     "id": "prod-swar-0445",
@@ -12050,6 +12494,7 @@ export const INITIAL_PRODUCTS = [
       }
     ],
     "selling_price": 33,
-    "cost_price": 26.67
+    "cost_price": 26.67,
+    "barcode": ""
   }
 ];

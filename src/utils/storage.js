@@ -1,8 +1,9 @@
 import { INITIAL_PRODUCTS } from '../data/defaultProducts.js';
+import { HARDCODED_COST_PRICES } from '../data/hardcodedCostPrices.js';
 
 const STORAGE_KEY = 'swar_frozen_inventory_v2';
 const SCHEMA_KEY = 'swar_schema_version';
-const CURRENT_SCHEMA = 'v4_cost_prices_populated_aug2026';
+const CURRENT_SCHEMA = 'v5_hardcoded_cost_prices_aug2026';
 const SETTINGS_KEY = 'swar_app_settings_v1';
 const INVOICES_KEY = 'swar_invoices_v1';
 const CUSTOMERS_KEY = 'swar_customers_v1';
@@ -20,10 +21,18 @@ export const normalizeProduct = (p) => {
   if (!p || typeof p !== 'object') return p;
   const selling_price = Number(p.selling_price ?? p.price ?? 0);
   
-  // If cost_price is missing or 0 in an older item, retrieve it from the initial populated catalog
+  // 1. Direct cost_price from product
   let cost_price = Number(p.cost_price ?? p.costPrice ?? 0);
-  if (cost_price === 0 && p.id && initialCostMap.has(p.id)) {
-    cost_price = initialCostMap.get(p.id);
+
+  // 2. If missing or 0, fallback to hardcoded PDF dataset lookup by barcode or name
+  if (cost_price === 0) {
+    if (p.barcode && HARDCODED_COST_PRICES[p.barcode] !== undefined) {
+      cost_price = Number(HARDCODED_COST_PRICES[p.barcode]);
+    } else if (p.name && HARDCODED_COST_PRICES[p.name] !== undefined) {
+      cost_price = Number(HARDCODED_COST_PRICES[p.name]);
+    } else if (p.id && initialCostMap.has(p.id)) {
+      cost_price = initialCostMap.get(p.id);
+    }
   }
 
   return {
@@ -38,7 +47,7 @@ export const getStoredProducts = () => {
   try {
     const existingSchema = localStorage.getItem(SCHEMA_KEY);
     if (existingSchema !== CURRENT_SCHEMA) {
-      // Migrate stored products to v4 schema: populate cost prices while preserving existing stock and audit logs
+      // Migrate stored products to v5 schema: populate hardcoded cost prices while preserving existing stock and audit logs
       localStorage.setItem(SCHEMA_KEY, CURRENT_SCHEMA);
       const data = localStorage.getItem(STORAGE_KEY);
       let existingProducts = [];
@@ -54,14 +63,17 @@ export const getStoredProducts = () => {
       const merged = INITIAL_PRODUCTS.map(initProd => {
         const stored = existingMap.get(initProd.id);
         if (stored) {
+          const customCost = Number(stored.cost_price ?? stored.costPrice ?? 0);
+          const finalCost = customCost > 0 ? customCost : Number(initProd.cost_price ?? 0);
+          const finalSelling = Number(stored.selling_price ?? stored.price ?? initProd.selling_price ?? initProd.price ?? 0);
+
           return {
             ...initProd,
             currentStock: stored.currentStock !== undefined ? stored.currentStock : initProd.currentStock,
             auditHistory: Array.isArray(stored.auditHistory) && stored.auditHistory.length > 0 ? stored.auditHistory : initProd.auditHistory,
-            // Use custom cost_price if stored, or initial catalog cost price
-            cost_price: Number(stored.cost_price ?? initProd.cost_price ?? 0),
-            selling_price: Number(stored.selling_price ?? stored.price ?? initProd.selling_price ?? initProd.price ?? 0),
-            price: Number(stored.selling_price ?? stored.price ?? initProd.selling_price ?? initProd.price ?? 0),
+            cost_price: finalCost,
+            selling_price: finalSelling,
+            price: finalSelling,
             notes: stored.notes || initProd.notes,
             freezerLocation: stored.freezerLocation || initProd.freezerLocation
           };
