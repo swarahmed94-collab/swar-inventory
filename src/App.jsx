@@ -9,7 +9,8 @@ import ReportModal from './components/ReportModal';
 import PurchaseOrderModal from './components/PurchaseOrderModal';
 import SyncModal from './components/SyncModal';
 import AdminModal from './components/AdminModal';
-import InvoiceModal from './components/InvoiceModal';
+import SalesInvoiceModal from './components/SalesInvoiceModal';
+import PurchaseInvoiceModal from './components/PurchaseInvoiceModal';
 import DailyJournalModal from './components/DailyJournalModal';
 import InvoicePdfImportModal from './components/InvoicePdfImportModal';
 import BulkStockImportModal from './components/BulkStockImportModal';
@@ -56,7 +57,10 @@ export default function App() {
   const [isPurchaseOrderOpen, setIsPurchaseOrderOpen] = useState(false);
   const [isSyncOpen, setIsSyncOpen] = useState(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
-  const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
+  // ── Separated: Sales Invoice Modal state
+  const [isSalesInvoiceOpen, setIsSalesInvoiceOpen] = useState(false);
+  // ── Separated: Purchase Invoice Modal state
+  const [isPurchaseInvoiceOpen, setIsPurchaseInvoiceOpen] = useState(false);
   const [isJournalOpen, setIsJournalOpen] = useState(false);
   const [isPdfImportOpen, setIsPdfImportOpen] = useState(false);
   const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
@@ -399,8 +403,15 @@ export default function App() {
 
   const handleEditInvoice = (invoiceId) => {
     if (!isAdmin) return;
-    setIsInvoiceOpen(true);
-    setInvoiceToEdit(invoices.find(i => i.id === invoiceId) || null);
+    const inv = invoices.find(i => i.id === invoiceId);
+    if (!inv) return;
+    setInvoiceToEdit(inv);
+    // Open the correct modal based on invoice type
+    if ((inv.type || 'sales') === 'sales') {
+      setIsSalesInvoiceOpen(true);
+    } else {
+      setIsPurchaseInvoiceOpen(true);
+    }
   };
 
   const handleDeleteInvoice = (invoiceId, restoreStock = false) => {
@@ -788,7 +799,8 @@ export default function App() {
         onOpenReport={() => setIsReportOpen(true)}
         onOpenPurchaseOrder={() => setIsPurchaseOrderOpen(true)}
         onOpenSync={() => setIsSyncOpen(true)}
-        onOpenInvoice={() => setIsInvoiceOpen(true)}
+        onOpenSalesInvoice={() => setIsSalesInvoiceOpen(true)}
+        onOpenPurchaseInvoice={() => setIsPurchaseInvoiceOpen(true)}
         onOpenJournal={() => setIsJournalOpen(true)}
         onOpenPdfImport={() => setIsPdfImportOpen(true)}
         onOpenBulkImport={() => setIsBulkImportOpen(true)}
@@ -901,14 +913,15 @@ export default function App() {
         onOpenAuditTrail={() => setIsAuditTrailOpen(true)}
       />
 
-      <InvoiceModal
-        isOpen={isInvoiceOpen}
+      {/* ── SALES INVOICE MODAL (selling_price only, deducts stock) ── */}
+      <SalesInvoiceModal
+        isOpen={isSalesInvoiceOpen}
         products={products}
         invoices={invoices}
         customers={customers}
         isAdmin={isAdmin}
-        invoiceToEdit={invoiceToEdit}
-        onClose={() => { setIsInvoiceOpen(false); setInvoiceToEdit(null); }}
+        invoiceToEdit={invoiceToEdit?.type === 'sales' ? invoiceToEdit : null}
+        onClose={() => { setIsSalesInvoiceOpen(false); setInvoiceToEdit(null); }}
         onProcessInvoice={(inv) => {
           if (invoiceToEdit) {
             handleDeleteInvoice(invoiceToEdit.id, true);
@@ -920,7 +933,26 @@ export default function App() {
         onEditInvoice={handleEditInvoice}
         onOpenAdminModal={() => setIsAdminModalOpen(true)}
         onSettleCustomerDebt={handleSettleCustomerDebt}
-        onOpenPdfImport={() => setIsPdfImportOpen(true)}
+      />
+
+      {/* ── PURCHASE INVOICE MODAL (cost_price only, adds to stock) ── */}
+      <PurchaseInvoiceModal
+        isOpen={isPurchaseInvoiceOpen}
+        products={products}
+        invoices={invoices}
+        isAdmin={isAdmin}
+        invoiceToEdit={invoiceToEdit?.type === 'purchase' ? invoiceToEdit : null}
+        onClose={() => { setIsPurchaseInvoiceOpen(false); setInvoiceToEdit(null); }}
+        onProcessInvoice={(inv) => {
+          if (invoiceToEdit) {
+            handleDeleteInvoice(invoiceToEdit.id, true);
+            setInvoiceToEdit(null);
+          }
+          handleProcessInvoice(inv);
+        }}
+        onDeleteInvoice={handleDeleteInvoice}
+        onOpenAdminModal={() => setIsAdminModalOpen(true)}
+        onOpenPdfImport={() => { setIsPurchaseInvoiceOpen(false); setTimeout(() => setIsPdfImportOpen(true), 100); }}
       />
 
       <DailyJournalModal
@@ -972,7 +1004,11 @@ export default function App() {
         onClose={() => setIsAuditTrailOpen(false)}
         onViewInvoice={(inv) => {
           setIsAuditTrailOpen(false);
-          setIsInvoiceOpen(true);
+          if ((inv?.type || 'sales') === 'sales') {
+            setIsSalesInvoiceOpen(true);
+          } else {
+            setIsPurchaseInvoiceOpen(true);
+          }
         }}
         onOpenAdminModal={() => setIsAdminModalOpen(true)}
       />
