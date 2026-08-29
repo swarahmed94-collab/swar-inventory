@@ -3,7 +3,7 @@ import { HARDCODED_COST_PRICES } from '../data/hardcodedCostPrices.js';
 
 const STORAGE_KEY = 'swar_frozen_inventory_v2';
 const SCHEMA_KEY = 'swar_schema_version';
-const CURRENT_SCHEMA = 'v7_comprehensive_seeded_cost_prices_aug2026';
+const CURRENT_SCHEMA = 'v8_deep_purge_hardcoded_costs_aug2026';
 const SETTINGS_KEY = 'swar_app_settings_v1';
 const INVOICES_KEY = 'swar_invoices_v1';
 const CUSTOMERS_KEY = 'swar_customers_v1';
@@ -48,49 +48,34 @@ export const normalizeProduct = (p) => {
   };
 };
 
+// ─── DEEP PURGE & ONE-TIME RE-SEED ON INITIALIZATION ───────────────────────
+if (typeof window !== 'undefined' && window.localStorage) {
+  try {
+    if (!localStorage.getItem('PURCHASE_CATALOG_V2_APPLIED') || localStorage.getItem(SCHEMA_KEY) !== CURRENT_SCHEMA) {
+      // Deep purge legacy/stale caches
+      localStorage.removeItem('products');
+      localStorage.removeItem('inventory');
+      localStorage.removeItem('swar_frozen_inventory_v1');
+      localStorage.removeItem('swar_frozen_inventory_v2');
+      localStorage.setItem('PURCHASE_CATALOG_V2_APPLIED', 'true');
+      localStorage.setItem(SCHEMA_KEY, CURRENT_SCHEMA);
+      const normalizedInitial = INITIAL_PRODUCTS.map(normalizeProduct);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizedInitial));
+    }
+  } catch (e) {
+    console.warn('Storage purge error:', e);
+  }
+}
+
 export const getStoredProducts = () => {
   try {
     const existingSchema = localStorage.getItem(SCHEMA_KEY);
-    if (existingSchema !== CURRENT_SCHEMA) {
-      // Migrate stored products to v7 schema: populate hardcoded cost prices while preserving existing stock and audit logs
+    if (existingSchema !== CURRENT_SCHEMA || !localStorage.getItem('PURCHASE_CATALOG_V2_APPLIED')) {
       localStorage.setItem(SCHEMA_KEY, CURRENT_SCHEMA);
-      const data = localStorage.getItem(STORAGE_KEY);
-      let existingProducts = [];
-      try {
-        if (data) existingProducts = JSON.parse(data);
-      } catch (_) {}
-
-      const existingMap = new Map();
-      if (Array.isArray(existingProducts)) {
-        existingProducts.forEach(p => { 
-          if (p?.id) existingMap.set(p.id, p); 
-          if (p?.barcode) existingMap.set(p.barcode, p);
-        });
-      }
-
-      const merged = INITIAL_PRODUCTS.map(initProd => {
-        const stored = existingMap.get(initProd.id) || (initProd.barcode ? existingMap.get(initProd.barcode) : null);
-        if (stored) {
-          const customCost = Number(stored.cost_price ?? stored.costPrice ?? 0);
-          const finalCost = customCost > 0 ? customCost : Number(initProd.cost_price ?? 0);
-          const finalSelling = Number(stored.selling_price ?? stored.price ?? initProd.selling_price ?? initProd.price ?? 0);
-
-          return {
-            ...initProd,
-            currentStock: stored.currentStock !== undefined ? stored.currentStock : initProd.currentStock,
-            auditHistory: Array.isArray(stored.auditHistory) && stored.auditHistory.length > 0 ? stored.auditHistory : initProd.auditHistory,
-            cost_price: finalCost,
-            selling_price: finalSelling,
-            price: finalSelling,
-            notes: stored.notes || initProd.notes,
-            freezerLocation: stored.freezerLocation || initProd.freezerLocation
-          };
-        }
-        return normalizeProduct(initProd);
-      });
-
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-      return merged;
+      localStorage.setItem('PURCHASE_CATALOG_V2_APPLIED', 'true');
+      const normalizedInitial = INITIAL_PRODUCTS.map(normalizeProduct);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizedInitial));
+      return normalizedInitial;
     }
 
     const data = localStorage.getItem(STORAGE_KEY);
@@ -117,11 +102,13 @@ export const getStoredProducts = () => {
 export const resetProductsToNewDataset = () => {
   try {
     localStorage.setItem(SCHEMA_KEY, CURRENT_SCHEMA);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_PRODUCTS));
-    return INITIAL_PRODUCTS;
+    localStorage.setItem('PURCHASE_CATALOG_V2_APPLIED', 'true');
+    const normalized = INITIAL_PRODUCTS.map(normalizeProduct);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+    return normalized;
   } catch (err) {
     console.error('Error resetting products:', err);
-    return INITIAL_PRODUCTS;
+    return INITIAL_PRODUCTS.map(normalizeProduct);
   }
 };
 
