@@ -401,8 +401,193 @@ export default function App() {
     sounds.playSuccess();
   };
 
+  const handleUpdateInvoice = (oldInvoiceId, newInvoiceData) => {
+    if (!isAdmin) {
+      setIsAdminModalOpen(true);
+      return;
+    }
+    const oldInv = invoices.find(i => i.id === oldInvoiceId);
+    if (!oldInv) {
+      handleProcessInvoice(newInvoiceData);
+      return;
+    }
+
+    const now = new Date().toISOString();
+    const isSales = (oldInv.type || 'sales') === 'sales';
+
+    // 1. Calculate net stock changes
+    const oldQtyMap = new Map();
+    if (oldInv.deductedFromStock) {
+      (oldInv.items || []).forEach(it => {
+        oldQtyMap.set(it.productId, (oldQtyMap.get(it.productId) || 0) + Number(it.qty || 0));
+      });
+    }
+
+    const newQtyMap = new Map();
+    (newInvoiceData.items || []).forEach(it => {
+      newQtyMap.set(it.productId, (newQtyMap.get(it.productId) || 0) + Number(it.qty || 0));
+    });
+
+    const affectedProdIds = new Set([...oldQtyMap.keys(), ...newQtyMap.keys()]);
+
+    const updatedProds = products.map(p => {
+      if (!affectedProdIds.has(p.id)) return p;
+
+      const oldQty = oldQtyMap.get(p.id) || 0;
+      const newQty = newQtyMap.get(p.id) || 0;
+
+      // For Sales: oldQty was deducted (-oldQty). Returning it adds +oldQty. New invoice deducts -newQty.
+      // Net change = oldQty - newQty.
+      // For Purchase: oldQty was added (+oldQty). Returning it subtracts -oldQty. New invoice adds +newQty.
+      // Net change = newQty - oldQty.
+      const netDelta = isSales ? (oldQty - newQty) : (newQty - oldQty);
+      const newStock = Number(p.currentStock) + netDelta;
+
+      const log = {
+        id: 'aud-edit-inv-' + Date.now() + '-' + p.id,
+        date: now,
+        quantity: newStock,
+        delta: netDelta,
+        auditor: oldInv.invoiceNumber || (isSales ? 'فاتورة مبيعات' : 'فاتورة مشتريات'),
+        notes: `تعديل فاتورة ${isSales ? 'مبيعات' : 'مشتريات'} (${oldInv.invoiceNumber}): تغيير الكمية من ${oldQty} إلى ${newQty}`
+      };
+
+      return {
+        ...p,
+        currentStock: newStock,
+        updatedAt: now,
+        auditHistory: [...(p.auditHistory || []), log]
+      };
+    });
+
+    // 2. Customer debt updates (for sales invoices)
+    let updatedCusts = [...customers];
+    if (isSales) {
+      const oldCustName = (oldInv.customerName || '').trim();
+      const newCustName = (newInvoiceData.customerName || '').trim();
+      const oldRemainingDebt = Number(oldInv.remainingBalance) || 0;
+      const newRemainingDebt = Number(newInvoiceData.remainingBalance) || 0;
+
+      if (oldCustName.toLowerCase() === newCustName.toLowerCase()) {
+        const debtDelta = newRemainingDebt - oldRemainingDebt;
+        if (newCustName) {
+          updatedCusts = updatedCusts.map(c => {
+            if (c.name?.trim().toLowerCase() === newCustName.toLowerCase()) {
+              return {
+                ...c,
+                totalDebt: Math.max(0, (Number(c.totalDebt) || 0) + debtDelta),
+                phone: newInvoiceData.customerPhone || c.phone || '',
+                updatedAt: now
+              };
+            }
+            return c;
+          });
+        }
+      } else {
+        if (oldCustName && oldRemainingDebt > 0) {
+          updatedCusts = updatedCusts.map(c => {
+            if (c.name?.trim().toLowerCase() === oldCustName.toLowerCase()) {
+              return {
+                ...c,
+                totalDebt: Math.max(0, (Number(c.totalDebt) || 0) - oldRemainingDebt),
+                invoicesCount: Math.max(0, (Number(c.invoicesCount) || 1) - 1),
+                updatedAt: now
+              };
+            }
+            return c;
+          });
+        }
+        if (newCustName) {
+          const newIdx = updatedCusts.findIndex(c => c.name?.trim().toLowerCase() === newCustName.toLowerCase());
+          if (newIdx >= 0) {
+            const ex = updatedCusts[newIdx];
+            updatedCusts[newIdx] = {
+              ...ex,
+              totalDebt: (Number(ex.totalDebt) || 0) + newRemainingDebt,
+              invoicesCount: (Number(ex.invoicesCount) || 0) + 1,
+              phone: newInvoiceData.customerPhone || ex.phone || '',
+              updatedAt: now
+            };
+          } else {
+            updatedCusts.push({
+              id: 'cust-' + Date.now(),
+              name: newCustName,
+              phone: newInvoiceData.customerPhone || '',
+              totalDebt: newRemainingDebt,
+              invoicesCount: 1,
+              createdAt: now,
+              updatedAt: now
+            });
+          }
+        }
+      }
+    }
+
+    // 3. Cash journal updates
+    let updatedJrnl = journal.filter(j => j.invoiceId !== oldInvoiceId);
+    const paid = Number(newInvoiceData.amountPaid);
+    if (newInvoiceData.recordInJournal && paid > 0) {
+      const journalEntry = {
+        id: 'jrnl-' + Date.now(),
+        date: now,
+        type: isSales ? 'income' : 'expense',
+        amount: paid,
+        personName: (newInvoiceData.customerName || newInvoiceData.vendorName || '').trim() || (isSales ? 'عميل نقدي' : 'مورد بضاعة'),
+        category: isSales ? 'تحصيل مبيعات نقدية' : 'مشتريات وتوريد بضاعة',
+        notes: `تعديل ${isSales ? 'فاتورة مبيعات' : 'فاتورة مشتريات'} رقم ${oldInv.invoiceNumber}`,
+        invoiceId: oldInvoiceId,
+        createdAt: now
+      };
+      updatedJrnl = [journalEntry, ...updatedJrnl];
+    }
+
+    // 4. Update Invoices list
+    const finalizedInvoice = {
+      ...oldInv,
+      ...newInvoiceData,
+      id: oldInv.id,
+      invoiceNumber: oldInv.invoiceNumber,
+      createdAt: oldInv.createdAt,
+      updatedAt: now,
+      isEdited: true
+    };
+
+    const updatedInvs = invoices.map(i => i.id === oldInvoiceId ? finalizedInvoice : i);
+
+    // 5. Atomic Transaction
+    const txResult = executeAtomicTransaction({
+      updatedProducts: updatedProds,
+      updatedInvoices: updatedInvs,
+      updatedCustomers: updatedCusts,
+      updatedJournal: updatedJrnl,
+      auditEvent: {
+        action: isSales ? 'SALES_INVOICE_UPDATED' : 'PURCHASE_INVOICE_UPDATED',
+        actor: settings.auditorName || 'مسؤول النظام',
+        title: `تعديل ${isSales ? 'فاتورة مبيعات' : 'فاتورة مشتريات'} (${finalizedInvoice.invoiceNumber})`,
+        details: `الطرف: ${finalizedInvoice.customerName || finalizedInvoice.vendorName || 'نقدي'} | الإجمالي المعدل: ${finalizedInvoice.total} ج | الأصناف: ${(finalizedInvoice.items || []).length} صنف`,
+        metadata: { invoiceId: finalizedInvoice.id, invoiceNumber: finalizedInvoice.invoiceNumber }
+      }
+    });
+
+    if (!txResult.success) {
+      alert(`⚠️ تعذر حفظ تعديلات الفاتورة: ${txResult.error}`);
+      return;
+    }
+
+    setProducts(updatedProds);
+    setInvoices(updatedInvs);
+    setCustomers(updatedCusts);
+    setJournal(updatedJrnl);
+
+    broadcast(updatedProds, updatedInvs, updatedCusts, updatedJrnl);
+    sounds.playSuccess();
+  };
+
   const handleEditInvoice = (invoiceId) => {
-    if (!isAdmin) return;
+    if (!isAdmin) {
+      setIsAdminModalOpen(true);
+      return;
+    }
     const inv = invoices.find(i => i.id === invoiceId);
     if (!inv) return;
     setInvoiceToEdit(inv);
@@ -924,10 +1109,11 @@ export default function App() {
         onClose={() => { setIsSalesInvoiceOpen(false); setInvoiceToEdit(null); }}
         onProcessInvoice={(inv) => {
           if (invoiceToEdit) {
-            handleDeleteInvoice(invoiceToEdit.id, true);
+            handleUpdateInvoice(invoiceToEdit.id, inv);
             setInvoiceToEdit(null);
+          } else {
+            handleProcessInvoice(inv);
           }
-          handleProcessInvoice(inv);
         }}
         onDeleteInvoice={handleDeleteInvoice}
         onEditInvoice={handleEditInvoice}
@@ -945,12 +1131,14 @@ export default function App() {
         onClose={() => { setIsPurchaseInvoiceOpen(false); setInvoiceToEdit(null); }}
         onProcessInvoice={(inv) => {
           if (invoiceToEdit) {
-            handleDeleteInvoice(invoiceToEdit.id, true);
+            handleUpdateInvoice(invoiceToEdit.id, inv);
             setInvoiceToEdit(null);
+          } else {
+            handleProcessInvoice(inv);
           }
-          handleProcessInvoice(inv);
         }}
         onDeleteInvoice={handleDeleteInvoice}
+        onEditInvoice={handleEditInvoice}
         onOpenAdminModal={() => setIsAdminModalOpen(true)}
         onOpenPdfImport={() => { setIsPurchaseInvoiceOpen(false); setTimeout(() => setIsPdfImportOpen(true), 100); }}
       />
@@ -1001,6 +1189,7 @@ export default function App() {
       <AuditTrailModal
         isOpen={isAuditTrailOpen}
         invoices={invoices}
+        isAdmin={isAdmin}
         onClose={() => setIsAuditTrailOpen(false)}
         onViewInvoice={(inv) => {
           setIsAuditTrailOpen(false);
@@ -1010,6 +1199,7 @@ export default function App() {
             setIsPurchaseInvoiceOpen(true);
           }
         }}
+        onEditInvoice={handleEditInvoice}
         onOpenAdminModal={() => setIsAdminModalOpen(true)}
       />
 

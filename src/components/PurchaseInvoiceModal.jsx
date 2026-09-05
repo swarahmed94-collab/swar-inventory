@@ -16,7 +16,8 @@ import {
   Package,
   FileText,
   Upload,
-  ShieldAlert
+  ShieldAlert,
+  Pencil
 } from 'lucide-react';
 import { formatArabicDateTime } from '../utils/storage';
 import { generateInvoiceNumber } from '../utils/transactions';
@@ -33,9 +34,11 @@ export default function PurchaseInvoiceModal({
   products = [],
   invoices = [],
   isAdmin = false,
+  invoiceToEdit = null,
   onClose,
   onProcessInvoice,
   onDeleteInvoice,
+  onEditInvoice,
   onOpenAdminModal,
   onOpenPdfImport,
 }) {
@@ -58,8 +61,38 @@ export default function PurchaseInvoiceModal({
   const [notes, setNotes] = useState('');
   const [search, setSearch] = useState('');
   const [historySearch, setHistorySearch] = useState('');
+  const [isEditMode, setIsEditMode] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [successToast, setSuccessToast] = useState('');
+
+  // When invoiceToEdit changes (admin clicked Edit), pre-fill the purchase form
+  useEffect(() => {
+    if (invoiceToEdit) {
+      setIsEditMode(true);
+      setActiveTab('create');
+      setVendorName(invoiceToEdit.vendorName || invoiceToEdit.customerName || '');
+      setVendorPhone(invoiceToEdit.vendorPhone || '');
+      setPaymentType(invoiceToEdit.paymentType || 'cash');
+      setAmountPaid(invoiceToEdit.amountPaid !== undefined ? String(invoiceToEdit.amountPaid) : '');
+      setNotes(invoiceToEdit.notes || '');
+      setItems((invoiceToEdit.items || []).map(it => {
+        const prod = safeProducts.find(pr => pr.id === it.productId);
+        const cost_price = Number(it.cost_price ?? it.price ?? prod?.cost_price ?? 0);
+        return {
+          productId: it.productId,
+          name: it.name,
+          unit: it.unit || prod?.unit || 'وحدة',
+          cost_price,
+          price: cost_price,
+          qty: Number(it.qty) || 1,
+          currentStock: prod ? Number(prod.currentStock) : 0,
+        };
+      }));
+      setRecordInJournal(false);
+    } else {
+      setIsEditMode(false);
+    }
+  }, [invoiceToEdit]);
 
   // ── STRICTLY reads cost_price ─────────────────────────────────────────────
   const addItem = (product) => {
@@ -206,9 +239,20 @@ ${inv.notes ? `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-ra
       return;
     }
 
-    const invoiceNum = generateInvoiceNumber('purchase', safeInvoices);
+    const invoiceNum = (isEditMode && invoiceToEdit?.invoiceNumber)
+      ? invoiceToEdit.invoiceNumber
+      : generateInvoiceNumber('purchase', safeInvoices);
+
+    const invoiceId = (isEditMode && invoiceToEdit?.id)
+      ? invoiceToEdit.id
+      : ('inv-purch-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6));
+
+    const invoiceCreatedAt = (isEditMode && invoiceToEdit?.createdAt)
+      ? invoiceToEdit.createdAt
+      : new Date().toISOString();
+
     const newInvoice = {
-      id: 'inv-purch-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
+      id: invoiceId,
       invoiceNumber: invoiceNum,
       type: 'purchase',
       vendorName: vendorName.trim() || 'مورد غير محدد',
@@ -230,12 +274,17 @@ ${inv.notes ? `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-ra
       recordInJournal,
       notes: notes.trim(),
       deductedFromStock: true,  // adds to stock
-      createdAt: new Date().toISOString(),
+      createdAt: invoiceCreatedAt,
+      updatedAt: new Date().toISOString(),
+      isEdited: isEditMode
     };
 
     if (onProcessInvoice) onProcessInvoice(newInvoice);
     printInvoiceContent(newInvoice);
-    setSuccessToast(`✅ تم حفظ وإصدار فاتورة الشراء (${newInvoice.invoiceNumber}) وإضافة الكميات للمخزون!`);
+    setSuccessToast(isEditMode
+      ? `✅ تم حفظ وتعديل فاتورة الشراء (${newInvoice.invoiceNumber}) بنجاح!`
+      : `✅ تم حفظ وإصدار فاتورة الشراء (${newInvoice.invoiceNumber}) وإضافة الكميات للمخزون!`
+    );
     setTimeout(() => setSuccessToast(''), 4000);
     handleReset();
   };
@@ -248,6 +297,7 @@ ${inv.notes ? `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-ra
     setAmountPaid('');
     setNotes('');
     setSearch('');
+    setIsEditMode(false);
   };
 
   const executeDelete = (restoreStock) => {
@@ -327,6 +377,28 @@ ${inv.notes ? `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-ra
         {/* ── TAB: CREATE ── */}
         {activeTab === 'create' && (
           <div className="overflow-y-auto flex-1 p-4 sm:p-6 space-y-4">
+
+            {/* Edit Mode Banner */}
+            {isEditMode && (
+              <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/50 border-2 border-amber-400 dark:border-amber-600 text-amber-900 dark:text-amber-200 flex items-center justify-between gap-2 shadow-sm animate-fade-in">
+                <div className="flex items-center gap-2 text-xs sm:text-sm font-black">
+                  <Pencil className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                  <span>
+                    وضع التعديل: تعديل فاتورة مشتريات رقم <strong className="font-mono">{invoiceToEdit?.invoiceNumber || ''}</strong> — سيتم استرجاع الكميات القديمة وتحديث المخزون تلقائياً.
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleReset();
+                    if (onClose) onClose();
+                  }}
+                  className="px-3 py-1 bg-amber-600 text-white rounded-lg font-bold text-xs hover:bg-amber-500 transition-colors shrink-0"
+                >
+                  إلغاء التعديل
+                </button>
+              </div>
+            )}
 
             {/* Cost mode notice */}
             <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 flex items-center gap-2 text-xs font-bold text-emerald-900 dark:text-emerald-300">
@@ -544,9 +616,13 @@ ${inv.notes ? `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-ra
                     <RotateCcw className="w-4 h-4" />مسح الكل
                   </button>
                   <button onClick={handleConfirmAndProcess}
-                    className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-black shadow-md active:scale-95 transition-all flex items-center justify-center gap-2">
-                    <Truck className="w-5 h-5" />
-                    تأكيد توريد وإصدار فاتورة الشراء
+                    className={`flex-1 py-2.5 rounded-xl text-white text-sm font-black shadow-md active:scale-95 transition-all flex items-center justify-center gap-2 ${
+                      isEditMode
+                        ? 'bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500'
+                        : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500'
+                    }`}>
+                    {isEditMode ? <Pencil className="w-5 h-5" /> : <Truck className="w-5 h-5" />}
+                    {isEditMode ? '💾 حفظ وتحديث فاتورة الشراء' : 'تأكيد توريد وإصدار فاتورة الشراء'}
                   </button>
                 </div>
               </div>
@@ -601,6 +677,20 @@ ${inv.notes ? `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-ra
                         <button onClick={() => printInvoiceContent(inv)}
                           className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition-colors">
                           🖨️ طباعة
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (!isAdmin) {
+                              if (onOpenAdminModal) onOpenAdminModal();
+                              return;
+                            }
+                            if (onEditInvoice) onEditInvoice(inv.id);
+                          }}
+                          className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-white rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm transition-colors"
+                          title="تعديل فاتورة الشراء"
+                        >
+                          <Pencil className="w-3.5 h-3.5" />
+                          <span>تعديل</span>
                         </button>
                         {isAdmin && (
                           <button onClick={() => setDeleteConfirm(inv)}

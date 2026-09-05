@@ -304,9 +304,20 @@ ${inv.notes ? `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-ra
       if (!window.confirm(`تنبيه: الكميات المطلوبة للأصناف التالية (${names}) تتجاوز المتوفر بالمخزن. هل ترغب في المتابعة؟`)) return;
     }
 
-    const invoiceNum = generateInvoiceNumber('sales', safeInvoices);
+    const invoiceNum = (isEditMode && invoiceToEdit?.invoiceNumber)
+      ? invoiceToEdit.invoiceNumber
+      : generateInvoiceNumber('sales', safeInvoices);
+
+    const invoiceId = (isEditMode && invoiceToEdit?.id)
+      ? invoiceToEdit.id
+      : ('inv-sales-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6));
+
+    const invoiceCreatedAt = (isEditMode && invoiceToEdit?.createdAt)
+      ? invoiceToEdit.createdAt
+      : new Date().toISOString();
+
     const newInvoice = {
-      id: 'inv-sales-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
+      id: invoiceId,
       invoiceNumber: invoiceNum,
       type: 'sales',
       customerName: customerName.trim() || 'عميل نقدي',
@@ -326,12 +337,17 @@ ${inv.notes ? `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-ra
       recordInJournal,
       notes: notes.trim(),
       deductedFromStock: true,
-      createdAt: new Date().toISOString(),
+      createdAt: invoiceCreatedAt,
+      updatedAt: new Date().toISOString(),
+      isEdited: isEditMode
     };
 
     if (onProcessInvoice) onProcessInvoice(newInvoice);
     printInvoiceContent(newInvoice);
-    setSuccessToast(`✅ تم حفظ وإصدار فاتورة المبيعات (${newInvoice.invoiceNumber}) وتحديث المخزون!`);
+    setSuccessToast(isEditMode 
+      ? `✅ تم حفظ وتحديث فاتورة المبيعات (${newInvoice.invoiceNumber}) بنجاح!` 
+      : `✅ تم حفظ وإصدار فاتورة المبيعات (${newInvoice.invoiceNumber}) وتحديث المخزون!`
+    );
     setTimeout(() => setSuccessToast(''), 4000);
     handleReset();
   };
@@ -738,6 +754,20 @@ ${inv.notes ? `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-ra
                       <button onClick={() => printInvoiceContent(inv)}
                         className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-bold transition-colors">
                         🖨️ طباعة
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (!isAdmin) {
+                            if (onOpenAdminModal) onOpenAdminModal();
+                            return;
+                          }
+                          if (onEditInvoice) onEditInvoice(inv.id);
+                        }}
+                        className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-white rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm transition-colors"
+                        title="تعديل الفاتورة"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                        <span>تعديل</span>
                       </button>
                       {isAdmin && (
                         <button onClick={() => setDeleteConfirm(inv)}

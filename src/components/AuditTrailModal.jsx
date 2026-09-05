@@ -17,7 +17,8 @@ import {
   Printer, 
   Sparkles,
   ShieldCheck,
-  AlertCircle
+  AlertCircle,
+  Pencil
 } from 'lucide-react';
 import { formatArabicDateTime } from '../utils/storage';
 import { getStoredAuditTrail } from '../utils/transactions';
@@ -25,8 +26,10 @@ import { getStoredAuditTrail } from '../utils/transactions';
 export default function AuditTrailModal({
   isOpen,
   invoices = [],
+  isAdmin = false,
   onClose,
   onViewInvoice,
+  onEditInvoice,
   onOpenAdminModal
 }) {
   const [filterType, setFilterType] = useState('all'); // 'all' | 'sales' | 'purchase' | 'reset' | 'bulk'
@@ -224,15 +227,35 @@ export default function AuditTrailModal({
                             </div>
                           </div>
 
-                          {onViewInvoice && (
-                            <button
-                              type="button"
-                              onClick={() => onViewInvoice(inv)}
-                              className="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 rounded-xl text-xs font-bold transition-colors"
-                            >
-                              عرض وطباعة
-                            </button>
-                          )}
+                          <div className="flex items-center gap-2">
+                            {onViewInvoice && (
+                              <button
+                                type="button"
+                                onClick={() => onViewInvoice(inv)}
+                                className="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 rounded-xl text-xs font-bold transition-colors"
+                              >
+                                عرض وطباعة
+                              </button>
+                            )}
+                            {onEditInvoice && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  if (!isAdmin) {
+                                    if (onOpenAdminModal) onOpenAdminModal();
+                                    return;
+                                  }
+                                  onClose();
+                                  onEditInvoice(inv.id);
+                                }}
+                                className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-white rounded-xl text-xs font-bold flex items-center gap-1 transition-colors shadow-sm"
+                                title="تعديل الفاتورة"
+                              >
+                                <Pencil className="w-3.5 h-3.5" />
+                                <span>تعديل</span>
+                              </button>
+                            )}
+                          </div>
                         </div>
                       </div>
                     );
